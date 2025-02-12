@@ -1,0 +1,76 @@
+/* Benefits Section */
+.benefits {
+    background: var(--primary);
+    position: relative;
+}
+
+/* Add a subtle gradient overlay */
+.benefits::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        165deg,
+        rgba(29, 185, 84, 0.015) 0%,
+        transparent 100%
+    );
+    pointer-events: none;
+}
+
+/* Ensure content stays above gradient */
+.benefits .container {
+    position: relative;
+    z-index: 1;
+}
+
+.benefits h2 {
+    color: var(--secondary);
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: 700;
+    font-size: 2.8em;
+    position: relative;
+    display: inline-block;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin: 40px 0;
+}
+
+.benefit-card {
+    background: var(--dark-gray);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(29, 185, 84, 0.1);
+    transition: transform 0.3s ease;
+    height: 100%;  /* Ensure all cards are same height */
+    display: flex;
+    flex-direction: column;
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+}
+
+.benefit-header {
+    margin-bottom: 25px;
+    flex: 1;
+}
+
+.benefit-header h3 {
+    color: var(--secondary);
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.benefit-tagline {
+    color: var(--text-secondary);
+    font-size: 1em;

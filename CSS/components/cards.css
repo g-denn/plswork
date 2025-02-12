@@ -1,0 +1,45 @@
+/* Card Base Styles */
+.card {
+    background: var(--dark-gray);
+    border-radius: 15px;
+    border: 1px solid rgba(29, 185, 84, 0.1);
+    padding: 30px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(29, 185, 84, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Header */
+.card-header {
+    margin-bottom: 20px;
+}
+
+.card-header h3 {
+    color: var(--secondary);
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+/* Card Content */
+.card-content {
+    color: var(--text-secondary);
+    font-size: 1.05em;
+    line-height: 1.6;
+}
+
+/* Card Grid */
+.card-grid {
+    display: grid;
+    gap: 25px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card {
+        padding: 20px;
+    }
+}
