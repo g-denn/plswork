@@ -560,5 +560,18 @@
         </div>
     </footer>
     <script src="js/main.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const styles = document.styleSheets;
+        console.log('Loaded stylesheets:', styles.length);
+        for(let i = 0; i < styles.length; i++) {
+            try {
+                console.log(styles[i].href);
+            } catch(e) {
+                console.log('Failed to load stylesheet');
+            }
+        }
+    });
+    </script>
 </body>
 </html> 
