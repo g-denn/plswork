@@ -562,13 +562,11 @@
     <script src="js/main.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const styles = document.styleSheets;
-        console.log('Loaded stylesheets:', styles.length);
-        for(let i = 0; i < styles.length; i++) {
-            try {
-                console.log(styles[i].href);
-            } catch(e) {
-                console.log('Failed to load stylesheet');
+        // Check which stylesheets failed to load
+        const links = document.getElementsByTagName('link');
+        for (let link of links) {
+            if (link.rel === 'stylesheet') {
+                console.log(`Stylesheet ${link.href} loaded:`, link.sheet !== null);
             }
         }
     });
