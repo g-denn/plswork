@@ -559,17 +559,325 @@
             </div>
         </div>
     </footer>
-    <script src="js/main.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Check which stylesheets failed to load
-        const links = document.getElementsByTagName('link');
-        for (let link of links) {
-            if (link.rel === 'stylesheet') {
-                console.log(`Stylesheet ${link.href} loaded:`, link.sheet !== null);
+
+    <!-- AI Chat Interface -->
+    <div class="chat-container" style="display: none;">
+        <div class="chat-header">
+            <h3>RealToken Assistant</h3>
+            <button id="closeChat" class="close-btn">&times;</button>
+        </div>
+        <div id="chatMessages" class="chat-messages"></div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Ask about tokenization...">
+            <button id="sendMessage">Send</button>
+        </div>
+        <div class="chat-footer">
+            <span id="remainingMessages">5 messages remaining</span>
+        </div>
+    </div>
+    <button id="openChat" class="chat-trigger">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" fill="currentColor"/>
+        </svg>
+    </button>
+
+    <style>
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 380px;
+            height: 600px;
+            background: var(--dark-gray);
+            border-radius: 15px;
+            border: 1px solid rgba(29, 185, 84, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: linear-gradient(
+                90deg,
+                var(--medium-gray) 0%,
+                var(--dark-gray) 100%
+            );
+            color: var(--text);
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(29, 185, 84, 0.1);
+        }
+
+        .chat-header h3 {
+            color: var(--secondary);
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: var(--secondary);
+            transform: rotate(90deg);
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-input {
+            padding: 20px;
+            display: flex;
+            gap: 12px;
+            border-top: 1px solid rgba(29, 185, 84, 0.1);
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            background: var(--medium-gray);
+            border: 1px solid rgba(29, 185, 84, 0.1);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(29, 185, 84, 0.1);
+        }
+
+        .chat-input button {
+            padding: 12px 20px;
+            background: var(--secondary);
+            color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            background: #1ed760;
+            transform: translateY(-2px);
+        }
+
+        .chat-trigger {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--secondary);
+            color: var(--primary);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
+        }
+
+        .chat-trigger:hover {
+            transform: scale(1.1);
+            background: #1ed760;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 12px;
+            max-width: 85%;
+            position: relative;
+        }
+
+        .user-message {
+            background: rgba(29, 185, 84, 0.1);
+            margin-left: auto;
+            color: var(--text);
+            border: 1px solid rgba(29, 185, 84, 0.2);
+        }
+
+        .ai-message {
+            background: var(--medium-gray);
+            margin-right: auto;
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-footer {
+            padding: 15px;
+            text-align: center;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(29, 185, 84, 0.1);
+            font-size: 0.9em;
+        }
+
+        /* Custom Scrollbar */
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: var(--dark-gray);
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(29, 185, 84, 0.2);
+            border-radius: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: rgba(29, 185, 84, 0.3);
+        }
+
+        /* Message Animation */
+        @keyframes messageAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
-    });
+
+        .message {
+            animation: messageAppear 0.3s ease forwards;
+        }
+    </style>
+
+    <script>
+        // Replace environment variable access with a direct API key configuration
+        const PERPLEXITY_API_KEY = 'YOUR_PERPLEXITY_API_KEY'; // Replace this with your actual API key
+        let messageCount = 0;
+        const MAX_MESSAGES = 5;
+
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatContainer = document.querySelector('.chat-container');
+            const openChatBtn = document.getElementById('openChat');
+            const closeChatBtn = document.getElementById('closeChat');
+            const sendMessageBtn = document.getElementById('sendMessage');
+            const userInput = document.getElementById('userInput');
+
+            // Initialize chat UI
+            openChatBtn.addEventListener('click', () => {
+                chatContainer.style.display = 'flex';
+                openChatBtn.style.display = 'none';
+                // Add welcome message
+                addMessageToChat("Hello! I'm your AI assistant. I'd be happy to explain more about tokenization, our platform, and how we're revolutionizing the insurance industry. What would you like to know?", 'ai');
+            });
+
+            closeChatBtn.addEventListener('click', () => {
+                chatContainer.style.display = 'none';
+                openChatBtn.style.display = 'block';
+            });
+
+            // Chat functionality
+            sendMessageBtn.addEventListener('click', sendMessage);
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+
+            async function sendMessage() {
+                if (messageCount >= MAX_MESSAGES) {
+                    alert('You have reached the maximum number of messages for this session. Please refresh the page to start a new session.');
+                    return;
+                }
+
+                const message = userInput.value.trim();
+                if (!message) return;
+
+                // Add user message to chat
+                addMessageToChat(message, 'user');
+                userInput.value = '';
+
+                // Prepare context for the AI
+                const context = `You are an AI assistant for RealToken, a tokenization platform focused on revolutionizing insurance. 
+                Be enthusiastic about tokenization and its benefits. Key points to emphasize:
+                - How tokenization makes insurance more accessible and efficient
+                - The benefits of blockchain technology in insurance
+                - Our solution to the current insurance crisis
+                - The advantages of fractional ownership
+                - The security and transparency of our platform
+                Always maintain a professional but friendly tone. Current user message: ${message}`;
+
+                try {
+                    const response = await fetch('https://api.perplexity.ai/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${PERPLEXITY_API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            model: 'mixtral-8x7b-instruct',
+                            messages: [{
+                                role: 'system',
+                                content: context
+                            }, {
+                                role: 'user',
+                                content: message
+                            }]
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('API request failed');
+                    }
+
+                    const data = await response.json();
+                    const aiResponse = data.choices[0].message.content;
+                    addMessageToChat(aiResponse, 'ai');
+                    
+                    messageCount++;
+                    updateRemainingMessages();
+                } catch (error) {
+                    console.error('Error:', error);
+                    addMessageToChat('I apologize, but I encountered an error. Please try again in a moment.', 'ai');
+                }
+            }
+
+            function addMessageToChat(message, sender) {
+                const chatMessages = document.getElementById('chatMessages');
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', `${sender}-message`);
+                messageDiv.textContent = message;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function updateRemainingMessages() {
+                const remaining = MAX_MESSAGES - messageCount;
+                document.getElementById('remainingMessages').textContent = 
+                    `${remaining} message${remaining !== 1 ? 's' : ''} remaining`;
+            }
+        });
     </script>
 </body>
 </html> 
