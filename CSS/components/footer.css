@@ -166,4 +166,40 @@ footer::after {
 }
 
 @media (max-width: 768px) {
-    .footer-conte
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+
+    .footer-brand {
+        align-items: center;
+    }
+
+    .footer-links {
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 30px 0 0;
+        margin-top: 10px;
+    }
+
+    .footer-links h4 {
+        text-align: center;
+    }
+
+    .footer-links ul {
+        align-items: center;
+    }
+
+    .footer-contact {
+        text-align: center;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+    }
+}

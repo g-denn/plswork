@@ -72,4 +72,76 @@
     color: var(--secondary);
 }
 
-.nav-links .con
+.nav-links .contact-btn {
+    background: var(--secondary);
+    color: var(--primary);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: block;
+    white-space: nowrap;
+}
+
+.nav-links .contact-btn:hover {
+    background: #1ed760;
+    color: var(--primary);
+}
+
+/* Add container for each link */
+.nav-links > * {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.nav-links a.active {
+    color: var(--secondary);
+    position: relative;
+    font-weight: 500;
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 15px;
+    right: 15px;
+    height: 2px;
+    background: var(--secondary);
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(29, 185, 84, 0.3);
+    transition: all 0.3s ease;
+}
+
+.nav-links a:not(.contact-btn):hover::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 15px;
+    right: 15px;
+    height: 2px;
+    background: var(--secondary);
+    border-radius: 2px;
+    opacity: 0.8;
+}
+
+.nav-links .contact-btn.active {
+    background: #1ed760;
+}
+
+.nav-links .contact-btn.active::after {
+    display: none;
+}
+
+/* Update responsive styles */
+@media (max-width: 768px) {
+    .nav {
+        top: 10px;
+        padding: 10px 15px;
+    }
+    
+    .logo {
+        height: 35px;
+    }
+}

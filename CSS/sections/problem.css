@@ -87,4 +87,38 @@
 
 .crisis-card {
     background: var(--dark-gray);
-    paddin
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid rgba(29, 185, 84, 0.2);
+}
+
+.crisis-card h3 {
+    color: var(--secondary);
+    margin-bottom: 20px;
+}
+
+.crisis-card ul {
+    list-style: none;
+    margin: 0;
+}
+
+.crisis-card ul li {
+    color: var(--text-secondary);
+    margin: 12px 0;
+    padding-left: 25px;
+    position: relative;
+}
+
+.crisis-card ul li:before {
+    content: "•";
+    color: var(--secondary);
+    position: absolute;
+    left: 0;
+}
+
+@media (max-width: 1200px) {
+    .crisis-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+} 

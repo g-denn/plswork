@@ -90,4 +90,154 @@
 }
 
 /* Stagger the animations */
-.form-sectio
+.form-section:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.form-section:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.form-section h3 {
+    color: var(--secondary);
+    font-size: 1.5em;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(29, 185, 84, 0.2);
+    position: relative;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(18, 18, 18, 0.6);
+    border: 1px solid rgba(29, 185, 84, 0.1);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+/* Make all inputs consistent */
+.form-group input,
+.form-group select {
+    height: 48px;  /* Standardize height */
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Adjust spacing for consecutive form rows */
+.form-row + .form-row {
+    margin-top: -10px;
+}
+
+/* Adjust spacing for last form section */
+.form-section:last-of-type {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    color: var(--text);
+    margin-bottom: 8px;
+    font-size: 1em;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--secondary);
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 30px 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+    margin-top: 5px;
+}
+
+.checkbox-group label {
+    font-size: 0.95em;
+    margin: 0;
+}
+
+.checkbox-group label span {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+button[type="submit"] {
+    background: linear-gradient(
+        45deg,
+        var(--secondary) 0%,
+        #1ed760 100%
+    );
+    color: var(--primary);
+    padding: 18px 40px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.2em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(29, 185, 84, 0.2);
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(29, 185, 84, 0.3);
+}
+
+@media (max-width: 1200px) {
+    .contact-form {
+        max-width: 90%;
+        padding: 40px;
+    }
+}
+
+@media (max-width: 1400px) {
+    .contact h2 {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-form {
+        padding: 25px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;  /* Stack on mobile */
+    }
+
+    .contact h2 {
+        margin-left: 0;
+        font-size: 2.2em;
+    }
+}

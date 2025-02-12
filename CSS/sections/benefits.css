@@ -74,3 +74,48 @@
 .benefit-tagline {
     color: var(--text-secondary);
     font-size: 1em;
+    margin: 0;
+    opacity: 0.8;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.benefit-highlights {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.highlight {
+    text-align: center;
+    padding: 15px;
+    background: rgba(18, 18, 18, 0.6);
+    border-radius: 10px;
+    border: 1px solid rgba(29, 185, 84, 0.1);
+}
+
+.highlight-number {
+    font-size: 1.6em;  /* Made consistent */
+    min-height: 40px;  /* Ensure consistent height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.highlight-text {
+    font-size: 0.85em;
+    min-height: 20px;
+    white-space: nowrap;
+}
+
+@media (max-width: 1200px) {
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+}
