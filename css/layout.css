@@ -1,7 +1,7 @@
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 60px;
+    padding: 0 40px;
 }
 
 section {
@@ -16,33 +16,51 @@ section {
 section h2 {
     color: var(--secondary);
     text-align: left;
-    font-size: 2.8em;
+    font-size: 3.2em;  /* Match "get started" size */
     margin: 0 0 40px 0;
     font-weight: 800;
     background: linear-gradient(45deg, var(--text) 30%, var(--secondary) 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-transform: uppercase;
+    text-transform: lowercase;
     letter-spacing: 0.5px;
     position: relative;
     white-space: nowrap;
     width: fit-content;
     padding-left: 0;
-    margin-left: 60px;
+    margin-left: 120px;
 }
 
+/* Add horizontal line after all section headers */
 section h2::after {
     content: '';
     position: absolute;
     bottom: -15px;
     left: 0;
-    transform: none;
     width: 150px;
     height: 4px;
     background: var(--secondary);
     border-radius: 3px;
     opacity: 0.9;
     box-shadow: 0 0 10px rgba(29, 185, 84, 0.3);
+}
+
+/* Remove any section-specific overrides */
+.tokenization h2,
+.problem h2,
+.solution h2,
+.benefits h2,
+.contact h2 {
+    margin-left: 120px !important;
+    text-align: left !important;
+    padding-left: 0 !important;
+    font-size: 3.2em !important;  /* Ensure consistent size */
+    text-transform: lowercase !important;
+    background: linear-gradient(45deg, var(--text) 30%, var(--secondary) 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
 }
 
 /* Add subtle animation for headers */
@@ -139,10 +157,14 @@ section:not(:first-of-type)::after {
     .container {
         padding: 0 20px;
     }
-    section h2 {
-        margin-left: 20px;
-        font-size: 2.2em;
-        white-space: normal;
+    section h2,
+    .tokenization h2,
+    .problem h2,
+    .solution h2,
+    .benefits h2,
+    .contact h2 {
+        margin-left: 20px !important;
+        font-size: 2.5em !important;
     }
 
     section h2::after {

@@ -43,7 +43,10 @@
         <div class="floating-orb orb-4"></div>
         <div class="floating-orb orb-5"></div>
         <div class="container">
-            <h1>Revolutionizing Insurance Through <span class="mission-statement">Blockchain Technology</span></h1>
+            <h1>
+                <span class="animated-word">Revolutionizing Insurance</span><br>
+                <span class="mission-statement">Through Blockchain Technology</span>
+            </h1>
             <p>Rebuilding communities and protecting assets in an era of unprecedented challenges</p>
             <div class="hero-stats">
                 <p class="hero-stat">$275B+ in California wildfire economic losses</p>
@@ -57,7 +60,7 @@
 
     <section id="problem" class="problem">
         <div class="container">
-            <h2>The Insurance Crisis</h2>
+            <h2>the problem</h2>
             
             <div class="crisis-container">
                 <div class="crisis-text">
@@ -95,9 +98,9 @@
         </div>
     </section>
 
-    <section id="tokenization" class="token-explanation">
+    <section id="tokenization" class="tokenization">
         <div class="container">
-            <h2>Understanding Tokenization</h2>
+            <h2>How It Works</h2>
             <div class="tokenization-container">
                 <div class="tokenization-text">
                     <p class="intro-text">Imagine turning your property into digital shares, similar to how a company offers stocks. Using Ethereum's secure blockchain technology, we convert real estate into easily tradeable digital tokens. This means you can own a piece of property for a fraction of its total cost, trade it instantly, and participate in its value growth - all while helping protect communities through shared insurance pools.</p>
@@ -208,8 +211,8 @@
 
     <section id="solution" class="solution">
         <div class="container">
-            <h2>Our Solution: Tokenized Insurance</h2>
-            <p>By leveraging Ethereum's smart contract capabilities, we're creating a decentralized insurance platform that converts real estate assets into tradeable digital shares. This enables transparent risk pooling, automated claims processing, and democratized access to property investment - all while maintaining regulatory compliance through blockchain's immutable record-keeping.</p>
+            <h2>our solution</h2>
+            <p>By leveraging <strong>Ethereum's smart contract capabilities</strong>, we're creating a <strong>decentralized insurance platform</strong> that converts real estate assets into tradeable digital shares. This enables <strong>transparent risk pooling</strong>, <strong>automated claims processing</strong>, and <strong>democratized access</strong> to property investment - all while maintaining regulatory compliance through blockchain's immutable record-keeping.</p>
 
             <div class="solution-overview">
                 <div class="process-card">
@@ -344,7 +347,7 @@
 
     <section id="benefits" class="benefits">
         <div class="container">
-            <h2>Key Benefits</h2>
+            <h2>Benefits</h2>
             <div class="benefits-grid">
                 <div class="benefit-card">
                     <div class="benefit-header">
@@ -419,7 +422,7 @@
 
     <section id="contact" class="contact">
         <div class="container">
-            <h2>Join the Revolution</h2>
+            <h2>get started</h2>
             <form class="contact-form">
                 <!-- Personal Information -->
                 <div class="form-section">
@@ -449,13 +452,19 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <input type="text" id="propertyCity" placeholder="City" required>
+                            <label for="city">City*</label>
+                            <input type="text" id="city" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="propertyState" placeholder="State" required>
+                            <label for="state">State*</label>
+                            <select id="state" required>
+                                <option value="">Select State</option>
+                                <!-- State options -->
+                            </select>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="propertyZip" placeholder="ZIP Code" required>
+                            <label for="zipCode">ZIP Code*</label>
+                            <input type="text" id="zipCode" pattern="[0-9]{5}" required>
                         </div>
                     </div>
                     <div class="form-row">

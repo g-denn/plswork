@@ -98,6 +98,7 @@
     animation-delay: 0.4s;
 }
 
+/* Form section headings */
 .form-section h3 {
     color: var(--secondary);
     font-size: 1.5em;
@@ -105,8 +106,11 @@
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(29, 185, 84, 0.2);
     position: relative;
+  /* Match section title alignment */
+    text-align: left;
 }
 
+/* Form group alignment */
 .form-group {
     margin-bottom: 20px;
 }
@@ -130,9 +134,10 @@
     height: 48px;  /* Standardize height */
 }
 
+/* Form row alignment */
 .form-row {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     margin-bottom: 20px;
 }
@@ -233,11 +238,10 @@ button[type="submit"]:hover {
     }
 
     .form-row {
-        grid-template-columns: 1fr;  /* Stack on mobile */
+        grid-template-columns: 1fr;
     }
 
-    .contact h2 {
-        margin-left: 0;
-        font-size: 2.2em;
+    .form-section h3 {
+        margin-left: 20px;
     }
 }

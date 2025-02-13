@@ -2,28 +2,15 @@ require('dotenv').config();
 const fetch = require('node-fetch');
 
 const handler = async (event) => {
-  // Check for allowed origins
-  const allowedOrigins = [
-    'http://localhost:8888',    // Netlify dev server
-    'http://localhost:3000',    // Alternative local dev
-    'https://real-token.netlify.app'  // Your production domain
-  ];
-
-  const origin = event.headers.origin;
-  const isAllowedOrigin = allowedOrigins.includes(origin);
-
-  // CORS headers
+  // Add CORS headers
   const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json'
   };
 
-  if (isAllowedOrigin) {
-    headers['Access-Control-Allow-Origin'] = origin;
-  }
-
-  // Handle preflight requests
+  // Handle OPTIONS preflight request
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 204,
@@ -32,6 +19,7 @@ const handler = async (event) => {
     };
   }
 
+  // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return { 
       statusCode: 405, 
@@ -40,19 +28,16 @@ const handler = async (event) => {
     };
   }
 
-  // Check for API key and validate format
-  const apiKey = process.env.PERPLEXITY_API_KEY?.trim();
+  // Get API key from Netlify environment variables
+  const apiKey = process.env.PERPLEXITY_API_KEY;
   if (!apiKey || !apiKey.startsWith('pplx-')) {
-    console.error('Invalid API key format');
+    console.error('API key not properly configured');
     return {
       statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
+      headers,
       body: JSON.stringify({ 
         error: 'Configuration error',
-        details: 'Invalid API key format'
+        details: 'API key not properly configured'
       })
     };
   }
@@ -60,36 +45,31 @@ const handler = async (event) => {
   try {
     const { message } = JSON.parse(event.body);
 
-    // Log request details (remove in production)
-    console.log('Making API request with:', {
-      apiKeyValid: apiKey.startsWith('pplx-'),
-      apiKeyLength: apiKey.length,
-      messagePreview: message.substring(0, 50) + '...'
-    });
+    if (!message) {
+      throw new Error('No message provided');
+    }
+
+    console.log('Using API key:', apiKey); // Debug log
 
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
-        'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: "sonar-pro",
+        model: "sonar",
         messages: [
+          {
+            role: "system",
+            content: "You are TokenAI, an expert in blockchain-based insurance tokenization. Keep answers concise (max 3 sentences). Always advocate for the benefits of tokenization in insurance, emphasizing transparency, efficiency, and community resilience. Focus on how tokenization solves traditional insurance problems."
+          },
           {
             role: "user",
             content: message
           }
         ]
       })
-    });
-
-    // Log response details
-    console.log('API Response:', {
-      status: response.status,
-      statusText: response.statusText,
-      headers: Object.fromEntries(response.headers.entries())
     });
 
     if (!response.ok) {
@@ -111,12 +91,7 @@ const handler = async (event) => {
 
     return {
       statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
-      },
+      headers,
       body: JSON.stringify({
         message: messageContent,
         citations: []
@@ -127,10 +102,7 @@ const handler = async (event) => {
     console.error('Error details:', error);
     return {
       statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
+      headers,
       body: JSON.stringify({ 
         error: 'Failed to process request',
         details: error.message
