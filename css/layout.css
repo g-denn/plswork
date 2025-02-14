@@ -13,27 +13,28 @@ section {
 }
 
 /* Unified Section Header Styling */
-section h2 {
+section h2,
+.contact h2 {
     color: var(--secondary);
     text-align: left;
-    font-size: 3.2em;  /* Match "get started" size */
-    margin: 0 0 40px 0;
+    font-size: 3.2em;
+    margin: 0 0 50px 120px;
     font-weight: 800;
     background: linear-gradient(45deg, var(--text) 30%, var(--secondary) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-transform: lowercase;
+    text-transform: capitalize !important;
     letter-spacing: 0.5px;
     position: relative;
     white-space: nowrap;
     width: fit-content;
     padding-left: 0;
-    margin-left: 120px;
 }
 
-/* Add horizontal line after all section headers */
-section h2::after {
+/* Add line under all headers including get started */
+section h2::after,
+.contact h2::after {
     content: '';
     position: absolute;
     bottom: -15px;
@@ -46,21 +47,59 @@ section h2::after {
     box-shadow: 0 0 10px rgba(29, 185, 84, 0.3);
 }
 
-/* Remove any section-specific overrides */
+/* Force consistent styling for all headers */
 .tokenization h2,
 .problem h2,
 .solution h2,
 .benefits h2,
 .contact h2 {
-    margin-left: 120px !important;
-    text-align: left !important;
-    padding-left: 0 !important;
-    font-size: 3.2em !important;  /* Ensure consistent size */
-    text-transform: lowercase !important;
+    margin: 0 0 50px 120px !important;
+    text-transform: capitalize !important;
+    font-size: 3.2em !important;
     background: linear-gradient(45deg, var(--text) 30%, var(--secondary) 100%) !important;
     -webkit-background-clip: text !important;
     background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
+}
+
+/* Container spacing adjustments */
+.tokenization-container,
+.crisis-container,
+.solution-overview,
+.benefits-grid,
+.contact-form {
+    margin-top: 0 !important;
+    padding-top: 30px !important;
+}
+
+/* Specific adjustments for problem section */
+.crisis-container {
+    padding-top: 30px !important;
+    background: linear-gradient(
+        165deg,
+        rgba(30, 30, 30, 0.9) 0%,
+        rgba(18, 18, 18, 0.95) 100%
+    );
+    border-radius: 20px;
+    border: 1px solid rgba(29, 185, 84, 0.15);
+}
+
+/* Specific adjustments for contact form */
+.contact-form {
+    padding: 30px !important;
+    background: linear-gradient(
+        165deg,
+        rgba(30, 30, 30, 0.9) 0%,
+        rgba(18, 18, 18, 0.95) 100%
+    );
+    border-radius: 20px;
+    border: 1px solid rgba(29, 185, 84, 0.15);
+}
+
+/* Remove any conflicting margins */
+.benefits .benefits-grid,
+.tokenization .tokenization-container {
+    margin-top: 0 !important;
 }
 
 /* Add subtle animation for headers */
@@ -192,4 +231,48 @@ section:not(:first-of-type)::after {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 1000;
     height: 60px;
+}
+
+/* Loading indicator styles */
+.loading {
+    background: transparent !important;
+    border: none !important;
+    padding: 10px !important;
+    margin-bottom: 15px !important;
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: var(--secondary);
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out;
+    opacity: 0.6;
+}
+
+.dot:nth-child(1) { animation-delay: -0.32s; }
+.dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+
+/* Specific adjustments for tokenization and benefits sections */
+.tokenization h2,
+.benefits h2 {
+    margin: 0 0 50px 120px !important;
+}
+
+/* Container spacing - separate from header spacing */
+.tokenization-container,
+.benefits-grid {
+    margin-top: 0;
+    padding-top: 30px !important;
 }

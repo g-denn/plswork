@@ -1017,6 +1017,7 @@
 I'm here to help you understand how RealToken is revolutionizing the insurance industry through blockchain technology and tokenization.
 
 I can explain:
+
 • How our tokenization platform works
 • The benefits of fractional insurance ownership
 • Our solution to the current insurance crisis
@@ -1092,10 +1093,17 @@ What would you like to know more about?`;
                 addMessageToChat(message, 'user');
                 userInput.value = '';
 
-                // Create response message container
-                const responseDiv = document.createElement('div');
-                responseDiv.classList.add('message', 'ai-message');
-                document.getElementById('chatMessages').appendChild(responseDiv);
+                // Add loading indicator
+                const loadingDiv = document.createElement('div');
+                loadingDiv.classList.add('message', 'ai-message', 'loading');
+                loadingDiv.innerHTML = `
+                    <div class="typing-indicator">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                `;
+                document.getElementById('chatMessages').appendChild(loadingDiv);
 
                 try {
                     const response = await fetch('/.netlify/functions/chat', {
@@ -1106,11 +1114,19 @@ What would you like to know more about?`;
                         body: JSON.stringify({ message })
                     });
 
+                    // Remove loading indicator
+                    loadingDiv.remove();
+
                     const data = await response.json();
                     
                     if (data.error) {
                         throw new Error(data.error);
                     }
+
+                    // Create response message container
+                    const responseDiv = document.createElement('div');
+                    responseDiv.classList.add('message', 'ai-message');
+                    document.getElementById('chatMessages').appendChild(responseDiv);
 
                     // Emulate streaming like welcome message
                     let displayedText = '';
@@ -1189,6 +1205,34 @@ What would you like to know more about?`;
             // Add this to your DOMContentLoaded listener
             const avatarImg = document.getElementById('aiAvatar');
             setAvatar(avatarImg);
+
+            // Add secret key combination handler
+            let secretCode = '';
+            document.addEventListener('keydown', (e) => {
+                // Check for Ctrl + Shift + R
+                if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+                    e.preventDefault(); // Prevent page refresh
+                    messageCount = 0;
+                    localStorage.setItem('chatMessageCount', '0');
+                    updateRemainingMessages();
+                    
+                    // Re-enable chat if it was disabled
+                    userInput.disabled = false;
+                    sendMessageBtn.disabled = false;
+                    userInput.placeholder = 'Ask about tokenization...';
+                    
+                    // Show subtle confirmation
+                    const chatMessages = document.getElementById('chatMessages');
+                    if (chatMessages) {
+                        const resetMsg = document.createElement('div');
+                        resetMsg.classList.add('message', 'ai-message');
+                        resetMsg.style.opacity = '0.7';
+                        resetMsg.textContent = '🔄 Message limit reset';
+                        chatMessages.appendChild(resetMsg);
+                        setTimeout(() => resetMsg.remove(), 2000);
+                    }
+                }
+            });
         });
     </script>
 </body>
