@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="css/sections/solution.css">
     <link rel="stylesheet" href="css/sections/tokenization.css">
     <link rel="stylesheet" href="css/sections/benefits.css">
+    <link rel="stylesheet" href="css/components/property-lookup.css">
 </head>
 <body>
     <nav class="nav">
@@ -44,55 +45,116 @@
         <div class="floating-orb orb-5"></div>
         <div class="container">
             <h1>
-                <span class="animated-word">Revolutionizing Insurance</span><br>
+                <span class="animated-word">Revolutionizing Real Estate</span><br>
                 <span class="mission-statement">Through Blockchain Technology</span>
             </h1>
             <p>Rebuilding communities and protecting assets in an era of unprecedented challenges</p>
             <div class="hero-stats">
-                <p class="hero-stat">$275B+ in California wildfire economic losses</p>
-                <p class="hero-stat">47% of Florida hurricane claims denied in 2023</p>
-                <p class="hero-stat">342% premium spike in high-risk zones</p>
-                <p class="hero-stat">76,428 homeowner claims denied in Florida</p>
-                <p class="hero-stat-subtitle">Traditional insurance is failing communities</p>
+                <div class="crisis-stats">
+                    <p class="hero-stat" style="margin-bottom: 20px;">$19.35B+ Untapped vacation rental market potential</p>
+                    <p class="hero-stat" style="margin-bottom: 20px;">87% of property owners struggle with traditional management</p>
+                    <p class="hero-stat" style="margin-bottom: 20px;">300% higher returns through tokenized property ownership</p>
+                    <p class="hero-stat" style="margin-bottom: 20px;">$300M+ locked in illiquid real estate investments</p>
+                    <p class="hero-stat-subtitle" style="margin-top: 10px;">Property ownership needs innovation</p>
+                </div>
             </div>
         </div>
     </header>
 
-    <section id="problem" class="problem">
-        <div class="container">
-            <h2>the problem</h2>
-            
-            <div class="crisis-container">
-                <div class="crisis-text">
-                    <p>The traditional insurance model is breaking down at an unprecedented scale, leaving millions of Americans vulnerable and unprotected.</p>
-                    
-                    <p class="emphasis">With damages exceeding $250B in California alone, thousands of families are unable to rebuild their lives as major insurers withdraw from high-risk areas.</p>
-                    
-                    <p>The current system is failing precisely when people need it most. Traditional insurers, focused on profit maximization, are abandoning communities facing climate-related risks. This isn't just a market inefficiency—it's a humanitarian crisis requiring immediate innovation.</p>
+    <section id="problem" class="problem" style="padding: 80px 0; background: linear-gradient(165deg, var(--dark-gray) 0%, var(--primary) 100%);">
+        <h2 style="text-align: left; font-size: 3.2em; background: linear-gradient(45deg, var(--text) 30%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 50px 120px;">Tokenization Opportunities</h2>
+        
+        <div style="display: flex; gap: 40px; padding: 0 120px; margin-bottom: 40px;">
+            <!-- Left side - Main text -->
+            <div style="flex: 1.5; background: linear-gradient(165deg, rgba(30, 30, 30, 0.6) 0%, rgba(18, 18, 18, 0.8) 100%); border-radius: 20px; border: 1px solid rgba(29, 185, 84, 0.15); padding: 40px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+                <p style="color: var(--text); font-size: 1.4em; line-height: 1.8; margin-bottom: 30px; font-weight: 300;">
+                    <span style="color: var(--secondary); font-weight: 500;">Transform your property into a digital powerhouse!</span> Imagine unlocking the hidden potential of your real estate through simple, secure tokenization. Just like splitting a pie into perfectly sized slices, tokenization lets you divide your property ownership into digital shares – opening doors to possibilities you never thought possible.
+                </p>
+                
+                <p style="color: var(--text); font-size: 1.4em; line-height: 1.8; margin-bottom: 30px; font-weight: 300;">
+                    Gone are the days of all-or-nothing property ownership. Now you can <span style="color: var(--secondary); font-weight: 500;">tap into your property's value without the burden of loans</span>, share ownership while staying in control, and turn your real estate into a flexible asset that works harder for you. Best of all? It's as straightforward as using your smartphone.
+                </p>
+                
+                <p style="color: var(--text); font-size: 1.4em; line-height: 1.8; font-weight: 300;">
+                    Join the property revolution where <span style="color: var(--secondary); font-weight: 500;">blockchain technology meets real estate simplicity</span>. Your journey to smarter property ownership starts here.
+                </p>
+            </div>
+
+            <!-- Right side - Use cases -->
+            <div style="flex: 0.8; display: grid; grid-template-rows: repeat(3, 1fr); gap: 20px;">
+                <div style="background: linear-gradient(165deg, rgba(30, 30, 30, 0.9) 0%, rgba(18, 18, 18, 0.95) 100%); padding: 25px; border-radius: 15px; border: 1px solid rgba(29, 185, 84, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(0, 0, 0, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.2)';">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <div style="width: 40px; height: 40px; background: rgba(29, 185, 84, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2">
+                                <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3m4-3v3m4-3v3"/>
+                            </svg>
+                        </div>
+                        <h3 style="color: var(--secondary); font-size: 1.2em; margin: 0;">Property Improvements</h3>
+                    </div>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="color: var(--text); line-height: 1.6; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
+                            <span style="color: var(--secondary); font-size: 1.2em;">→</span>
+                            Raise renovation funds without loans
+                        </li>
+                        <li style="color: var(--text); line-height: 1.6; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
+                            <span style="color: var(--secondary); font-size: 1.2em;">→</span>
+                            Share in property value appreciation
+                        </li>
+                        <li style="color: var(--text); line-height: 1.6; display: flex; align-items: center; gap: 10px;">
+                            <span style="color: var(--secondary); font-size: 1.2em;">→</span>
+                            Streamline improvement financing
+                        </li>
+                    </ul>
                 </div>
 
-                <div class="crisis-grid">
-                    <div class="crisis-card">
-                        <h3>Market Failure</h3>
-                        <ul>
-                            <li>7 major insurers have withdrawn from California</li>
-                            <li>140,000+ Florida homes denied flood coverage</li>
-                            <li>Premium increases of up to 300% in high-risk areas</li>
-                            <li>Black swan events overwhelming traditional reserves</li>
-                            <li>Insurance companies refusing to write new policies</li>
-                        </ul>
+                <div style="background: linear-gradient(165deg, rgba(30, 30, 30, 0.9) 0%, rgba(18, 18, 18, 0.95) 100%); padding: 25px; border-radius: 15px; border: 1px solid rgba(29, 185, 84, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(0, 0, 0, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.2)';">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <div style="width: 40px; height: 40px; background: rgba(29, 185, 84, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <h3 style="color: var(--secondary); font-size: 1.2em; margin: 0;">Rental Income Management</h3>
                     </div>
-                    
-                    <div class="crisis-card">
-                        <h3>Human Impact</h3>
-                        <ul>
-                            <li>Thousands of families unable to rebuild after disasters</li>
-                            <li>Communities forced to rely on inadequate crowdfunding</li>
-                            <li>Growing wealth inequality as property values appreciate</li>
-                            <li>Essential coverage becoming unaffordable for many</li>
-                            <li>Profit-driven denials of legitimate claims</li>
-                        </ul>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="color: var(--text); line-height: 1.6; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
+                            <span style="color: var(--secondary); font-size: 1.2em;">→</span>
+                            Automate rental distributions
+                        </li>
+                        <li style="color: var(--text); line-height: 1.6; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
+                            <span style="color: var(--secondary); font-size: 1.2em;">→</span>
+                            Real-time payment tracking
+                        </li>
+                        <li style="color: var(--text); line-height: 1.6; display: flex; align-items: center; gap: 10px;">
+                            <span style="color: var(--secondary); font-size: 1.2em;">→</span>
+                            Smart contract-managed funds
+                        </li>
+                    </ul>
+                </div>
+
+                <div style="background: linear-gradient(165deg, rgba(30, 30, 30, 0.9) 0%, rgba(18, 18, 18, 0.95) 100%); padding: 25px; border-radius: 15px; border: 1px solid rgba(29, 185, 84, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(0, 0, 0, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.2)';">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <div style="width: 40px; height: 40px; background: rgba(29, 185, 84, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                            </svg>
+                        </div>
+                        <h3 style="color: var(--secondary); font-size: 1.2em; margin: 0;">Flexible Ownership</h3>
                     </div>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="color: var(--text); line-height: 1.6; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
+                            <span style="color: var(--secondary); font-size: 1.2em;">→</span>
+                            Maintain control while sharing
+                        </li>
+                        <li style="color: var(--text); line-height: 1.6; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
+                            <span style="color: var(--secondary); font-size: 1.2em;">→</span>
+                            Create steady income streams
+                        </li>
+                        <li style="color: var(--text); line-height: 1.6; display: flex; align-items: center; gap: 10px;">
+                            <span style="color: var(--secondary); font-size: 1.2em;">→</span>
+                            Access equity without debt
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -211,52 +273,52 @@
 
     <section id="solution" class="solution">
         <div class="container">
-            <h2>our solution</h2>
-            <p>By leveraging <strong>Ethereum's smart contract capabilities</strong>, we're creating a <strong>decentralized insurance platform</strong> that converts real estate assets into tradeable digital shares. This enables <strong>transparent risk pooling</strong>, <strong>automated claims processing</strong>, and <strong>democratized access</strong> to property investment - all while maintaining regulatory compliance through blockchain's immutable record-keeping.</p>
+            <h2>Our Solution</h2>
+            <p style="margin-bottom: 30px;">By leveraging <strong>advanced smart contract technology</strong>, we're creating a <strong>next-generation tokenization platform</strong> that transforms how real estate is owned, traded, and managed. Our platform delivers <strong>unmatched liquidity</strong>, <strong>automated compliance</strong>, and <strong>seamless property management</strong> - all while maintaining the highest standards of security and transparency.</p>
 
-            <div class="solution-overview">
-                <div class="process-card">
+            <div class="solution-overview" style="margin-top: 0;">
+                <div class="process-card" style="margin-top: 0;">
                     <h3>How It Works</h3>
                     <div class="process-steps">
                         <div class="step-item">
                             <span class="step-number">1</span>
-                            <h4>Asset Verification</h4>
-                            <p>Property is verified and valued using market data and professional assessments</p>
+                            <h4>Property Validation</h4>
+                            <p>Comprehensive verification using market data and professional assessments</p>
                         </div>
                         <div class="step-item">
                             <span class="step-number">2</span>
-                            <h4>Smart Contract Creation</h4>
-                            <p>Legal ownership is encoded into blockchain-based smart contracts</p>
+                            <h4>Token Generation</h4>
+                            <p>Advanced smart contracts create secure, compliant property tokens</p>
                         </div>
                         <div class="step-item">
                             <span class="step-number">3</span>
-                            <h4>Token Distribution</h4>
-                            <p>Property value is divided into tradeable tokens, representing fractional ownership</p>
+                            <h4>Market Integration</h4>
+                            <p>Instant listing on our liquid marketplace for immediate trading</p>
                         </div>
                         <div class="step-item">
                             <span class="step-number">4</span>
-                            <h4>Risk Pool Formation</h4>
-                            <p>Tokens form part of a distributed risk pool, ensuring sustainable coverage</p>
+                            <h4>Automated Management</h4>
+                            <p>Smart contracts handle distributions, voting, and property operations</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="advantages-grid">
                     <div class="advantage-card">
-                        <h4>Sustainable Risk Management</h4>
-                        <p>Unlike traditional insurers who rely solely on premiums, our model distributes risk across a global network of token holders who benefit from property appreciation.</p>
+                        <h4>Enhanced Liquidity</h4>
+                        <p>Our platform features instant token trading, deep market integration, and automated market making to ensure your property investments remain liquid 24/7.</p>
                     </div>
                     <div class="advantage-card">
-                        <h4>Instant Liquidity</h4>
-                        <p>Token holders can trade their positions at any time, providing immediate access to capital without the delays of traditional property sales.</p>
+                        <h4>Smart Property Management</h4>
+                        <p>Automated rental distributions, maintenance scheduling, and stakeholder voting streamline property operations and reduce costs.</p>
                     </div>
                     <div class="advantage-card">
-                        <h4>Transparent Operations</h4>
-                        <p>All transactions, claims, and ownership changes are recorded on the blockchain, ensuring complete transparency and trust.</p>
+                        <h4>Compliance & Security</h4>
+                        <p>Built-in regulatory compliance, multi-signature security, and real-time audit trails protect all stakeholders.</p>
                     </div>
                     <div class="advantage-card">
-                        <h4>Community Alignment</h4>
-                        <p>Token holders share in both the responsibility of insurance and the benefits of property value appreciation, creating perfect alignment of interests.</p>
+                        <h4>Market Access</h4>
+                        <p>Start with any investment size, trade globally, and access institutional-grade real estate opportunities previously out of reach.</p>
                     </div>
                 </div>
 
@@ -272,8 +334,8 @@
                                     </g>
                                 </svg>
                             </div>
-                            <h4>Smart Contracts</h4>
-                            <p>Automated claims processing with blockchain verification</p>
+                            <h4>Automated Compliance</h4>
+                            <p>Built-in regulatory checks and balances</p>
                         </div>
                         <div class="feature-item">
                             <div class="feature-icon">
@@ -281,13 +343,11 @@
                                     <g fill="none" stroke="#1DB954" stroke-width="3">
                                         <path d="M20 80l30-30 15 15 15-35"/>
                                         <circle cx="80" cy="30" r="4"/>
-                                        <path d="M20 20h60"/>
-                                        <path d="M20 50h60"/>
                                     </g>
                                 </svg>
                             </div>
-                            <h4>Real-time Tracking</h4>
-                            <p>Live property value monitoring and adjustments</p>
+                            <h4>Market Analytics</h4>
+                            <p>Real-time property and market insights</p>
                         </div>
                         <div class="feature-item">
                             <div class="feature-icon">
@@ -295,49 +355,11 @@
                                     <g fill="none" stroke="#1DB954" stroke-width="3">
                                         <circle cx="50" cy="50" r="30"/>
                                         <path d="M35 50h30"/>
-                                        <path d="M50 35v30"/>
-                                    </g>
-                                </svg>
-                            </div>
-                            <h4>Fractional Ownership</h4>
-                            <p>Start with any investment amount</p>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <svg width="40" height="40" viewBox="0 0 100 100">
-                                    <g fill="none" stroke="#1DB954" stroke-width="3">
-                                        <path d="M30 30h40v40h-40z"/>
-                                        <path d="M20 20l60 60"/>
-                                        <path d="M80 20l-60 60"/>
                                     </g>
                                 </svg>
                             </div>
                             <h4>Instant Trading</h4>
-                            <p>24/7 secure token exchange platform</p>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <svg width="40" height="40" viewBox="0 0 100 100">
-                                    <g fill="none" stroke="#1DB954" stroke-width="3">
-                                        <path d="M20 50c0-20 15-30 30-30s30 10 30 30-15 30-30 30-30-10-30-30z"/>
-                                        <path d="M35 50l10 10 20-20"/>
-                                    </g>
-                                </svg>
-                            </div>
-                            <h4>Risk Management</h4>
-                            <p>Transparent pool management system</p>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <svg width="40" height="40" viewBox="0 0 100 100">
-                                    <g fill="none" stroke="#1DB954" stroke-width="3">
-                                        <path d="M20 50c0-20 15-30 30-30s30 10 30 30-15 30-30 30-30-10-30-30z"/>
-                                        <path d="M35 50l10 10 20-20"/>
-                                    </g>
-                                </svg>
-                            </div>
-                            <h4>Auto Distribution</h4>
-                            <p>Automated appreciation dividends</p>
+                            <p>24/7 liquid token marketplace</p>
                         </div>
                     </div>
                 </div>
@@ -385,17 +407,17 @@
 
                 <div class="benefit-card">
                     <div class="benefit-header">
-                        <h3>Smart Processing</h3>
-                        <p class="benefit-tagline">Automated Claims & Payouts</p>
+                        <h3>Smart Governance</h3>
+                        <p class="benefit-tagline">Automated Property Management</p>
                     </div>
                     <div class="benefit-highlights">
                         <div class="highlight">
-                            <span class="highlight-number">≤24h</span>
-                            <span class="highlight-text">Processing</span>
+                            <span class="highlight-number">1-tap</span>
+                            <span class="highlight-text">Voting</span>
                         </div>
                         <div class="highlight">
-                            <span class="highlight-number">0%</span>
-                            <span class="highlight-text">Manual Work</span>
+                            <span class="highlight-number">100%</span>
+                            <span class="highlight-text">Transparent</span>
                         </div>
                     </div>
                 </div>
@@ -529,6 +551,58 @@
 
                 <button type="submit">Submit Application</button>
             </form>
+        </div>
+    </section>
+
+    <section class="property-lookup" style="display: none;">
+        <div class="container">
+            <h2>Property Lookup</h2>
+            
+            <form class="lookup-form">
+                <div class="form-group">
+                    <label for="address">Property Address</label>
+                    <input type="text" id="address" placeholder="Enter full property address">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" placeholder="City">
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" id="state" placeholder="State">
+                    </div>
+                    <div class="form-group">
+                        <label for="zip">ZIP Code</label>
+                        <input type="text" id="zip" placeholder="ZIP Code">
+                    </div>
+                </div>
+                
+                <button type="submit" class="lookup-btn">Search Property</button>
+            </form>
+
+            <div class="property-results" style="display: none;">
+                <h3>Property Details</h3>
+                <div class="property-card">
+                    <div class="property-detail">
+                        <span class="detail-label">Estimated Value</span>
+                        <span class="detail-value" id="propertyValue">$0</span>
+                    </div>
+                    <div class="property-detail">
+                        <span class="detail-label">Last Sale Price</span>
+                        <span class="detail-value" id="lastSalePrice">$0</span>
+                    </div>
+                    <div class="property-detail">
+                        <span class="detail-label">Square Footage</span>
+                        <span class="detail-value" id="squareFootage">0</span>
+                    </div>
+                    <div class="property-detail">
+                        <span class="detail-label">Year Built</span>
+                        <span class="detail-value" id="yearBuilt">-</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -969,7 +1043,7 @@
     </style>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
             // Initialize or get message count from localStorage
             let messageCount = parseInt(localStorage.getItem('chatMessageCount') || '0');
             const MAX_MESSAGES = 5;
@@ -1233,7 +1307,53 @@ What would you like to know more about?`;
                     }
                 }
             });
-        });
+    });
+
+    document.addEventListener('keydown', (e) => {
+        // Check for Ctrl + Shift + P
+        if (e.ctrlKey && e.shiftKey && e.key === 'P') {
+            e.preventDefault(); // Prevent browser print dialog
+            
+            // Toggle property lookup visibility
+            const propertyLookup = document.querySelector('.property-lookup');
+            const mainContent = document.querySelectorAll('section:not(.property-lookup)');
+            
+            if (propertyLookup.style.display === 'none') {
+                // Hide main content
+                mainContent.forEach(section => {
+                    section.style.display = 'none';
+                });
+                // Show property lookup
+                propertyLookup.style.display = 'block';
+            } else {
+                // Show main content
+                mainContent.forEach(section => {
+                    section.style.display = 'block';
+                });
+                // Hide property lookup
+                propertyLookup.style.display = 'none';
+            }
+        }
+    });
+
+    // Add form submission handler
+    document.querySelector('.lookup-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const results = document.querySelector('.property-results');
+        results.style.display = 'block';
+        
+        // Simulate loading with random data
+        const randomValue = Math.floor(Math.random() * 1000000) + 500000;
+        const randomSalePrice = Math.floor(Math.random() * 800000) + 400000;
+        const randomSqFt = Math.floor(Math.random() * 2000) + 1000;
+        const randomYear = Math.floor(Math.random() * 50) + 1970;
+        
+        document.getElementById('propertyValue').textContent = `$${randomValue.toLocaleString()}`;
+        document.getElementById('lastSalePrice').textContent = `$${randomSalePrice.toLocaleString()}`;
+        document.getElementById('squareFootage').textContent = `${randomSqFt.toLocaleString()} sq ft`;
+        document.getElementById('yearBuilt').textContent = randomYear;
+    });
     </script>
 </body>
 </html> 
