@@ -55,14 +55,16 @@
                     <p class="hero-stat" style="margin-bottom: 20px;">87% of property owners struggle with traditional management</p>
                     <p class="hero-stat" style="margin-bottom: 20px;">300% higher returns through tokenized property ownership</p>
                     <p class="hero-stat" style="margin-bottom: 20px;">$300M+ locked in illiquid real estate investments</p>
-                    <p class="hero-stat-subtitle" style="margin-top: 10px;">Property ownership needs innovation</p>
+                    <p class="hero-stat-subtitle" style="margin-top: 10px;">Join the Revolution</p>
                 </div>
             </div>
         </div>
     </header>
 
     <section id="problem" class="problem" style="padding: 80px 0; background: linear-gradient(165deg, var(--dark-gray) 0%, var(--primary) 100%);">
-        <h2 style="text-align: left; font-size: 3.2em; background: linear-gradient(45deg, var(--text) 30%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 50px 120px;">Tokenization Opportunities</h2>
+        <div class="container">
+            <h2 style="text-align: center; font-size: 3.2em; background: linear-gradient(45deg, var(--text) 30%, var(--secondary) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 50px 0;">Your Opportunities</h2>
+        </div>
         
         <div style="display: flex; gap: 40px; padding: 0 120px; margin-bottom: 40px;">
             <!-- Left side - Main text -->
@@ -273,7 +275,8 @@
 
     <section id="solution" class="solution">
         <div class="container">
-            <h2>Our Solution</h2>
+            <h2 style="text-align: center; font-size: 3.2em; background: linear-gradient(45deg, var(--text) 30%, var(--secondary) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 50px 0;">Our Solution</h2>
+
             <p style="margin-bottom: 30px;">By leveraging <strong>advanced smart contract technology</strong>, we're creating a <strong>next-generation tokenization platform</strong> that transforms how real estate is owned, traded, and managed. Our platform delivers <strong>unmatched liquidity</strong>, <strong>automated compliance</strong>, and <strong>seamless property management</strong> - all while maintaining the highest standards of security and transparency.</p>
 
             <div class="solution-overview" style="margin-top: 0;">
@@ -367,8 +370,41 @@
         </div>
     </section>
 
-    <section id="benefits" class="benefits">
-        <div class="container">
+    <section id="benefits" class="benefits" style="
+        padding: 80px 0; 
+        background: radial-gradient(circle at 10% 20%, rgba(30, 30, 30, 0.98) 0%, rgba(18, 18, 18, 0.97) 90%),
+                    repeating-linear-gradient(45deg, 
+                        rgba(29, 185, 84, 0.05) 0%, 
+                        rgba(29, 185, 84, 0.05) 1px,
+                        transparent 1px,
+                        transparent 10px);
+        position: relative;
+        overflow: hidden;
+    ">
+        <!-- Add subtle animated orbs in the background -->
+        <div style="
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle at center, rgba(29, 185, 84, 0.1) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            border-radius: 50%;
+            animation: float 15s ease-in-out infinite;
+        "></div>
+        <div style="
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle at center, rgba(29, 185, 84, 0.08) 0%, transparent 70%);
+            bottom: -50px;
+            left: -50px;
+            border-radius: 50%;
+            animation: float 20s ease-in-out infinite reverse;
+        "></div>
+
+        <!-- Rest of the benefits content -->
+        <div class="container" style="position: relative; z-index: 1;">
             <h2>Benefits</h2>
             <div class="benefits-grid">
                 <div class="benefit-card">
@@ -557,7 +593,6 @@
     <section class="property-lookup" style="display: none;">
         <div class="container">
             <h2>Property Lookup</h2>
-            
             <form class="lookup-form">
                 <div class="form-group">
                     <label for="address">Property Address</label>
@@ -581,27 +616,8 @@
                 
                 <button type="submit" class="lookup-btn">Search Property</button>
             </form>
-
-            <div class="property-results" style="display: none;">
-                <h3>Property Details</h3>
-                <div class="property-card">
-                    <div class="property-detail">
-                        <span class="detail-label">Estimated Value</span>
-                        <span class="detail-value" id="propertyValue">$0</span>
-                    </div>
-                    <div class="property-detail">
-                        <span class="detail-label">Last Sale Price</span>
-                        <span class="detail-value" id="lastSalePrice">$0</span>
-                    </div>
-                    <div class="property-detail">
-                        <span class="detail-label">Square Footage</span>
-                        <span class="detail-value" id="squareFootage">0</span>
-                    </div>
-                    <div class="property-detail">
-                        <span class="detail-label">Year Built</span>
-                        <span class="detail-value" id="yearBuilt">-</span>
-                    </div>
-                </div>
+            <div class="property-results">
+                <!-- ... results content ... -->
             </div>
         </div>
     </section>
@@ -614,7 +630,7 @@
                         <img src="images/logo.png" alt="RealToken Logo">
                         <span>RealToken</span>
                     </div>
-                    <p>Revolutionizing insurance through blockchain technology and asset tokenization. Making property protection accessible, transparent, and community-driven.</p>
+                    <p>Revolutionizing real estate through blockchain technology and property tokenization. Making property ownership accessible, transparent, and community-driven.</p>
                 </div>
 
                 <div class="footer-links">
@@ -1225,6 +1241,13 @@ What would you like to know more about?`;
                     localStorage.setItem('chatMessageCount', messageCount.toString());
                     updateRemainingMessages();
 
+                    // Add this right before setting values
+                    console.log('Setting values to DOM:', {
+                        estimatedValue: data.propertyData.estimatedValue,
+                        propertyValueElement: document.getElementById('propertyValue'),
+                        allData: data.propertyData
+                    });
+
                 } catch (error) {
                     console.error('Error:', error);
                     responseDiv.textContent = 'Sorry, I encountered an error. Please try again.';
@@ -1307,52 +1330,211 @@ What would you like to know more about?`;
                     }
                 }
             });
+
+            // Update the Get Started button handler
+            const getStartedBtn = document.querySelector('.contact-btn');
+            const propertyLookup = document.querySelector('.property-lookup');
+            const mainContent = document.querySelectorAll('section:not(.property-lookup)');
+            const navLinks = document.querySelectorAll('.nav-links a:not(.contact-btn)');
+            
+            // Handle Get Started button
+            getStartedBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPropertyLookup();
+            });
+
+            // Handle navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    showMainContent();
+                    
+                    // Scroll to the target section
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // Helper function to show property lookup
+            function showPropertyLookup() {
+                mainContent.forEach(section => {
+                    section.style.display = 'none';
+                });
+                propertyLookup.style.display = 'block';
+                propertyLookup.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // Helper function to show main content
+            function showMainContent() {
+                mainContent.forEach(section => {
+                    section.style.display = 'block';
+                });
+                propertyLookup.style.display = 'none';
+            }
     });
 
     document.addEventListener('keydown', (e) => {
-        // Check for Ctrl + Shift + P
         if (e.ctrlKey && e.shiftKey && e.key === 'P') {
-            e.preventDefault(); // Prevent browser print dialog
-            
-            // Toggle property lookup visibility
+            e.preventDefault();
             const propertyLookup = document.querySelector('.property-lookup');
             const mainContent = document.querySelectorAll('section:not(.property-lookup)');
             
             if (propertyLookup.style.display === 'none') {
-                // Hide main content
-                mainContent.forEach(section => {
-                    section.style.display = 'none';
-                });
-                // Show property lookup
+                mainContent.forEach(section => section.style.display = 'none');
                 propertyLookup.style.display = 'block';
             } else {
-                // Show main content
-                mainContent.forEach(section => {
-                    section.style.display = 'block';
-                });
-                // Hide property lookup
+                mainContent.forEach(section => section.style.display = 'block');
                 propertyLookup.style.display = 'none';
             }
         }
     });
 
-    // Add form submission handler
+    // Update the form submission handler
     document.querySelector('.lookup-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const results = document.querySelector('.property-results');
+        if (!results) return;
+
+        // Show simple loading spinner without text
         results.style.display = 'block';
-        
-        // Simulate loading with random data
-        const randomValue = Math.floor(Math.random() * 1000000) + 500000;
-        const randomSalePrice = Math.floor(Math.random() * 800000) + 400000;
-        const randomSqFt = Math.floor(Math.random() * 2000) + 1000;
-        const randomYear = Math.floor(Math.random() * 50) + 1970;
-        
-        document.getElementById('propertyValue').textContent = `$${randomValue.toLocaleString()}`;
-        document.getElementById('lastSalePrice').textContent = `$${randomSalePrice.toLocaleString()}`;
-        document.getElementById('squareFootage').textContent = `${randomSqFt.toLocaleString()} sq ft`;
-        document.getElementById('yearBuilt').textContent = randomYear;
+        results.innerHTML = `
+            <div class="loading-indicator">
+                <div class="spinner"></div>
+            </div>
+        `;
+
+        try {
+            const response = await fetch('/.netlify/functions/property-lookup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    address: document.getElementById('address')?.value || '',
+                    city: document.getElementById('city')?.value || '',
+                    state: document.getElementById('state')?.value || ''
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            // Restore the original HTML structure
+            results.innerHTML = `
+                <h3>Property Details</h3>
+                <div class="property-card">
+                    <div class="property-section">
+                        <h4>Basic Information</h4>
+                        <div class="property-grid">
+                            <div class="property-detail">
+                                <span class="detail-label">Estimated Value</span>
+                                <span class="detail-value" id="propertyValue2"></span>
+                            </div>
+                            <div class="property-detail">
+                                <span class="detail-label">Square Footage</span>
+                                <span class="detail-value" id="squareFootage"></span>
+                            </div>
+                            <div class="property-detail">
+                                <span class="detail-label">Year Built</span>
+                                <span class="detail-value" id="yearBuilt"></span>
+                            </div>
+                            <div class="property-detail">
+                                <span class="detail-label">Bedrooms</span>
+                                <span class="detail-value" id="bedrooms"></span>
+                            </div>
+                            <div class="property-detail">
+                                <span class="detail-label">Bathrooms</span>
+                                <span class="detail-value" id="bathrooms"></span>
+                            </div>
+                            <div class="property-detail">
+                                <span class="detail-label">Lot Size</span>
+                                <span class="detail-value" id="lotSize"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="property-section">
+                        <h4>Neighborhood</h4>
+                        <div class="neighborhood-info">
+                            <div class="rating-container">
+                                <span class="detail-label">Area Rating</span>
+                                <div class="rating-stars" id="neighborhoodRating"></div>
+                            </div>
+                            <p id="neighborhoodDescription"></p>
+                            <div class="amenities" id="amenities"></div>
+                        </div>
+                    </div>
+
+                    <div class="property-section">
+                        <h4>Market Trends</h4>
+                        <div class="market-trends">
+                            <div class="trend-item">
+                                <span class="detail-label">Yearly Appreciation</span>
+                                <span class="detail-value" id="yearlyAppreciation"></span>
+                            </div>
+                            <div class="trend-item">
+                                <span class="detail-label">Median Price</span>
+                                <span class="detail-value" id="medianPrice"></span>
+                            </div>
+                            <div class="trend-item">
+                                <span class="detail-label">Days on Market</span>
+                                <span class="detail-value" id="daysOnMarket"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Extract property data with guaranteed format
+            const { propertyData } = data;
+            
+            // Update all values consistently
+            document.getElementById('propertyValue2').textContent = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 0
+            }).format(propertyData.estimatedValue);
+
+            document.getElementById('squareFootage').textContent = `${propertyData.squareFootage.toLocaleString()} sq ft`;
+            document.getElementById('yearBuilt').textContent = propertyData.yearBuilt;
+            document.getElementById('bedrooms').textContent = propertyData.bedrooms;
+            document.getElementById('bathrooms').textContent = propertyData.bathrooms;
+            document.getElementById('lotSize').textContent = propertyData.lotSize;
+
+            // Neighborhood info
+            const rating = propertyData.neighborhood.rating;
+            document.getElementById('neighborhoodRating').textContent = '★'.repeat(rating) + '☆'.repeat(10 - rating);
+            document.getElementById('neighborhoodDescription').textContent = propertyData.neighborhood.description;
+
+            // Amenities
+            document.getElementById('amenities').innerHTML = propertyData.neighborhood.amenities
+                .map(amenity => `<span class="amenity-tag">${amenity}</span>`)
+                .join('');
+
+            // Market trends
+            document.getElementById('yearlyAppreciation').textContent = propertyData.marketTrends.yearlyAppreciation;
+            document.getElementById('medianPrice').textContent = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 0
+            }).format(propertyData.marketTrends.medianPrice);
+            document.getElementById('daysOnMarket').textContent = `${propertyData.marketTrends.daysOnMarket} days`;
+
+        } catch (error) {
+            console.error('Error updating property details:', error);
+            results.innerHTML = `
+                <h3>Property Details</h3>
+                <div class="error-message">
+                    <p>Sorry, we couldn't find the property details.</p>
+                    <p class="error-details">${error.message}</p>
+                </div>
+            `;
+        }
     });
     </script>
 </body>
