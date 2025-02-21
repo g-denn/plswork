@@ -1,0 +1,182 @@
+.code-showcase {
+    background: linear-gradient(165deg, rgba(30, 30, 30, 0.9) 0%, rgba(18, 18, 18, 0.95) 100%);
+    border-radius: 15px;
+    border: 1px solid rgba(29, 185, 84, 0.15);
+    padding: 40px;
+    margin: 60px auto;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 40px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.code-container {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(29, 185, 84, 0.1);
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    background: rgba(29, 185, 84, 0.08);
+    border-bottom: 1px solid rgba(29, 185, 84, 0.15);
+}
+
+.file-name {
+    color: var(--secondary);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.95em;
+    font-weight: 500;
+}
+
+.copy-btn {
+    background: var(--secondary);
+    color: var(--primary);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.copy-btn:hover {
+    background: #1ed760;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
+}
+
+.code-content {
+    padding: 25px;
+    margin: 0;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    line-height: 1.6;
+    font-size: 0.9em;
+    color: #e0e0e0;
+}
+
+.code-explanation {
+    padding: 20px 10px;
+}
+
+.code-explanation h3 {
+    color: var(--secondary);
+    font-size: 1.6em;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(29, 185, 84, 0.15);
+}
+
+.explanation-item {
+    margin-bottom: 30px;
+    padding: 15px;
+    background: rgba(29, 185, 84, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(29, 185, 84, 0.08);
+}
+
+.explanation-item h4 {
+    color: var(--secondary);
+    margin-bottom: 12px;
+    font-size: 1.2em;
+}
+
+.explanation-item p {
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 0.95em;
+}
+
+/* Enhanced syntax highlighting for Solidity */
+.language-solidity {
+    color: #d4d4d4; /* Default text color */
+}
+
+/* Keywords */
+.language-solidity .keyword {
+    color: #569cd6; /* Blue for keywords like contract, function, public */
+}
+
+/* Types */
+.language-solidity .type {
+    color: #4ec9b0; /* Teal for types like uint256, string, address */
+}
+
+/* Comments */
+.language-solidity .comment {
+    color: #6a9955; /* Green for comments */
+    font-style: italic;
+}
+
+/* Strings */
+.language-solidity .string {
+    color: #ce9178; /* Orange-brown for strings */
+}
+
+/* Numbers */
+.language-solidity .number {
+    color: #b5cea8; /* Light green for numbers */
+}
+
+/* Function names */
+.language-solidity .function {
+    color: #dcdcaa; /* Yellow for function names */
+}
+
+/* Variables and parameters */
+.language-solidity .variable {
+    color: #9cdcfe; /* Light blue for variables */
+}
+
+/* Operators and punctuation */
+.language-solidity .operator {
+    color: #d4d4d4; /* White for operators */
+}
+
+/* Storage types */
+.language-solidity .storage {
+    color: #569cd6; /* Blue for storage keywords */
+}
+
+/* Custom types (structs, etc) */
+.language-solidity .custom-type {
+    color: #4ec9b0; /* Teal for custom types */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .code-showcase {
+        grid-template-columns: 1fr;
+        margin: 40px 20px;
+        padding: 30px;
+    }
+    
+    .code-explanation {
+        padding: 20px 0;
+    }
+}
+
+/* Scrollbar styling */
+.code-content::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.code-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.code-content::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 4px;
+} 

@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="css/sections/tokenization.css">
     <link rel="stylesheet" href="css/sections/benefits.css">
     <link rel="stylesheet" href="css/components/property-lookup.css">
+    <link rel="stylesheet" href="css/components/code-showcase.css">
+    <script src="js/code-showcase.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="nav">
@@ -66,9 +69,9 @@
             <h2 style="text-align: center; font-size: 3.2em; background: linear-gradient(45deg, var(--text) 30%, var(--secondary) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 50px 0;">Your Opportunities</h2>
         </div>
         
-        <div style="display: flex; gap: 40px; padding: 0 120px; margin-bottom: 40px;">
+        <div style="display: flex; gap: 40px; padding: 0 200px; margin-bottom: 40px; justify-content: center;">
             <!-- Left side - Main text -->
-            <div style="flex: 1.5; background: linear-gradient(165deg, rgba(30, 30, 30, 0.6) 0%, rgba(18, 18, 18, 0.8) 100%); border-radius: 20px; border: 1px solid rgba(29, 185, 84, 0.15); padding: 40px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
+            <div style="max-width: 900px; background: linear-gradient(165deg, rgba(30, 30, 30, 0.6) 0%, rgba(18, 18, 18, 0.8) 100%); border-radius: 20px; border: 1px solid rgba(29, 185, 84, 0.15); padding: 40px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);">
                 <p style="color: var(--text); font-size: 1.4em; line-height: 1.8; margin-bottom: 30px; font-weight: 300;">
                     <span style="color: var(--secondary); font-weight: 500;">Transform your property into a digital powerhouse!</span> Imagine unlocking the hidden potential of your real estate through simple, secure tokenization. Just like splitting a pie into perfectly sized slices, tokenization lets you divide your property ownership into digital shares – opening doors to possibilities you never thought possible.
                 </p>
@@ -83,8 +86,8 @@
             </div>
 
             <!-- Right side - Use cases -->
-            <div style="flex: 0.8; display: grid; grid-template-rows: repeat(3, 1fr); gap: 20px;">
-                <div style="background: linear-gradient(165deg, rgba(30, 30, 30, 0.9) 0%, rgba(18, 18, 18, 0.95) 100%); padding: 25px; border-radius: 15px; border: 1px solid rgba(29, 185, 84, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(0, 0, 0, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.2)';">
+            <div style="width: 400px; display: grid; grid-template-rows: repeat(3, 1fr); gap: 20px;">
+                <div style="background: linear-gradient(165deg, rgba(30, 30, 30, 0.6) 0%, rgba(18, 18, 18, 0.8) 100%); padding: 25px; border-radius: 15px; border: 1px solid rgba(29, 185, 84, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(0, 0, 0, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.2)';">
                     <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
                         <div style="width: 40px; height: 40px; background: rgba(29, 185, 84, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2">
@@ -109,7 +112,7 @@
                     </ul>
                 </div>
 
-                <div style="background: linear-gradient(165deg, rgba(30, 30, 30, 0.9) 0%, rgba(18, 18, 18, 0.95) 100%); padding: 25px; border-radius: 15px; border: 1px solid rgba(29, 185, 84, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(0, 0, 0, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.2)';">
+                <div style="background: linear-gradient(165deg, rgba(30, 30, 30, 0.6) 0%, rgba(18, 18, 18, 0.8) 100%); padding: 25px; border-radius: 15px; border: 1px solid rgba(29, 185, 84, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(0, 0, 0, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.2)';">
                     <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
                         <div style="width: 40px; height: 40px; background: rgba(29, 185, 84, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2">
@@ -134,7 +137,7 @@
                     </ul>
                 </div>
 
-                <div style="background: linear-gradient(165deg, rgba(30, 30, 30, 0.9) 0%, rgba(18, 18, 18, 0.95) 100%); padding: 25px; border-radius: 15px; border: 1px solid rgba(29, 185, 84, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(0, 0, 0, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.2)';">
+                <div style="background: linear-gradient(165deg, rgba(30, 30, 30, 0.6) 0%, rgba(18, 18, 18, 0.8) 100%); padding: 25px; border-radius: 15px; border: 1px solid rgba(29, 185, 84, 0.15); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(0, 0, 0, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.2)';">
                     <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
                         <div style="width: 40px; height: 40px; background: rgba(29, 185, 84, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2">
@@ -268,6 +271,78 @@
                         <li>Reduced gas costs</li>
                         <li>Flexible asset management</li>
                     </ul>
+                </div>
+            </div>
+
+            <div class="code-showcase">
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="file-name">RealEstateToken.sol</span>
+                        <div class="code-actions">
+                            <button class="copy-btn" onclick="copyCode()">Copy</button>
+                        </div>
+                    </div>
+                    <pre class="code-content"><code class="language-solidity"><span class="comment">// SPDX-License-Identifier: MIT</span>
+<span class="keyword">pragma</span> <span class="keyword">solidity</span> ^0.8.0;
+
+<span class="comment">/* OpenZeppelin Imports for Security & Standards */</span>
+<span class="keyword">import</span> <span class="string">"@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol"</span>;
+<span class="keyword">import</span> <span class="string">"@openzeppelin/contracts/access/Ownable.sol"</span>;
+
+<span class="comment">/* Main Contract Definition */</span>
+<span class="keyword">contract</span> <span class="custom-type">RealEstateToken</span> <span class="keyword">is</span> ERC721URIStorage, Ownable {
+    <span class="comment">/* Property Data Structure */</span>
+    <span class="keyword">struct</span> <span class="custom-type">Property</span> {
+        <span class="type">uint256</span> <span class="variable">id</span>;          <span class="comment">// Unique property identifier</span>
+        <span class="type">string</span> <span class="variable">location</span>;     <span class="comment">// Physical location of the property</span>
+        <span class="type">uint256</span> <span class="variable">valuation</span>;   <span class="comment">// Current market value</span>
+        <span class="type">bool</span> <span class="variable">forSale</span>;        <span class="comment">// Whether property is listed for sale</span>
+        <span class="type">uint256</span> <span class="variable">rentalIncome</span>;<span class="comment">// Accumulated rental payments</span>
+        <span class="type">uint256</span> <span class="variable">lastDistributionTime</span>;
+    }
+
+    <span class="comment">/* State Variables & Mappings */</span>
+    <span class="keyword">mapping</span>(<span class="type">uint256</span> => <span class="custom-type">Property</span>) <span class="keyword">public</span> <span class="variable">properties</span>;
+    <span class="keyword">mapping</span>(<span class="type">uint256</span> => <span class="keyword">mapping</span>(<span class="type">address</span> => <span class="type">uint256</span>)) <span class="keyword">public</span> <span class="variable">dividendBalance</span>;
+
+    <span class="comment">/* Property Tokenization Function */</span>
+    <span class="keyword">function</span> <span class="function">tokenizeProperty</span>(
+        <span class="type">string</span> <span class="storage">memory</span> <span class="variable">_location</span>,
+        <span class="type">uint256</span> <span class="variable">_valuation</span>
+    ) <span class="keyword">public</span> <span class="keyword">onlyOwner</span> <span class="keyword">returns</span> (<span class="type">uint256</span>) {
+        <span class="comment">// Create new property token</span>
+        <span class="type">uint256</span> <span class="variable">newPropertyId</span> = _tokenIds.current();
+        _mint(<span class="variable">msg.sender</span>, <span class="variable">newPropertyId</span>);
+        
+        <span class="comment">// Store property details</span>
+        <span class="variable">properties</span>[<span class="variable">newPropertyId</span>] = <span class="custom-type">Property</span>({
+            <span class="variable">id</span>: <span class="variable">newPropertyId</span>,
+            <span class="variable">location</span>: <span class="variable">_location</span>,
+            <span class="variable">valuation</span>: <span class="variable">_valuation</span>,
+            <span class="variable">forSale</span>: <span class="keyword">false</span>,
+            <span class="variable">rentalIncome</span>: <span class="number">0</span>,
+            <span class="variable">lastDistributionTime</span>: <span class="variable">block.timestamp</span>
+        });
+    }</code></pre>
+                </div>
+                <div class="code-explanation">
+                    <h3>Smart Contract Breakdown</h3>
+                    <div class="explanation-item">
+                        <h4>Property Data Structure</h4>
+                        <p>The contract uses a comprehensive Property struct to store essential information about each tokenized property, including its location, value, and rental income status.</p>
+                    </div>
+                    <div class="explanation-item">
+                        <h4>Tokenization Process</h4>
+                        <p>Properties are converted into unique NFTs using the ERC721 standard, ensuring secure and verifiable ownership on the blockchain. Each token is linked to specific property details and rental income rights.</p>
+                    </div>
+                    <div class="explanation-item">
+                        <h4>Income Management</h4>
+                        <p>The contract includes automated systems for handling rental payments and distributing income to token holders, with built-in security checks and transparent transaction records.</p>
+                    </div>
+                    <div class="explanation-item">
+                        <h4>Security Features</h4>
+                        <p>Built on OpenZeppelin's battle-tested contracts with role-based access control and standardized token implementations for maximum security and compatibility.</p>
+                    </div>
                 </div>
             </div>
         </div>

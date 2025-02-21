@@ -1,5 +1,7 @@
-const fetch = require('node-fetch');
 require('dotenv').config();
+const fetch = require('node-fetch');
+
+const apiKey = process.env.PERPLEXITY_API_KEY;
 
 const extractJSONFromResponse = (content) => {
     try {
