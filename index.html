@@ -31,10 +31,11 @@
                 <span class="nav-logo">RealToken</span>
             </a>
             <div class="nav-links">
-                <a href="#problem">The Problem</a>
-                <a href="#tokenization">How It Works</a>
-                <a href="#solution">Our Solution</a>
-                <a href="#benefits">Benefits</a>
+                <a href="#problem" class="nav-link">The Problem</a>
+                <a href="#tokenization" class="nav-link">How It Works</a>
+                <a href="#solution" class="nav-link">Our Solution</a>
+                <a href="#benefits" class="nav-link">Benefits</a>
+                <a href="/marketplace">Properties</a>
                 <a href="#contact" class="contact-btn">Get Started</a>
             </div>
         </div>
@@ -715,6 +716,7 @@
                         <li><a href="#tokenization">How It Works</a></li>
                         <li><a href="#solution">Our Solution</a></li>
                         <li><a href="#benefits">Benefits</a></li>
+                        <li><a href="/marketplace">Properties</a></li>
                         <li><a href="#contact">Get Started</a></li>
                     </ul>
                 </div>
@@ -1177,10 +1179,9 @@
 
             // Replace the existing welcome message with this streaming version
             async function showWelcomeMessage() {
-                const welcomeMessage = `Hello! I'm TokenAI, your dedicated insurance and tokenization specialist. 👋
+                const welcomeMessage = `Hello! I'm TokenAI, your dedicated tokenization specialist
 
-I'm here to help you understand how RealToken is revolutionizing the insurance industry through blockchain technology and tokenization.
-
+I'm here to help you understand how RealToken is revolutionizing the tokenization industry through blockchain technology
 I can explain:
 
 • How our tokenization platform works
@@ -1651,7 +1652,7 @@ What would you like to know more about?`;
 
     <style>
     .code-showcase {
-        margin: 40px 0;
+        margin: 60px 0;
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 30px;
@@ -1666,6 +1667,7 @@ What would you like to know more about?`;
         border-radius: 15px;
         overflow: hidden;
         border: 1px solid rgba(29, 185, 84, 0.1);
+        margin-top: 20px;
     }
 
     .code-header {
@@ -1722,7 +1724,8 @@ What would you like to know more about?`;
     .code-content .function { color: #50fa7b; }
 
     .code-explanation {
-        padding: 30px;
+        padding: 40px;
+        margin-top: 20px;
         background: linear-gradient(165deg, rgba(25, 25, 25, 0.7) 0%, rgba(15, 15, 15, 0.8) 100%);
         border-radius: 15px;
         border: 1px solid rgba(29, 185, 84, 0.1);
@@ -1753,12 +1756,16 @@ What would you like to know more about?`;
     }
 
     .explanation-item {
-        margin-bottom: 30px;
+        margin-bottom: 35px;
         padding: 20px;
         background: rgba(29, 185, 84, 0.05);
         border-radius: 12px;
         border: 1px solid rgba(29, 185, 84, 0.1);
         transition: all 0.3s ease;
+    }
+
+    .explanation-item:last-child {
+        margin-bottom: 0;
     }
 
     .explanation-item:hover {
@@ -1799,6 +1806,56 @@ What would you like to know more about?`;
     .code-container:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+    </style>
+
+    <script>
+    // Navigation highlight functionality
+    document.addEventListener('DOMContentLoaded', () => {
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a:not(.contact-btn)');
+        
+        function highlightNavigation() {
+            const scrollPosition = window.scrollY + window.innerHeight / 2;
+            let lastVisibleSection = null;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    lastVisibleSection = sectionId;
+                    // If we're in the contact section, keep benefits highlighted
+                    if (sectionId === 'contact') {
+                        lastVisibleSection = 'benefits';
+                    }
+                }
+            });
+            
+            // If we're past all sections, keep benefits highlighted
+            if (scrollPosition >= document.documentElement.scrollHeight - window.innerHeight) {
+                lastVisibleSection = 'benefits';
+            }
+            
+            // Update active state for navigation links
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (lastVisibleSection && link.getAttribute('href').includes(lastVisibleSection)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', highlightNavigation);
+        highlightNavigation(); // Run on initial load
+    });
+    </script>
+
+    <style>
+    /* Navigation active state */
+    .nav-links a.active {
+        color: var(--secondary);
     }
     </style>
 </body>

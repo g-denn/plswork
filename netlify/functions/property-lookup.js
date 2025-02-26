@@ -224,4 +224,71 @@ module.exports = {
                         {
                             "propertyData": {
                                 "estimatedValue": number,  // Direct property value, not in marketTrends
-              
+                                "squareFootage": number,
+                                "yearBuilt": number,
+                                "bedrooms": number,
+                                "bathrooms": number,
+                                "propertyType": string,
+                                "lastSalePrice": number,
+                                "lastSaleDate": string,
+                                "lotSize": string,
+                                "neighborhood": {
+                                    "rating": number (1-10),
+                                    "description": string,
+                                    "amenities": string[]
+                                },
+                                "marketTrends": {
+                                    "yearlyAppreciation": string,
+                                    "medianPrice": number,
+                                    "daysOnMarket": number
+                                }
+                            }
+                        }`
+                    },
+                    {
+                        role: "user",
+                        content: `Find property details for ${address}, ${city}, ${state}. Include a realistic estimated value.`
+                    }
+                ]
+            };
+
+            const response = await fetch('https://api.perplexity.ai/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('\n📥 Raw API Response:', JSON.stringify(data, null, 2));
+
+            const rawData = extractJSONFromResponse(data.choices[0].message.content);
+            const sanitizedData = sanitizePropertyData(rawData);
+
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify(sanitizedData)
+            };
+
+        } catch (error) {
+            console.error('\n❌ Error in property lookup:', error);
+            return {
+                statusCode: 500,
+                headers,
+                body: JSON.stringify({ 
+                    error: 'Failed to fetch property data',
+                    details: error.message,
+                    timestamp: new Date().toISOString(),
+                    errorType: error.constructor.name
+                })
+            };
+        }
+    }
+};

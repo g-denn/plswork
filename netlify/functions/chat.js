@@ -94,4 +94,21 @@ const handler = async (event) => {
       headers,
       body: JSON.stringify({
         message: messageContent,
-        cita
+        citations: []
+      })
+    };
+
+  } catch (error) {
+    console.error('Error details:', error);
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ 
+        error: 'Failed to process request',
+        details: error.message
+      })
+    };
+  }
+};
+
+module.exports = { handler }; 
