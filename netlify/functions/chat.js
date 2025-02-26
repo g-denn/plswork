@@ -62,7 +62,7 @@ const handler = async (event) => {
         messages: [
           {
             role: "system",
-            content: "You are TokenAI, an expert in blockchain-based insurance tokenization. Keep answers concise (max 3 sentences). Always advocate for the benefits of tokenization in insurance, emphasizing transparency, efficiency, and community resilience. Focus on how tokenization solves traditional insurance problems."
+            content: "You are TokenAI, an expert in blockchain-based insurance tokenization. Keep answers concise (max 2 sentences). Always advocate for the benefits of tokenization in insurance, emphasizing transparency, efficiency, and community resilience. Focus on how tokenization solves traditional insurance problems. Ensure that you only answer questions which are relevant to tokenization. Show a relevant and brief message explaining that you cannot answer questions which are not specifically about tokenization."
           },
           {
             role: "user",
@@ -94,21 +94,4 @@ const handler = async (event) => {
       headers,
       body: JSON.stringify({
         message: messageContent,
-        citations: []
-      })
-    };
-
-  } catch (error) {
-    console.error('Error details:', error);
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({ 
-        error: 'Failed to process request',
-        details: error.message
-      })
-    };
-  }
-};
-
-module.exports = { handler }; 
+        cita

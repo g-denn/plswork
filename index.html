@@ -1449,6 +1449,29 @@ What would you like to know more about?`;
                 });
                 propertyLookup.style.display = 'none';
             }
+
+            // Add scroll detection for automatic chat popup
+            const hero = document.querySelector('.hero');
+            let chatShown = false;
+
+            window.addEventListener('scroll', () => {
+                if (!chatShown) {
+                    const heroBottom = hero.offsetTop + hero.offsetHeight;
+                    const scrollPosition = window.scrollY + window.innerHeight;
+                    
+                    if (scrollPosition > heroBottom) {
+                        // Show chat window
+                        chatContainer.style.display = 'flex';
+                        openChatBtn.style.display = 'none';
+                        
+                        // Show welcome message
+                        showWelcomeMessage();
+                        
+                        // Update flag to prevent multiple triggers
+                        chatShown = true;
+                    }
+                }
+            });
     });
 
     document.addEventListener('keydown', (e) => {
@@ -1612,5 +1635,171 @@ What would you like to know more about?`;
         }
     });
     </script>
+
+    <script>
+    function copyCode() {
+        const codeContent = document.querySelector('.code-content').textContent;
+        navigator.clipboard.writeText(codeContent).then(() => {
+            const copyBtn = document.querySelector('.copy-btn');
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => {
+                copyBtn.textContent = 'Copy';
+            }, 2000);
+        });
+    }
+    </script>
+
+    <style>
+    .code-showcase {
+        margin: 40px 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        padding: 20px;
+        background: linear-gradient(165deg, rgba(30, 30, 30, 0.6) 0%, rgba(18, 18, 18, 0.8) 100%);
+        border-radius: 20px;
+        border: 1px solid rgba(29, 185, 84, 0.15);
+    }
+
+    .code-container {
+        background: linear-gradient(165deg, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%);
+        border-radius: 15px;
+        overflow: hidden;
+        border: 1px solid rgba(29, 185, 84, 0.1);
+    }
+
+    .code-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: rgba(29, 185, 84, 0.1);
+        border-bottom: 1px solid rgba(29, 185, 84, 0.15);
+    }
+
+    .file-name {
+        color: var(--secondary);
+        font-family: 'Fira Code', monospace;
+        font-size: 0.9em;
+    }
+
+    .code-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .copy-btn {
+        padding: 5px 10px;
+        background: rgba(29, 185, 84, 0.2);
+        border: 1px solid rgba(29, 185, 84, 0.3);
+        border-radius: 5px;
+        color: var(--secondary);
+        cursor: pointer;
+        font-size: 0.8em;
+        transition: all 0.3s ease;
+    }
+
+    .copy-btn:hover {
+        background: rgba(29, 185, 84, 0.3);
+    }
+
+    .code-content {
+        padding: 20px;
+        margin: 0;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.9em;
+        line-height: 1.5;
+        overflow-x: auto;
+    }
+
+    .code-content .keyword { color: #ff79c6; }
+    .code-content .string { color: #f1fa8c; }
+    .code-content .comment { color: #6272a4; }
+    .code-content .type { color: #8be9fd; }
+    .code-content .custom-type { color: #50fa7b; }
+    .code-content .variable { color: #f8f8f2; }
+    .code-content .number { color: #bd93f9; }
+    .code-content .function { color: #50fa7b; }
+
+    .code-explanation {
+        padding: 30px;
+        background: linear-gradient(165deg, rgba(25, 25, 25, 0.7) 0%, rgba(15, 15, 15, 0.8) 100%);
+        border-radius: 15px;
+        border: 1px solid rgba(29, 185, 84, 0.1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .code-explanation h3 {
+        font-size: 1.8em;
+        margin-bottom: 25px;
+        background: linear-gradient(45deg, var(--secondary) 0%, #88f8b6 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: left;
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    .code-explanation h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--secondary), transparent);
+        border-radius: 2px;
+    }
+
+    .explanation-item {
+        margin-bottom: 30px;
+        padding: 20px;
+        background: rgba(29, 185, 84, 0.05);
+        border-radius: 12px;
+        border: 1px solid rgba(29, 185, 84, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .explanation-item:hover {
+        transform: translateY(-2px);
+        background: rgba(29, 185, 84, 0.08);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .explanation-item h4 {
+        color: var(--secondary);
+        margin-bottom: 12px;
+        font-size: 1.2em;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .explanation-item h4::before {
+        content: '→';
+        color: var(--secondary);
+        font-size: 1.1em;
+        opacity: 0.8;
+    }
+
+    .explanation-item p {
+        color: var(--text);
+        line-height: 1.6;
+        font-size: 0.95em;
+        opacity: 0.9;
+    }
+
+    /* Add smooth hover effect for code container */
+    .code-container {
+        transition: all 0.3s ease;
+    }
+
+    .code-container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+    </style>
 </body>
 </html> 
