@@ -22,21 +22,23 @@
     <link rel="stylesheet" href="css/components/code-showcase.css">
     <script src="js/code-showcase.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Make sure this is in the head section -->
+    <link rel="stylesheet" href="css/components/chat.css">
 </head>
 <body>
     <nav class="nav">
         <div class="container nav-container">
-            <a href="#" class="nav-brand">
+            <a href="/" class="nav-brand">
                 <img src="images/logo.png" alt="RealToken Logo" class="logo">
                 <span class="nav-logo">RealToken</span>
             </a>
             <div class="nav-links">
-                <a href="#problem" class="nav-link">The Problem</a>
-                <a href="#tokenization" class="nav-link">How It Works</a>
-                <a href="#solution" class="nav-link">Our Solution</a>
-                <a href="#benefits" class="nav-link">Benefits</a>
-                <a href="/marketplace">Properties</a>
-                <a href="#contact" class="contact-btn">Get Started</a>
+                <a href="/#problem" class="nav-link">The Problem</a>
+                <a href="/#tokenization" class="nav-link">How It Works</a>
+                <a href="/#solution" class="nav-link">Our Solution</a>
+                <a href="/#benefits" class="nav-link">Benefits</a>
+                <a href="./marketplace.html" class="nav-link">Properties</a>
+                <a href="/#contact" class="contact-btn">Contact Us</a>
             </div>
         </div>
     </nav>
@@ -47,18 +49,25 @@
         <div class="floating-orb orb-3"></div>
         <div class="floating-orb orb-4"></div>
         <div class="floating-orb orb-5"></div>
+        <div class="floating-orb orb-6"></div>
         <div class="container">
             <h1>
-                <span class="animated-word">Revolutionizing Real Estate</span><br>
-                <span class="mission-statement">Through Blockchain Technology</span>
+                Revolutionizing Real Estate
+                Through Blockchain Technology
             </h1>
             <p>Rebuilding communities and protecting assets in an era of unprecedented challenges</p>
             <div class="hero-stats">
                 <div class="crisis-stats">
-                    <p class="hero-stat" style="margin-bottom: 20px;">$19.35B+ Untapped vacation rental market potential</p>
-                    <p class="hero-stat" style="margin-bottom: 20px;">87% of property owners struggle with traditional management</p>
-                    <p class="hero-stat" style="margin-bottom: 20px;">300% higher returns through tokenized property ownership</p>
-                    <p class="hero-stat" style="margin-bottom: 20px;">$300M+ locked in illiquid real estate investments</p>
+                    <p class="hero-stat stat-1">93% Lower Transaction Costs vs Traditional Real Estate</p>
+                    <p class="hero-stat stat-2">Instant Settlement vs 30-60 Days Traditional Closing</p>
+                    <p class="hero-stat stat-3">$100 Min Investment vs $50,000+ Traditional Entry</p>
+                    <p class="hero-stat stat-4">24/7 Global Property Trading</p>
+                    <p class="hero-stat stat-5">15x More Liquid Than Traditional Real Estate</p>
+                    <p class="hero-stat stat-6">Automated Rental Income Distribution</p>
+                    <p class="hero-stat stat-7">Zero Paperwork Through Smart Contracts</p>
+                    <p class="hero-stat stat-8">100% Transparent Ownership Records</p>
+                    <p class="hero-stat stat-9">5-Minute Property Investment Process</p>
+                    <p class="hero-stat stat-10">Earn While Your Property Appreciates</p>
                     <p class="hero-stat-subtitle" style="margin-top: 10px;">Join the Revolution</p>
                 </div>
             </div>
@@ -666,38 +675,6 @@
         </div>
     </section>
 
-    <section class="property-lookup" style="display: none;">
-        <div class="container">
-            <h2>Property Lookup</h2>
-            <form class="lookup-form">
-                <div class="form-group">
-                    <label for="address">Property Address</label>
-                    <input type="text" id="address" placeholder="Enter full property address">
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <input type="text" id="city" placeholder="City">
-                    </div>
-                    <div class="form-group">
-                        <label for="state">State</label>
-                        <input type="text" id="state" placeholder="State">
-                    </div>
-                    <div class="form-group">
-                        <label for="zip">ZIP Code</label>
-                        <input type="text" id="zip" placeholder="ZIP Code">
-                    </div>
-                </div>
-                
-                <button type="submit" class="lookup-btn">Search Property</button>
-            </form>
-            <div class="property-results">
-                <!-- ... results content ... -->
-            </div>
-        </div>
-    </section>
-
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -712,12 +689,12 @@
                 <div class="footer-links">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="#problem">The Problem</a></li>
-                        <li><a href="#tokenization">How It Works</a></li>
-                        <li><a href="#solution">Our Solution</a></li>
-                        <li><a href="#benefits">Benefits</a></li>
-                        <li><a href="/marketplace">Properties</a></li>
-                        <li><a href="#contact">Get Started</a></li>
+                        <li><a href="/#problem">The Problem</a></li>
+                        <li><a href="/#tokenization">How It Works</a></li>
+                        <li><a href="/#solution">Our Solution</a></li>
+                        <li><a href="/#benefits">Benefits</a></li>
+                        <li><a href="./marketplace.html">Properties</a></li>
+                        <li><a href="/#contact">Contact Us</a></li>
                     </ul>
                 </div>
 
@@ -1182,13 +1159,14 @@
                 const welcomeMessage = `Hello! I'm TokenAI, your dedicated tokenization specialist
 
 I'm here to help you understand how RealToken is revolutionizing the tokenization industry through blockchain technology
+
 I can explain:
 
-• How our tokenization platform works
-• The benefits of fractional insurance ownership
-• Our solution to the current insurance crisis
-• Security and transparency features
-• Getting started with RealToken
+• How tokenization works
+• Fractional ownership in Real Estate
+• Our Solution to Tokenizatoin
+• Security features with RealToken
+
 
 What would you like to know more about?`;
 
@@ -1408,17 +1386,10 @@ What would you like to know more about?`;
             });
 
             // Update the Get Started button handler
-            const getStartedBtn = document.querySelector('.contact-btn');
             const propertyLookup = document.querySelector('.property-lookup');
             const mainContent = document.querySelectorAll('section:not(.property-lookup)');
-            const navLinks = document.querySelectorAll('.nav-links a:not(.contact-btn)');
+            const navLinks = document.querySelectorAll('.nav-links a:not(.contact-btn):not([href*="marketplace"])');
             
-            // Handle Get Started button
-            getStartedBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                showPropertyLookup();
-            });
-
             // Handle navigation links
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
@@ -1433,15 +1404,6 @@ What would you like to know more about?`;
                     }
                 });
             });
-
-            // Helper function to show property lookup
-            function showPropertyLookup() {
-                mainContent.forEach(section => {
-                    section.style.display = 'none';
-                });
-                propertyLookup.style.display = 'block';
-                propertyLookup.scrollIntoView({ behavior: 'smooth' });
-            }
 
             // Helper function to show main content
             function showMainContent() {
@@ -1813,7 +1775,22 @@ What would you like to know more about?`;
     // Navigation highlight functionality
     document.addEventListener('DOMContentLoaded', () => {
         const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-links a:not(.contact-btn)');
+        const navLinks = document.querySelectorAll('.nav-links a:not(.contact-btn):not([href*="marketplace"])');
+        
+        // Handle navigation clicks
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Only handle internal links
+                if (link.getAttribute('href').startsWith('/#')) {
+                    e.preventDefault();
+                    const sectionId = link.getAttribute('href').replace('/#', '');
+                    const section = document.getElementById(sectionId);
+                    if (section) {
+                        section.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
         
         function highlightNavigation() {
             const scrollPosition = window.scrollY + window.innerHeight / 2;
@@ -1826,22 +1803,14 @@ What would you like to know more about?`;
                 
                 if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                     lastVisibleSection = sectionId;
-                    // If we're in the contact section, keep benefits highlighted
-                    if (sectionId === 'contact') {
-                        lastVisibleSection = 'benefits';
-                    }
                 }
             });
-            
-            // If we're past all sections, keep benefits highlighted
-            if (scrollPosition >= document.documentElement.scrollHeight - window.innerHeight) {
-                lastVisibleSection = 'benefits';
-            }
             
             // Update active state for navigation links
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                if (lastVisibleSection && link.getAttribute('href').includes(lastVisibleSection)) {
+                const href = link.getAttribute('href').replace('/#', '');
+                if (lastVisibleSection && href === lastVisibleSection) {
                     link.classList.add('active');
                 }
             });
@@ -1858,5 +1827,29 @@ What would you like to know more about?`;
         color: var(--secondary);
     }
     </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all stats
+        const allStats = Array.from(document.querySelectorAll('.hero-stat'));
+        
+        // First hide all stats
+        allStats.forEach(stat => {
+            stat.classList.remove('active');
+            stat.style.display = 'none';
+        });
+        
+        // Sort stats by text length (longest to shortest)
+        const sortedStats = [...allStats].sort((a, b) => 
+            b.textContent.length - a.textContent.length
+        );
+        
+        // Select and show first 4 stats (changed from 3 to 4)
+        sortedStats.slice(0, 4).forEach(stat => {
+            stat.classList.add('active');
+            stat.style.display = 'flex';
+        });
+    });
+    </script>
 </body>
 </html> 

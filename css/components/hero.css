@@ -2,164 +2,233 @@
 .hero {
     background: var(--dark-gray);
     color: var(--text);
-    padding: 140px 0 140px;
+    padding: 0;
     text-align: center;
-    margin-top: 60px;
-    min-height: 90vh;
+    margin-top: 0;
+    height: 100vh;
+    min-height: 1080px;
+    width: 100%;
+    margin: 0 auto;
     display: flex;
     align-items: flex-start;
-    padding-top: 100px;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    padding-bottom: 400px;
 }
 
 .hero .container {
     width: 100%;
+    min-height: 1080px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
     position: relative;
-    z-index: 1;
+    z-index: 5;
+    padding: 0;
+    margin-top: 120px;
+    padding-bottom: 200px;
+}
+
+.hero h1 {
+    font-size: 4.2em;
+    line-height: 1.15;
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 10;
+    text-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    display: block;
+    text-align: center;
+    transform: none !important;
+    transition: none !important;
+    letter-spacing: -1px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Remove individual word styling and combine into one */
+.hero h1 {
+    background: linear-gradient(45deg, var(--text) 30%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    white-space: normal;
+    line-height: 1.15;
+}
+
+/* Remove these styles since we're combining the text */
+.animated-word,
+.mission-statement {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    font-size: 1em;
+    line-height: inherit;
+    background: none;
+    -webkit-background-clip: inherit;
+    background-clip: inherit;
+    -webkit-text-fill-color: inherit;
 }
 
 .hero p {
     color: rgba(255, 255, 255, 0.7);
-    font-size: 1.3em;
-    max-width: 700px;
+    font-size: 1.6em;
+    max-width: 800px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 20px 40px;
     line-height: 1.7;
+    position: relative;
+    z-index: 10;
 }
 
+/* Update stats layout */
 .hero-stats {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    justify-content: center;
+    align-items: center;
     margin-top: 20px;
     position: relative;
-    padding-bottom: 100px;
+    padding: 0;
+    width: 100%;
+    margin-bottom: 200px;
+}
+
+.crisis-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    position: static;
+    padding: 0 20px;
 }
 
 .hero-stat {
-    font-size: 1.2em;
-    color: var(--text);
+    display: none;
+    align-items: center;
+    justify-content: center;
     margin: 0;
-    padding: 12px 20px;
-    background: rgba(29, 185, 84, 0.08);
-    border-radius: 10px;
-    border: 1px solid rgba(29, 185, 84, 0.2);
-    transition: transform 0.3s ease;
-    box-shadow: 0 0 20px rgba(29, 185, 84, 0.05);
+    padding: 8px 16px;
+    background: rgba(29, 185, 84, 0.05);
+    border: 1px solid rgba(29, 185, 84, 0.1);
+    border-radius: 20px;
+    font-size: 1.4em !important;
+    color: var(--text);
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(29, 185, 84, 0.03);
+    backdrop-filter: blur(5px);
+    text-align: center;
+    min-height: unset;
+    width: fit-content;
+    margin: 0 auto;
+    white-space: nowrap;
+}
+
+/* Show only stats with active class */
+.hero-stat.active {
+    display: flex;
 }
 
 .hero-stat:hover {
-    transform: translateX(5px);
-    background: rgba(29, 185, 84, 0.12);
-    border-color: rgba(29, 185, 84, 0.25);
-    color: var(--secondary);
-    box-shadow: 0 0 25px rgba(29, 185, 84, 0.1);
+    transform: translateY(-3px);
+    background: rgba(29, 185, 84, 0.1);
+    border-color: rgba(29, 185, 84, 0.2);
+}
+
+/* Remove all floating animations */
+.stat-1, .stat-2, .stat-3, .stat-4, .stat-5,
+.stat-6, .stat-7, .stat-8, .stat-9, .stat-10 {
+    animation: none;
+}
+
+/* Remove all keyframes for floating stats */
+@keyframes floatStat1, @keyframes floatStat2,
+@keyframes floatStat3, @keyframes floatStat4,
+@keyframes floatStat5, @keyframes floatStat6,
+@keyframes floatStat7, @keyframes floatStat8,
+@keyframes floatStat9, @keyframes floatStat10 {
+    /* Remove these keyframes */
 }
 
 .hero-stat-subtitle {
     position: absolute;
-    bottom: 0;
+    bottom: -100px;
     left: 0;
     right: 0;
     text-align: center;
     font-size: 1.8em;
     font-weight: 800;
     color: var(--secondary);
-    margin-top: 40px;
+    transform: none;
     padding: 20px;
-    transform: translateY(40px);
     text-transform: uppercase;
     letter-spacing: 1px;
-    animation: pulseEmphasis 3s ease-in-out infinite;
     text-shadow: 0 2px 10px rgba(29, 185, 84, 0.2);
+    z-index: 10;
 }
 
-/* Updated pulsing animation */
-@keyframes pulseEmphasis {
-    0%, 100% { 
-        opacity: 0.95;
-        transform: translateY(40px) scale(1);
-    }
-    50% { 
-        opacity: 1;
-        transform: translateY(40px) scale(1.03);
+/* Update responsive design */
+@media (max-width: 1920px) {
+    .crisis-stats {
+        max-width: 1400px;
     }
 }
 
-/* Adjust responsive design */
+@media (max-width: 1600px) {
+    .crisis-stats {
+        max-width: 1200px;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .hero {
-        padding: 140px 0 100px;
-        min-height: 80vh;
+        height: auto;
+        min-height: 100vh;
+        padding: 80px 0 40px;
+        padding-bottom: 300px;
     }
-}
+    
+    .hero .container {
+        height: auto;
+        min-height: 100vh;
+        margin-top: 40px;
+        gap: 15px;
+        padding-bottom: 160px;
+    }
+    
+    .hero h1 {
+        font-size: 3.2em;
+        letter-spacing: -0.5px;
+    }
+    
+    .hero-stat {
+        font-size: 1em !important;
+        padding: 6px 12px;
+        white-space: normal;
+    }
 
-/* Add the lava lamp background */
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-        45deg,
-        rgba(29, 185, 84, 0.02) 0%,
-        rgba(18, 18, 18, 0) 70%
-    );
-    filter: blur(80px);
-    animation: lavaMove 8s ease-in-out infinite;
-    z-index: 0;
+    .hero p {
+        font-size: 1.3em;
+        padding: 0 20px 30px;
+    }
+
+    .hero-stat-subtitle {
+        bottom: -80px;
+        font-size: 1.4em;
+        padding: 10px;
+    }
+
+    .hero-stats {
+        margin-bottom: 160px;
+    }
 }
 
 /* Add multiple floating blobs */
 .hero::after {
-    content: '';
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    background: radial-gradient(
-        circle,
-        rgba(29, 185, 84, 0.03) 0%,
-        rgba(29, 185, 84, 0.01) 50%,
-        transparent 70%
-    );
-    filter: blur(60px);
-    animation: blobFloat 12s ease-in-out infinite;
-    z-index: 0;
-}
-
-/* Animations */
-@keyframes lavaMove {
-    0% {
-        transform: translateY(0) scale(1);
-        opacity: 0.5;
-    }
-    50% {
-        transform: translateY(-2%) scale(1.05);
-        opacity: 0.7;
-    }
-    100% {
-        transform: translateY(0) scale(1);
-        opacity: 0.5;
-    }
-}
-
-@keyframes blobFloat {
-    0% {
-        transform: translate(0, 0) scale(1);
-    }
-    33% {
-        transform: translate(5%, 5%) scale(1.1);
-    }
-    66% {
-        transform: translate(-5%, -2%) scale(0.9);
-    }
-    100% {
-        transform: translate(0, 0) scale(1);
-    }
+    display: none;
 }
 
 /* Add floating orbs */

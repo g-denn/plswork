@@ -32,19 +32,11 @@ section h2,
     padding-left: 0;
 }
 
-/* Add line under all headers including get started */
+/* Remove or modify the line under headers */
 section h2::after,
 .contact h2::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    left: 0;
-    width: 150px;
-    height: 4px;
-    background: var(--secondary);
-    border-radius: 3px;
-    opacity: 0.9;
-    box-shadow: 0 0 10px rgba(29, 185, 84, 0.3);
+    /* Remove this entire block or comment it out */
+    display: none; /* This will hide the green line under headers */
 }
 
 /* Force consistent styling for all headers */
@@ -143,11 +135,11 @@ section:not(:first-of-type)::before {
         rgba(29, 185, 84, 0.3) 50%,
         transparent 100%
     );
-    opacity: 1;
+    opacity: 0.5;
     z-index: 1;
 }
 
-/* Add a glow effect */
+/* Add a subtle glow effect */
 section:not(:first-of-type)::after {
     content: '';
     position: absolute;
@@ -162,6 +154,24 @@ section:not(:first-of-type)::after {
         transparent 100%
     );
     filter: blur(2px);
+    z-index: 1;
+}
+
+/* Add a subtle glow effect to the bottom of the hero section */
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(29, 185, 84, 0.3) 50%,
+        transparent 100%
+    );
+    opacity: 0.5;
     z-index: 1;
 }
 
@@ -275,4 +285,9 @@ section:not(:first-of-type)::after {
 .benefits-grid {
     margin-top: 0;
     padding-top: 30px !important;
+}
+
+/* For marketplace page specifically, since it uses inline styles */
+.transactions h2 {
+    margin-bottom: 30px !important; /* Adjust spacing since we removed the line */
 }

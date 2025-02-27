@@ -49,3 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(section);
     });
 });
+
+// Increase typing speed for chat messages
+async function streamMessage(message, element) {
+    const streamDelay = 10; // Reduced from default (usually 20-30ms)
+    // ... rest of your streaming logic
+}

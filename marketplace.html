@@ -9,78 +9,198 @@
     <link rel="stylesheet" href="css/layout.css">
     <!-- Components next -->
     <link rel="stylesheet" href="css/components/navigation.css">
+    <link rel="stylesheet" href="css/components/hero.css">
     <link rel="stylesheet" href="css/components/footer.css">
     <link rel="stylesheet" href="css/components/cards.css">
     <link rel="stylesheet" href="css/components/forms.css">
+    <link rel="stylesheet" href="css/components/chat.css">
+    <!-- Add marketplace styles with correct path -->
+    <link rel="stylesheet" href="css/sections/marketplace.css" type="text/css">
+    <link rel="stylesheet" href="css/components/property-lookup.css">
+    <!-- Add variables -->
+    <style>
+        :root {
+            --primary: #000000;
+            --secondary: #1DB954;
+            --text: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --dark-gray: #121212;
+            --medium-gray: #1E1E1E;
+            --light-gray: #404040;
+        }
+    </style>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="nav">
         <div class="container nav-container">
-            <a href="/index.html" class="nav-brand">
+            <a href="index.html" class="nav-brand">
                 <img src="images/logo.png" alt="RealToken Logo" class="logo">
                 <span class="nav-logo">RealToken</span>
             </a>
             <div class="nav-links">
-                <a href="index.html#problem">The Problem</a>
-                <a href="index.html#tokenization">How It Works</a>
-                <a href="index.html#solution">Our Solution</a>
-                <a href="index.html#benefits">Benefits</a>
-                <a href="/property-lookup" class="active">Properties</a>
-                <a href="index.html#contact" class="contact-btn">Get Started</a>
+                <a href="index.html#problem" class="nav-link">The Problem</a>
+                <a href="index.html#tokenization" class="nav-link">How It Works</a>
+                <a href="index.html#solution" class="nav-link">Our Solution</a>
+                <a href="index.html#benefits" class="nav-link">Benefits</a>
+                <a href="marketplace.html" class="active nav-link">Properties</a>
+                <a href="index.html#contact" class="contact-btn">Contact Us</a>
             </div>
         </div>
     </nav>
 
-    <!-- Keep the transactions section content, but remove the section ID since it's now the main content -->
+    <!-- Update the header section -->
     <section class="transactions">
         <div class="container">
-            <h2 style="text-align: center; font-size: 3.2em; background: linear-gradient(45deg, var(--text) 30%, var(--secondary) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 50px 0;">Property Marketplace</h2>
-
-            <!-- Search and Filter Bar -->
-            <div class="search-container">
-                <div class="search-bar">
-                    <input type="text" id="propertySearch" placeholder="Search by location, type, or price range...">
-                    <button class="search-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"/>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                        </svg>
-                    </button>
+            <h2 class="marketplace-title">Property Marketplace</h2>
+            
+            <!-- View Toggle -->
+            <div class="view-toggle">
+                <button class="toggle-btn active" data-view="marketplace">Browse Properties</button>
+                <button class="toggle-btn" data-view="lookup">Property Lookup</button>
+            </div>
+            
+            <!-- Marketplace View -->
+            <div class="view-content" id="marketplace-view">
+                <div class="marketplace-stats">
+                    <div class="stat-item">
+                        <h3>$2.4B+</h3>
+                        <p>Total Property Value</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>14.2K</h3>
+                        <p>Active Investors</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>98.5%</h3>
+                        <p>Success Rate</p>
+                    </div>
                 </div>
-                <div class="filter-options">
-                    <select id="propertyType">
-                        <option value="">Property Type</option>
-                        <option value="residential">Residential</option>
-                        <option value="commercial">Commercial</option>
-                        <option value="industrial">Industrial</option>
-                    </select>
-                    <select id="priceRange">
-                        <option value="">Price Range</option>
-                        <option value="2000000-4000000">$2M - $4M</option>
-                        <option value="4000000-6000000">$4M - $6M</option>
-                        <option value="6000000-8000000">$6M - $8M</option>
-                        <option value="8000000-10000000">$8M - $10M</option>
-                        <option value="10000000-20000000">$10M - $20M</option>
-                    </select>
-                    <select id="tokenization">
-                        <option value="">Tokenization Status</option>
-                        <option value="available">Available for Tokenization</option>
-                        <option value="in-progress">Tokenization in Progress</option>
-                        <option value="completed">Fully Tokenized</option>
-                    </select>
+                
+                <div class="search-container">
+                    <div class="search-bar">
+                        <input type="text" id="propertySearch" placeholder="Search by location, type, or price range...">
+                        <button class="search-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="filter-options">
+                        <select id="propertyType">
+                            <option value="">Property Type</option>
+                            <option value="residential">Residential</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="industrial">Industrial</option>
+                        </select>
+                        <select id="priceRange">
+                            <option value="">Price Range</option>
+                            <option value="2000000-4000000">$2M - $4M</option>
+                            <option value="4000000-6000000">$4M - $6M</option>
+                            <option value="6000000-8000000">$6M - $8M</option>
+                            <option value="8000000-10000000">$8M - $10M</option>
+                            <option value="10000000-20000000">$10M - $20M</option>
+                        </select>
+                        <select id="tokenization">
+                            <option value="">Tokenization Status</option>
+                            <option value="available">Available for Tokenization</option>
+                            <option value="in-progress">Tokenization in Progress</option>
+                            <option value="completed">Fully Tokenized</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="property-grid">
+                    <!-- Property cards will be generated here -->
+                </div>
+
+                <div class="pagination">
+                    <button class="page-btn prev">Previous</button>
+                    <button class="page-btn next">Next</button>
                 </div>
             </div>
 
-            <!-- Property Grid -->
-            <div class="property-grid">
-                <!-- Property cards will be generated here -->
-            </div>
-
-            <!-- Pagination -->
-            <div class="pagination">
-                <button class="page-btn prev">Previous</button>
-                <button class="page-btn next">Next</button>
+            <!-- Property Lookup View -->
+            <div class="view-content" id="lookup-view" style="display: none;">
+                <div class="lookup-form">
+                    <div class="form-group">
+                        <label for="address">Property Address</label>
+                        <input type="text" id="address" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <select id="state" required>
+                                <option value="">Select State</option>
+                                <option value="AL">Alabama</option>
+                                <option value="AK">Alaska</option>
+                                <option value="AZ">Arizona</option>
+                                <option value="AR">Arkansas</option>
+                                <option value="CA">California</option>
+                                <option value="CO">Colorado</option>
+                                <option value="CT">Connecticut</option>
+                                <option value="DE">Delaware</option>
+                                <option value="FL">Florida</option>
+                                <option value="GA">Georgia</option>
+                                <option value="HI">Hawaii</option>
+                                <option value="ID">Idaho</option>
+                                <option value="IL">Illinois</option>
+                                <option value="IN">Indiana</option>
+                                <option value="IA">Iowa</option>
+                                <option value="KS">Kansas</option>
+                                <option value="KY">Kentucky</option>
+                                <option value="LA">Louisiana</option>
+                                <option value="ME">Maine</option>
+                                <option value="MD">Maryland</option>
+                                <option value="MA">Massachusetts</option>
+                                <option value="MI">Michigan</option>
+                                <option value="MN">Minnesota</option>
+                                <option value="MS">Mississippi</option>
+                                <option value="MO">Missouri</option>
+                                <option value="MT">Montana</option>
+                                <option value="NE">Nebraska</option>
+                                <option value="NV">Nevada</option>
+                                <option value="NH">New Hampshire</option>
+                                <option value="NJ">New Jersey</option>
+                                <option value="NM">New Mexico</option>
+                                <option value="NY">New York</option>
+                                <option value="NC">North Carolina</option>
+                                <option value="ND">North Dakota</option>
+                                <option value="OH">Ohio</option>
+                                <option value="OK">Oklahoma</option>
+                                <option value="OR">Oregon</option>
+                                <option value="PA">Pennsylvania</option>
+                                <option value="RI">Rhode Island</option>
+                                <option value="SC">South Carolina</option>
+                                <option value="SD">South Dakota</option>
+                                <option value="TN">Tennessee</option>
+                                <option value="TX">Texas</option>
+                                <option value="UT">Utah</option>
+                                <option value="VT">Vermont</option>
+                                <option value="VA">Virginia</option>
+                                <option value="WA">Washington</option>
+                                <option value="WV">West Virginia</option>
+                                <option value="WI">Wisconsin</option>
+                                <option value="WY">Wyoming</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="lookupBtn" class="lookup-btn">Look Up Property</button>
+                </div>
+                
+                <div id="propertyResults" class="property-results" style="display: none;">
+                    <!-- Results will display here -->
+                </div>
+                
+                <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Fetching property data...</p>
+                </div>
             </div>
         </div>
     </section>
@@ -99,12 +219,12 @@
                 <div class="footer-links">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="index.html#problem">The Problem</a></li>
-                        <li><a href="index.html#tokenization">How It Works</a></li>
-                        <li><a href="index.html#solution">Our Solution</a></li>
-                        <li><a href="index.html#benefits">Benefits</a></li>
-                        <li><a href="/property-lookup">Properties</a></li>
-                        <li><a href="index.html#contact">Get Started</a></li>
+                        <li><a href="index.html#problem" class="nav-link">The Problem</a></li>
+                        <li><a href="index.html#tokenization" class="nav-link">How It Works</a></li>
+                        <li><a href="index.html#solution" class="nav-link">Our Solution</a></li>
+                        <li><a href="index.html#benefits" class="nav-link">Benefits</a></li>
+                        <li><a href="marketplace.html" class="nav-link">Properties</a></li>
+                        <li><a href="index.html#contact">Contact Us</a></li>
                     </ul>
                 </div>
 
@@ -122,245 +242,6 @@
             </div>
         </div>
     </footer>
-
-    <style>
-    /* Simple active state - just color change */
-    .nav-links a.active {
-        color: var(--secondary);
-    }
-
-    /* Add all the styles from the original transactions section */
-    .transactions {
-        padding: 80px 0;
-        background: linear-gradient(165deg, var(--dark-gray) 0%, var(--primary) 100%);
-    }
-
-    .search-container {
-        margin-bottom: 40px;
-        background: linear-gradient(165deg, rgba(30, 30, 30, 0.6) 0%, rgba(18, 18, 18, 0.8) 100%);
-        padding: 25px;
-        border-radius: 15px;
-        border: 1px solid rgba(29, 185, 84, 0.15);
-    }
-
-    .search-bar {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-
-    .search-bar input {
-        flex: 1;
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid rgba(29, 185, 84, 0.2);
-        background: rgba(25, 25, 25, 0.9);
-        color: var(--text);
-        font-size: 1em;
-    }
-
-    .search-btn {
-        padding: 0 20px;
-        background: var(--secondary);
-        border: none;
-        border-radius: 10px;
-        color: var(--primary);
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .search-btn:hover {
-        background: #1ed760;
-        transform: translateY(-2px);
-    }
-
-    .filter-options {
-        display: flex;
-        gap: 15px;
-    }
-
-    .filter-options select {
-        flex: 1;
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid rgba(29, 185, 84, 0.2);
-        background: rgba(25, 25, 25, 0.9);
-        color: var(--text);
-        cursor: pointer;
-    }
-
-    .property-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 30px;
-        margin-bottom: 40px;
-    }
-
-    .property-card {
-        background: linear-gradient(165deg, rgba(30, 30, 30, 0.6) 0%, rgba(18, 18, 18, 0.8) 100%);
-        border-radius: 15px;
-        overflow: hidden;
-        border: 1px solid rgba(29, 185, 84, 0.15);
-        transition: all 0.3s ease;
-    }
-
-    .property-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    .property-image {
-        position: relative;
-        height: 200px;
-        background: var(--dark-gray);
-    }
-
-    .property-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        min-height: 200px;
-    }
-
-    .property-status {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 0.8em;
-        font-weight: 600;
-    }
-
-    .property-status.available {
-        background: rgba(29, 185, 84, 0.9);
-        color: var(--primary);
-    }
-
-    .property-details {
-        padding: 20px;
-    }
-
-    .property-details h3 {
-        margin: 0 0 10px 0;
-        color: var(--secondary);
-        font-size: 1.3em;
-    }
-
-    .location {
-        color: var(--text-secondary);
-        margin-bottom: 15px;
-    }
-
-    .property-stats {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
-        color: var(--text);
-    }
-
-    .tokenization-info {
-        margin-bottom: 20px;
-    }
-
-    .progress-bar {
-        height: 6px;
-        background: rgba(29, 185, 84, 0.1);
-        border-radius: 3px;
-        margin-bottom: 8px;
-    }
-
-    .progress {
-        height: 100%;
-        background: var(--secondary);
-        border-radius: 3px;
-        transition: width 0.3s ease;
-    }
-
-    .price-info {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
-
-    .token-price, .property-value {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .token-price span, .property-value span {
-        color: var(--text-secondary);
-        font-size: 0.9em;
-    }
-
-    .token-price strong, .property-value strong {
-        color: var(--secondary);
-        font-size: 1.2em;
-    }
-
-    .invest-btn {
-        width: 100%;
-        padding: 12px;
-        background: var(--secondary);
-        border: none;
-        border-radius: 8px;
-        color: var(--primary);
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .invest-btn:hover {
-        background: #1ed760;
-        transform: translateY(-2px);
-    }
-
-    .pagination {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 30px;
-    }
-
-    .page-btn {
-        padding: 8px 15px;
-        border: 1px solid rgba(29, 185, 84, 0.2);
-        background: rgba(25, 25, 25, 0.9);
-        color: var(--text);
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        min-width: 100px;
-    }
-
-    .page-btn:hover:not(.active) {
-        background: rgba(29, 185, 84, 0.1);
-        border-color: var(--secondary);
-    }
-
-    /* Add CSS variables if they're not in main.css */
-    :root {
-        --primary: #121212;
-        --secondary: #1DB954;
-        --text: #FFFFFF;
-        --text-secondary: #B3B3B3;
-        --dark-gray: #181818;
-        --medium-gray: #282828;
-    }
-
-    /* Add status style for fully tokenized properties */
-    .property-status.tokenized {
-        background: rgba(180, 180, 180, 0.9);
-    }
-
-    .results-count {
-        color: var(--text-secondary);
-        margin-bottom: 20px;
-        text-align: right;
-        font-size: 0.9em;
-    }
-    </style>
 
     <script>
     // Add this function at the top of your script
@@ -673,6 +554,124 @@
         propertyType.addEventListener('change', filterProperties);
         priceRange.addEventListener('change', filterProperties);
         tokenization.addEventListener('change', filterProperties);
+    });
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleBtns = document.querySelectorAll('.toggle-btn');
+        const views = document.querySelectorAll('.view-content');
+        
+        toggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update button states
+                toggleBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Show selected view
+                const viewToShow = btn.dataset.view;
+                views.forEach(view => {
+                    view.style.display = view.id === `${viewToShow}-view` ? 'block' : 'none';
+                });
+            });
+        });
+    });
+    </script>
+
+    <script>
+    // Add property lookup functionality
+    document.addEventListener('DOMContentLoaded', () => {
+        const lookupForm = document.querySelector('.lookup-form');
+        const lookupBtn = document.getElementById('lookupBtn');
+        const propertyResults = document.getElementById('propertyResults');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+
+        lookupBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            const address = document.getElementById('address').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+
+            if (!address || !city || !state) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Show loading indicator
+            loadingIndicator.style.display = 'flex';
+            propertyResults.style.display = 'none';
+
+            try {
+                const response = await fetch('/.netlify/functions/property-lookup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ address, city, state })
+                });
+
+                const data = await response.json();
+
+                // Hide loading indicator
+                loadingIndicator.style.display = 'none';
+                
+                if (data.error) {
+                    propertyResults.innerHTML = `
+                        <div class="error-message">
+                            <h3>Error</h3>
+                            <p>${data.error}</p>
+                        </div>
+                    `;
+                } else {
+                    // Display property results
+                    propertyResults.innerHTML = `
+                        <div class="property-result">
+                            <h3>Property Details</h3>
+                            <div class="result-grid">
+                                <div class="result-item">
+                                    <span>Estimated Value:</span>
+                                    <strong>$${data.propertyData.estimatedValue.toLocaleString()}</strong>
+                                </div>
+                                <div class="result-item">
+                                    <span>Square Footage:</span>
+                                    <strong>${data.propertyData.squareFootage.toLocaleString()} sqft</strong>
+                                </div>
+                                <div class="result-item">
+                                    <span>Year Built:</span>
+                                    <strong>${data.propertyData.yearBuilt}</strong>
+                                </div>
+                                <div class="result-item">
+                                    <span>Bedrooms:</span>
+                                    <strong>${data.propertyData.bedrooms}</strong>
+                                </div>
+                                <div class="result-item">
+                                    <span>Bathrooms:</span>
+                                    <strong>${data.propertyData.bathrooms}</strong>
+                                </div>
+                                <div class="result-item">
+                                    <span>Property Type:</span>
+                                    <strong>${data.propertyData.propertyType}</strong>
+                                </div>
+                            </div>
+                            <div class="tokenization-potential">
+                                <button class="tokenize-btn">Start Tokenization Process</button>
+                            </div>
+                        </div>
+                    `;
+                }
+                propertyResults.style.display = 'block';
+            } catch (error) {
+                loadingIndicator.style.display = 'none';
+                propertyResults.innerHTML = `
+                    <div class="error-message">
+                        <h3>Error</h3>
+                        <p>Failed to fetch property data. Please try again later.</p>
+                    </div>
+                `;
+                propertyResults.style.display = 'block';
+            }
+        });
     });
     </script>
 </body>
