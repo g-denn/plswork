@@ -1,1 +1,679 @@
-<
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RealToken - Property Marketplace</title>
+    <!-- Base styles first -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <!-- Components next -->
+    <link rel="stylesheet" href="css/components/navigation.css">
+    <link rel="stylesheet" href="css/components/footer.css">
+    <link rel="stylesheet" href="css/components/cards.css">
+    <link rel="stylesheet" href="css/components/forms.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="nav">
+        <div class="container nav-container">
+            <a href="/index.html" class="nav-brand">
+                <img src="images/logo.png" alt="RealToken Logo" class="logo">
+                <span class="nav-logo">RealToken</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#problem">The Problem</a>
+                <a href="index.html#tokenization">How It Works</a>
+                <a href="index.html#solution">Our Solution</a>
+                <a href="index.html#benefits">Benefits</a>
+                <a href="/property-lookup" class="active">Properties</a>
+                <a href="index.html#contact" class="contact-btn">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Keep the transactions section content, but remove the section ID since it's now the main content -->
+    <section class="transactions">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 3.2em; background: linear-gradient(45deg, var(--text) 30%, var(--secondary) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 50px 0;">Property Marketplace</h2>
+
+            <!-- Search and Filter Bar -->
+            <div class="search-container">
+                <div class="search-bar">
+                    <input type="text" id="propertySearch" placeholder="Search by location, type, or price range...">
+                    <button class="search-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="filter-options">
+                    <select id="propertyType">
+                        <option value="">Property Type</option>
+                        <option value="residential">Residential</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="industrial">Industrial</option>
+                    </select>
+                    <select id="priceRange">
+                        <option value="">Price Range</option>
+                        <option value="2000000-4000000">$2M - $4M</option>
+                        <option value="4000000-6000000">$4M - $6M</option>
+                        <option value="6000000-8000000">$6M - $8M</option>
+                        <option value="8000000-10000000">$8M - $10M</option>
+                        <option value="10000000-20000000">$10M - $20M</option>
+                    </select>
+                    <select id="tokenization">
+                        <option value="">Tokenization Status</option>
+                        <option value="available">Available for Tokenization</option>
+                        <option value="in-progress">Tokenization in Progress</option>
+                        <option value="completed">Fully Tokenized</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Property Grid -->
+            <div class="property-grid">
+                <!-- Property cards will be generated here -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="page-btn prev">Previous</button>
+                <button class="page-btn next">Next</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="images/logo.png" alt="RealToken Logo">
+                        <span>RealToken</span>
+                    </div>
+                    <p>Revolutionizing real estate through blockchain technology and property tokenization. Making property ownership accessible, transparent, and community-driven.</p>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#problem">The Problem</a></li>
+                        <li><a href="index.html#tokenization">How It Works</a></li>
+                        <li><a href="index.html#solution">Our Solution</a></li>
+                        <li><a href="index.html#benefits">Benefits</a></li>
+                        <li><a href="/property-lookup">Properties</a></li>
+                        <li><a href="index.html#contact">Get Started</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-contact">
+                    <h4>Contact Us</h4>
+                    <p>Email: info@realtoken.com</p>
+                    <p>Support: 24/7 Available</p>
+                    <p>Location: Los Angeles, CA</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2024 RealToken. All rights reserved.</p>
+                <p class="disclaimer">Operating under applicable securities regulations.</p>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+    /* Simple active state - just color change */
+    .nav-links a.active {
+        color: var(--secondary);
+    }
+
+    /* Add all the styles from the original transactions section */
+    .transactions {
+        padding: 80px 0;
+        background: linear-gradient(165deg, var(--dark-gray) 0%, var(--primary) 100%);
+    }
+
+    .search-container {
+        margin-bottom: 40px;
+        background: linear-gradient(165deg, rgba(30, 30, 30, 0.6) 0%, rgba(18, 18, 18, 0.8) 100%);
+        padding: 25px;
+        border-radius: 15px;
+        border: 1px solid rgba(29, 185, 84, 0.15);
+    }
+
+    .search-bar {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .search-bar input {
+        flex: 1;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid rgba(29, 185, 84, 0.2);
+        background: rgba(25, 25, 25, 0.9);
+        color: var(--text);
+        font-size: 1em;
+    }
+
+    .search-btn {
+        padding: 0 20px;
+        background: var(--secondary);
+        border: none;
+        border-radius: 10px;
+        color: var(--primary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+        background: #1ed760;
+        transform: translateY(-2px);
+    }
+
+    .filter-options {
+        display: flex;
+        gap: 15px;
+    }
+
+    .filter-options select {
+        flex: 1;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(29, 185, 84, 0.2);
+        background: rgba(25, 25, 25, 0.9);
+        color: var(--text);
+        cursor: pointer;
+    }
+
+    .property-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .property-card {
+        background: linear-gradient(165deg, rgba(30, 30, 30, 0.6) 0%, rgba(18, 18, 18, 0.8) 100%);
+        border-radius: 15px;
+        overflow: hidden;
+        border: 1px solid rgba(29, 185, 84, 0.15);
+        transition: all 0.3s ease;
+    }
+
+    .property-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .property-image {
+        position: relative;
+        height: 200px;
+        background: var(--dark-gray);
+    }
+
+    .property-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        min-height: 200px;
+    }
+
+    .property-status {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.8em;
+        font-weight: 600;
+    }
+
+    .property-status.available {
+        background: rgba(29, 185, 84, 0.9);
+        color: var(--primary);
+    }
+
+    .property-details {
+        padding: 20px;
+    }
+
+    .property-details h3 {
+        margin: 0 0 10px 0;
+        color: var(--secondary);
+        font-size: 1.3em;
+    }
+
+    .location {
+        color: var(--text-secondary);
+        margin-bottom: 15px;
+    }
+
+    .property-stats {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        color: var(--text);
+    }
+
+    .tokenization-info {
+        margin-bottom: 20px;
+    }
+
+    .progress-bar {
+        height: 6px;
+        background: rgba(29, 185, 84, 0.1);
+        border-radius: 3px;
+        margin-bottom: 8px;
+    }
+
+    .progress {
+        height: 100%;
+        background: var(--secondary);
+        border-radius: 3px;
+        transition: width 0.3s ease;
+    }
+
+    .price-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .token-price, .property-value {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .token-price span, .property-value span {
+        color: var(--text-secondary);
+        font-size: 0.9em;
+    }
+
+    .token-price strong, .property-value strong {
+        color: var(--secondary);
+        font-size: 1.2em;
+    }
+
+    .invest-btn {
+        width: 100%;
+        padding: 12px;
+        background: var(--secondary);
+        border: none;
+        border-radius: 8px;
+        color: var(--primary);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .invest-btn:hover {
+        background: #1ed760;
+        transform: translateY(-2px);
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .page-btn {
+        padding: 8px 15px;
+        border: 1px solid rgba(29, 185, 84, 0.2);
+        background: rgba(25, 25, 25, 0.9);
+        color: var(--text);
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 100px;
+    }
+
+    .page-btn:hover:not(.active) {
+        background: rgba(29, 185, 84, 0.1);
+        border-color: var(--secondary);
+    }
+
+    /* Add CSS variables if they're not in main.css */
+    :root {
+        --primary: #121212;
+        --secondary: #1DB954;
+        --text: #FFFFFF;
+        --text-secondary: #B3B3B3;
+        --dark-gray: #181818;
+        --medium-gray: #282828;
+    }
+
+    /* Add status style for fully tokenized properties */
+    .property-status.tokenized {
+        background: rgba(180, 180, 180, 0.9);
+    }
+
+    .results-count {
+        color: var(--text-secondary);
+        margin-bottom: 20px;
+        text-align: right;
+        font-size: 0.9em;
+    }
+    </style>
+
+    <script>
+    // Add this function at the top of your script
+    function checkImageExists(url) {
+        const img = new Image();
+        img.src = url;
+        img.onload = () => console.log('Image exists:', url);
+        img.onerror = () => console.error('Image does not exist:', url);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const propertySearch = document.getElementById('propertySearch');
+        const propertyType = document.getElementById('propertyType');
+        const priceRange = document.getElementById('priceRange');
+        const tokenization = document.getElementById('tokenization');
+
+        // Search functionality
+        propertySearch.addEventListener('input', filterProperties);
+        propertyType.addEventListener('change', filterProperties);
+        priceRange.addEventListener('change', filterProperties);
+        tokenization.addEventListener('change', filterProperties);
+
+        function filterProperties() {
+            // Add your filtering logic here
+            console.log('Filtering properties...');
+        }
+
+        // Simple Previous/Next pagination
+        const prevButton = document.querySelector('.page-btn.prev');
+        const nextButton = document.querySelector('.page-btn.next');
+        
+        prevButton.addEventListener('click', () => {
+            console.log('Loading previous page...');
+            // Add your previous page logic here
+        });
+        
+        nextButton.addEventListener('click', () => {
+            console.log('Loading next page...');
+            // Add your next page logic here
+        });
+
+        const propertyGrid = document.querySelector('.property-grid');
+        
+        // Test each image path
+        houseImages.forEach(image => {
+            checkImageExists(`/images/house_pictures/${image}`);
+            checkImageExists(`./images/house_pictures/${image}`);
+        });
+    });
+    </script>
+
+    <script>
+    // Property data generation
+    document.addEventListener('DOMContentLoaded', () => {
+        const propertyGrid = document.querySelector('.property-grid');
+        let currentPage = 1;
+        const propertiesPerPage = 8;
+        let allProperties = [];
+        let filteredProperties = [];
+        let lastUsedImageIndex = -1;  // Track the last used image index
+        
+        // Sample data arrays for realistic property generation
+        const locations = [
+            { city: "Beverly Hills", state: "CA" },
+            { city: "Manhattan", state: "NY" },
+            { city: "Miami Beach", state: "FL" },
+            { city: "Aspen", state: "CO" },
+            { city: "San Francisco", state: "CA" },
+            { city: "Seattle", state: "WA" },
+            { city: "Austin", state: "TX" },
+            { city: "Chicago", state: "IL" },
+            { city: "Boston", state: "MA" },
+            { city: "Las Vegas", state: "NV" }
+        ];
+
+        const houseImages = [
+            'pexels-binyaminmellish-106399.jpg',
+            'pexels-binyaminmellish-1396132.jpg',
+            'pexels-expect-best-79873-323780.jpg',
+            'pexels-luis-yanez-57302-206172.jpg',
+            'pexels-pixabay-210617.jpg',
+            'pexels-pixabay-259588.jpg',
+            'pexels-pixabay-259593.jpg',
+            'pexels-pixabay-277667.jpg',
+            'pexels-pixasquare-1115804.jpg',
+            'pexels-scottwebb-1029599.jpg',
+            'pexels-fotios-photos-2816323.jpg',
+            'pexels-tara-winstead-8407011.jpg',
+            'pexels-perqued-13041118.jpg',
+            'pexels-heyho-7598376.jpg',
+            'pexels-b-s-gulesan-2144469394-30847025.jpg',
+            'pexels-szafran-30866045.jpg',
+            'pexels-lina-3639542.jpg',
+            'pexels-julia-kuzenkov-442028-1974596.jpg'
+        ];
+
+        const propertyTypes = [
+            "Luxury Villa",
+            "Penthouse Suite",
+            "Beachfront Property",
+            "Mountain Resort",
+            "Modern Loft",
+            "Historic Mansion",
+            "Urban Townhouse",
+            "Waterfront Estate",
+            "Sky Villa",
+            "Desert Oasis"
+        ];
+
+        const amenities = [
+            "Private Pool",
+            "Ocean View",
+            "Smart Home",
+            "Wine Cellar",
+            "Home Theater",
+            "Rooftop Deck",
+            "Tennis Court",
+            "Spa",
+            "Guest House",
+            "Elevator"
+        ];
+
+        function generateRandomProperty() {
+            const location = locations[Math.floor(Math.random() * locations.length)];
+            const propertyType = propertyTypes[Math.floor(Math.random() * propertyTypes.length)];
+            const tokenizationProgress = Math.floor(Math.random() * 100);
+            const propertyValue = (2 + Math.random() * 18).toFixed(1);
+            const tokenPrice = Math.floor(propertyValue * 1000000 / 10000);
+            const beds = Math.floor(3 + Math.random() * 7);
+            const baths = Math.floor(beds * 0.7);
+            const sqft = Math.floor(2000 + Math.random() * 8000);
+            // Get a random image that's different from the last one
+            let newImageIndex;
+            do {
+                newImageIndex = Math.floor(Math.random() * houseImages.length);
+            } while (newImageIndex === lastUsedImageIndex);
+            
+            lastUsedImageIndex = newImageIndex;
+            const image = houseImages[newImageIndex];
+
+            return {
+                type: propertyType,
+                location: `${location.city}, ${location.state}`,
+                beds,
+                baths,
+                sqft,
+                tokenization: tokenizationProgress,
+                tokenPrice,
+                propertyValue,
+                image: image,
+                status: tokenizationProgress < 100 ? 'Available' : 'Fully Tokenized'
+            };
+        }
+
+        // Generate all properties once
+        for (let i = 0; i < 24; i++) {
+            allProperties.push(generateRandomProperty());
+        }
+        filteredProperties = [...allProperties];
+
+        function displayProperties(page) {
+            const startIndex = (page - 1) * propertiesPerPage;
+            const endIndex = startIndex + propertiesPerPage;
+            const propertiesToShow = filteredProperties.slice(startIndex, endIndex);
+            
+            propertyGrid.innerHTML = ''; // Clear existing properties
+
+            propertiesToShow.forEach(property => {
+                const propertyCard = `
+                    <div class="property-card">
+                        <div class="property-image">
+                            <img src="./images/house_pictures/${property.image}" 
+                                 alt="${property.type}"
+                                 onload="console.log('Image loaded successfully:', this.src)"
+                                 onerror="console.error('Failed to load image:', this.src, 'Error:', event);">
+                            <div class="property-status ${property.status === 'Available' ? 'available' : 'tokenized'}">${property.status}</div>
+                        </div>
+                        <div class="property-details">
+                            <h3>${property.type}</h3>
+                            <p class="location">${property.location}</p>
+                            <div class="property-stats">
+                                <span>${property.beds} Beds</span>
+                                <span>${property.baths} Baths</span>
+                                <span>${property.sqft.toLocaleString()} sqft</span>
+                            </div>
+                            <div class="tokenization-info">
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: ${property.tokenization}%"></div>
+                                </div>
+                                <p>${property.tokenization}% Tokenized</p>
+                            </div>
+                            <div class="price-info">
+                                <div class="token-price">
+                                    <span>Token Price</span>
+                                    <strong>$${property.tokenPrice.toLocaleString()}</strong>
+                                </div>
+                                <div class="property-value">
+                                    <span>Property Value</span>
+                                    <strong>$${property.propertyValue}M</strong>
+                                </div>
+                            </div>
+                            <button class="invest-btn">Invest Now</button>
+                        </div>
+                    </div>
+                `;
+                propertyGrid.innerHTML += propertyCard;
+            });
+
+            // Update pagination buttons state
+            const prevButton = document.querySelector('.page-btn.prev');
+            const nextButton = document.querySelector('.page-btn.next');
+            
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = currentPage >= Math.ceil(filteredProperties.length / propertiesPerPage);
+            
+            prevButton.style.opacity = prevButton.disabled ? '0.5' : '1';
+            nextButton.style.opacity = nextButton.disabled ? '0.5' : '1';
+        }
+
+        // Initialize first page
+        displayProperties(currentPage);
+
+        // Update pagination event listeners
+        const prevButton = document.querySelector('.page-btn.prev');
+        const nextButton = document.querySelector('.page-btn.next');
+        
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayProperties(currentPage);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+        
+        nextButton.addEventListener('click', () => {
+            if (currentPage < Math.ceil(filteredProperties.length / propertiesPerPage)) {
+                currentPage++;
+                displayProperties(currentPage);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        function filterProperties() {
+            const searchTerm = propertySearch.value.toLowerCase();
+            const selectedType = propertyType.value;
+            const selectedPriceRange = priceRange.value;
+            const selectedTokenization = tokenization.value;
+
+            filteredProperties = allProperties.filter(property => {
+                // Search term filter
+                const matchesSearch = 
+                    property.type.toLowerCase().includes(searchTerm) ||
+                    property.location.toLowerCase().includes(searchTerm) ||
+                    property.propertyValue.toString().includes(searchTerm);
+
+                // Property type filter
+                const matchesType = !selectedType || 
+                    property.type.toLowerCase().includes(selectedType.toLowerCase());
+
+                // Price range filter
+                let matchesPrice = true;
+                if (selectedPriceRange) {
+                    const propertyPriceInDollars = property.propertyValue * 1000000;
+                    const [minPrice, maxPrice] = selectedPriceRange.split('-').map(Number);
+                    matchesPrice = propertyPriceInDollars >= minPrice && propertyPriceInDollars <= maxPrice;
+                }
+
+                // Tokenization status filter
+                let matchesTokenization = true;
+                if (selectedTokenization) {
+                    switch(selectedTokenization) {
+                        case 'available':
+                            matchesTokenization = property.tokenization < 100;
+                            break;
+                        case 'in-progress':
+                            matchesTokenization = property.tokenization > 0 && property.tokenization < 100;
+                            break;
+                        case 'completed':
+                            matchesTokenization = property.tokenization === 100;
+                            break;
+                    }
+                }
+
+                return matchesSearch && matchesType && matchesPrice && matchesTokenization;
+            });
+
+            // Reset to first page when filtering
+            currentPage = 1;
+            displayProperties(currentPage);
+
+            // Update UI to show number of results
+            const resultsCount = document.createElement('p');
+            resultsCount.className = 'results-count';
+            resultsCount.textContent = `${filteredProperties.length} properties found`;
+            const existingCount = document.querySelector('.results-count');
+            if (existingCount) {
+                existingCount.remove();
+            }
+            document.querySelector('.property-grid').insertAdjacentElement('beforebegin', resultsCount);
+        }
+
+        // Add debounce for search input
+        let searchTimeout;
+        propertySearch.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(filterProperties, 300);
+        });
+
+        // Immediate filter for select inputs
+        propertyType.addEventListener('change', filterProperties);
+        priceRange.addEventListener('change', filterProperties);
+        tokenization.addEventListener('change', filterProperties);
+    });
+    </script>
+</body>
+</html> 
