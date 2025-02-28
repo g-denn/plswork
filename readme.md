@@ -1,43 +1,51 @@
-# RealToken - Tokenized Insurance Platform
+# RealToken - Tokenized Real Estate Platform
 
-A modern web interface demonstrating the concept of blockchain-based insurance tokenization. This project showcases how traditional insurance models can be revolutionized using blockchain technology.
+A modern web interface demonstrating the concept of blockchain-based real estate tokenization. This project showcases how traditional real estate investment can be revolutionized using blockchain technology.
 
 ## Overview
 
-RealToken presents a solution to the current insurance crisis, where traditional models are failing to serve communities in high-risk areas. The platform demonstrates how property insurance can be tokenized, making it more accessible, transparent, and efficient.
+RealToken presents a solution to the current real estate investment barriers, where traditional models limit accessibility and liquidity. The platform demonstrates how property ownership can be tokenized, making it more accessible, transparent, and efficient.
 
 ### Key Features Demonstrated
 
-- **Tokenized Insurance Concept**
-  - Fractional property investment
-  - Automated claims processing
-  - Transparent risk pooling
-  - Community-driven insurance model
+- **Tokenized Real Estate Concept**
+  - Fractional property ownership
+  - Automated income distribution
+  - Transparent property records
+  - Liquid real estate investment
 
 - **Modern UI/UX**
   - Responsive design
   - Interactive animations
-  - Smooth scrolling navigation
-  - Dynamic content highlighting
+  - Web3 wallet integration
+  - Property marketplace
+  - Real-time transaction updates
 
 - **Technical Implementation**
-  - CSS Grid and Flexbox layouts
-  - CSS custom properties (variables)
-  - Intersection Observer API
-  - Modern JavaScript practices
-  - Optimized performance
+  - Modern CSS architecture
+  - Component-based design
+  - Web3 integration
+  - MetaMask connectivity
+  - Blockchain transactions
 
 ## Project Status
 
 ⚠️ **IMPORTANT: This is a demonstration project only**
 
-This is a conceptual demonstration and is not intended for actual deployment or use. The code and design showcase the potential of blockchain-based insurance but should not be used as a basis for a production system without significant additional development, security auditing, and regulatory compliance work.
+This is a conceptual demonstration and is not intended for actual deployment or use. The code and design showcase the potential of blockchain-based real estate tokenization but should not be used as a basis for a production system without significant additional development, security auditing, and regulatory compliance work.
 
 ## Technical Details
 
 ### Structure
 
-## Project Structure
+```
+/css
+  /components - Reusable UI components
+  /sections - Page-specific styles
+/js - JavaScript functionality
+/images - Asset files
+/components - HTML components
+```
 
 ## Setup Instructions
 
@@ -47,10 +55,12 @@ This is a conceptual demonstration and is not intended for actual deployment or 
 
 ## Features
 
+- Property tokenization demonstration
+- Web3 wallet connectivity
+- Property marketplace interface
+- Transaction history
 - Responsive design
 - Modern UI/UX
-- Smooth scrolling
-- Interactive components
 - Mobile-friendly layout
 
 ## Browser Support

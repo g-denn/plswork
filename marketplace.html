@@ -57,7 +57,7 @@
                 </div>
                 <a href="/marketplace.html" class="nav-page">Properties</a>
                 <a href="/wallet.html" class="nav-page">Wallet</a>
-                <a href="/#contact" class="contact-btn scroll-link">Contact Us</a>
+                <a href="/#contact" class="nav-page">Contact Us</a>
             </div>
         </div>
     </nav>
@@ -73,7 +73,7 @@
             </div>
             
             <!-- Marketplace View -->
-            <div class="view-content" id="marketplace-view">
+            <div class="view-content marketplace-view" id="marketplace-view">
                 <div class="search-container">
                     <div class="search-bar">
                         <input type="text" id="propertySearch" placeholder="Search by location, type, or price range...">
@@ -109,12 +109,20 @@
                 </div>
 
                 <div class="property-grid">
-                    <!-- Property cards will be generated here -->
+                    <!-- First 6 property cards -->
+                    <div class="property-card"><!-- Property 1 --></div>
+                    <div class="property-card"><!-- Property 2 --></div>
+                    <div class="property-card"><!-- Property 3 --></div>
+                    <div class="property-card"><!-- Property 4 --></div>
+                    <div class="property-card"><!-- Property 5 --></div>
+                    <div class="property-card"><!-- Property 6 --></div>
                 </div>
 
                 <div class="pagination">
-                    <button class="page-btn prev">Previous</button>
-                    <button class="page-btn next">Next</button>
+                    <button class="page-btn" data-page="1">1</button>
+                    <button class="page-btn" data-page="2">2</button>
+                    <button class="page-btn" data-page="3">3</button>
+                    <button class="page-btn next-page">Next</button>
                 </div>
             </div>
 
