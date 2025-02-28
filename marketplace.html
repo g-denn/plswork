@@ -30,26 +30,38 @@
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="js/common.js"></script>
 </head>
 <body>
     <nav class="nav">
         <div class="container nav-container">
-            <a href="index.html" class="nav-brand">
-                <img src="images/logo.png" alt="RealToken Logo" class="logo">
+            <a href="/" class="nav-brand">
+                <img src="/images/logo.png" alt="RealToken Logo" class="logo">
                 <span class="nav-logo">RealToken</span>
             </a>
             <div class="nav-links">
-                <a href="index.html#problem" class="nav-link">The Problem</a>
-                <a href="index.html#tokenization" class="nav-link">How It Works</a>
-                <a href="index.html#solution" class="nav-link">Our Solution</a>
-                <a href="index.html#benefits" class="nav-link">Benefits</a>
-                <a href="marketplace.html" class="active nav-link">Properties</a>
-                <a href="index.html#contact" class="contact-btn">Contact Us</a>
+                <div class="nav-item">
+                    <a href="#about" class="nav-link">About</a>
+                    <div class="nav-dropdown">
+                        <a href="/#problem" class="scroll-link">The Problem</a>
+
+                        <a href="/#benefits" class="scroll-link">Benefits</a>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <a href="#tokenization" class="nav-link">How It Works</a>
+                    <div class="nav-dropdown">
+                        <a href="/#tokenization" class="scroll-link">Tokenization</a>
+
+                    </div>
+                </div>
+                <a href="/marketplace.html" class="nav-page">Properties</a>
+                <a href="/wallet.html" class="nav-page">Wallet</a>
+                <a href="/#contact" class="contact-btn scroll-link">Contact Us</a>
             </div>
         </div>
     </nav>
 
-    <!-- Update the header section -->
     <section class="transactions">
         <div class="container">
             <h2 class="marketplace-title">Property Marketplace</h2>
@@ -62,21 +74,6 @@
             
             <!-- Marketplace View -->
             <div class="view-content" id="marketplace-view">
-                <div class="marketplace-stats">
-                    <div class="stat-item">
-                        <h3>$2.4B+</h3>
-                        <p>Total Property Value</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>14.2K</h3>
-                        <p>Active Investors</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>98.5%</h3>
-                        <p>Success Rate</p>
-                    </div>
-                </div>
-                
                 <div class="search-container">
                     <div class="search-bar">
                         <input type="text" id="propertySearch" placeholder="Search by location, type, or price range...">
@@ -224,6 +221,7 @@
                         <li><a href="index.html#solution" class="nav-link">Our Solution</a></li>
                         <li><a href="index.html#benefits" class="nav-link">Benefits</a></li>
                         <li><a href="marketplace.html" class="nav-link">Properties</a></li>
+                        <li><a href="wallet.html" class="nav-link">Wallet</a></li>
                         <li><a href="index.html#contact">Contact Us</a></li>
                     </ul>
                 </div>

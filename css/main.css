@@ -24,6 +24,7 @@ body {
     color: var(--text, #FFFFFF);
     background: var(--dark-gray, #121212);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    animation: fadeIn 0.3s ease-in;
 }
 
 /* Typography */
@@ -233,4 +234,9 @@ section h2 {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0.8; }
+    to { opacity: 1; }
 }

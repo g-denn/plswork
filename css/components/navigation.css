@@ -14,6 +14,9 @@
     width: 95%;
     max-width: 1300px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: none;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
 }
 
 .nav-container {
@@ -53,136 +56,107 @@
     display: flex;
     align-items: center;
     gap: 30px;
+    position: relative;
 }
 
-.nav-links a {
-    color: var(--text-secondary);
+.nav-link, .nav-page {
+    color: var(--text);
     text-decoration: none;
     font-size: 1em;
     transition: all 0.3s ease;
     padding: 10px 15px;
     display: block;
     position: relative;
-    height: 100%;
-    line-height: normal;
-    text-align: center;
-}
-
-/* Hover state */
-.nav-links a:hover:not(.contact-btn) {
-    color: var(--secondary);
-}
-
-/* Active state for current section */
-.nav-links a.active:not(.contact-btn) {
-    color: var(--secondary);
-    position: relative;
-}
-
-/* Underline for active state */
-.nav-links a.active:not(.contact-btn)::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 15px;
-    right: 15px;
-    height: 2px;
-    background: var(--secondary);
-    border-radius: 2px;
-    box-shadow: 0 0 8px rgba(29, 185, 84, 0.3);
-}
-
-/* Hover underline animation */
-.nav-links a:not(.contact-btn):hover::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 15px;
-    right: 15px;
-    height: 2px;
-    background: var(--secondary);
-    border-radius: 2px;
     opacity: 0.8;
-    transform: scaleX(1);
+}
+
+/* Hover underline effect */
+.nav-link::after, .nav-page::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 15px;
+    right: 15px;
+    height: 2px;
+    background: var(--text);
+    transform: scaleX(0);
     transition: transform 0.3s ease;
 }
 
-/* Keep contact button styles unchanged */
-.nav-links .contact-btn {
-    background: var(--secondary);
-    color: var(--primary);
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
+.nav-link:hover, .nav-page:hover {
+    opacity: 1;
+    color: var(--text);
 }
 
-.nav-links .contact-btn:hover {
-    background: #1ed760;
-    color: var(--primary);
-}
-
-/* Add container for each link */
-.nav-links > * {
-    display: flex;
-    align-items: center;
-    height: 100%;
-}
-
-.nav-links a.active {
-    color: var(--secondary);
-    position: relative;
-    font-weight: 500;
-}
-
-.nav-links a.active::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 15px;
-    right: 15px;
-    height: 2px;
-    background: var(--secondary);
-    border-radius: 2px;
-    box-shadow: 0 0 8px rgba(29, 185, 84, 0.3);
-    transition: all 0.3s ease;
-}
-
-.nav-links a:not(.contact-btn):hover::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 15px;
-    right: 15px;
-    height: 2px;
-    background: var(--secondary);
-    border-radius: 2px;
-    opacity: 0.8;
-}
-
-.nav-links .contact-btn.active {
-    background: #1ed760;
-}
-
-.nav-links .contact-btn.active::after {
-    display: none;
-}
-
-/* Add styles for the hidden property lookup link */
-.nav-links .property-lookup-link {
-    opacity: 0.5;
-    font-size: 0.9em;
-    transition: opacity 0.3s ease;
-}
-
-.nav-links .property-lookup-link:hover {
+.nav-link.active, .nav-page.active {
+    color: var(--text);
     opacity: 1;
 }
 
-/* Optional: Add a subtle separator before the property lookup link */
-.nav-links .property-lookup-link::before {
-    content: '|';
-    margin: 0 10px;
-    color: rgba(255, 255, 255, 0.2);
+.nav-item {
+    position: relative;
+}
+
+.nav-item:hover {
+    z-index: 1000;
+}
+
+.nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--dark-gray);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    pointer-events: none;
+}
+
+.nav-item:hover .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.nav-dropdown a {
+    color: var(--text);
+    padding: 8px 20px;
+    display: block;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.95em;
+    opacity: 0.8;
+}
+
+.nav-dropdown a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+    opacity: 1;
+    padding-left: 25px;
+}
+
+.contact-btn {
+    background: var(--secondary);
+    color: var(--primary);
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+
+.contact-btn:hover {
+    background: #1ed760;
+    transform: translateY(-2px);
 }
 
 /* Update responsive styles */
@@ -216,4 +190,36 @@
 
 .property-lookup-link:hover {
     opacity: 1;
+}
+
+.nav-page {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    padding: 10px 15px;
+    display: block;
+    position: relative;
+    opacity: 0.8;
+}
+
+.nav-page.active {
+    color: var(--secondary);
+    opacity: 1;
+}
+
+.nav-page.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 15px;
+    right: 15px;
+    height: 2px;
+    background: var(--secondary);
+    transform: scaleX(1);
+}
+
+/* Prevent content from jumping when nav is fixed */
+body {
+    padding-top: 100px;
 }
