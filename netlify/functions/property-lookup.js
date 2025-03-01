@@ -116,6 +116,22 @@ const validatePropertyData = (data) => {
         }
     }
 
+    // Validate market history
+    if (!data.propertyData.marketHistory || 
+        !Array.isArray(data.propertyData.marketHistory.years) ||
+        !Array.isArray(data.propertyData.marketHistory.values) ||
+        data.propertyData.marketHistory.years.length !== data.propertyData.marketHistory.values.length) {
+        errors.push('Invalid market history data');
+    }
+
+    // Validate investment projection
+    if (!data.propertyData.investmentProjection ||
+        !Array.isArray(data.propertyData.investmentProjection.years) ||
+        !Array.isArray(data.propertyData.investmentProjection.returns) ||
+        data.propertyData.investmentProjection.years.length !== data.propertyData.investmentProjection.returns.length) {
+        errors.push('Invalid investment projection data');
+    }
+
     if (errors.length > 0) {
         console.error('Validation errors:', errors);
         throw new Error(`Data validation failed: ${errors.join('; ')}`);
@@ -196,7 +212,8 @@ module.exports = {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
         };
 
         if (event.httpMethod === 'OPTIONS') {
@@ -212,6 +229,9 @@ module.exports = {
         }
 
         try {
+            if (!apiKey) {
+                throw new Error('PERPLEXITY_API_KEY environment variable is not set');
+            }
             const { address, city, state } = JSON.parse(event.body);
             console.log(`\n🔍 Looking up property: ${address}, ${city}, ${state}`);
             
@@ -254,10 +274,7 @@ module.exports = {
 
             const response = await fetch('https://api.perplexity.ai/chat/completions', {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json'
-                },
+                headers: headers,
                 body: JSON.stringify(requestBody)
             });
 
