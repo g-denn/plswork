@@ -1,7 +1,13 @@
+const formatCurrency = (value) => new Intl.NumberFormat('ms-MY', {
+    style: 'currency',
+    currency: 'MYR',
+    maximumFractionDigits: 0
+}).format(value);
+
 // Update the displayPropertyData function
 function displayPropertyData(data) {
     const propertyResults = document.getElementById('propertyResults');
-    
+
     // Create the new dashboard HTML
     propertyResults.innerHTML = `
         <div class="dashboard-grid">
@@ -10,7 +16,7 @@ function displayPropertyData(data) {
                 <h3>Property Overview</h3>
                 <div class="property-value">
                     <span class="value-label">Estimated Value</span>
-                    <span class="value-amount">$${data.propertyData.estimatedValue.toLocaleString()}</span>
+                    <span class="value-amount">${formatCurrency(data.propertyData.estimatedValue)}</span>
                 </div>
                 <div class="property-specs">
                     <div class="spec-item">
@@ -38,7 +44,7 @@ function displayPropertyData(data) {
                     </div>
                     <div class="metric">
                         <span class="metric-label">Median Price</span>
-                        <span class="metric-value">$${data.propertyData.marketTrends.medianPrice.toLocaleString()}</span>
+                        <span class="metric-value">${formatCurrency(data.propertyData.marketTrends.medianPrice)}</span>
                     </div>
                     <div class="metric">
                         <span class="metric-label">Days on Market</span>

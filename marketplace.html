@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RealToken - Property Marketplace</title>
+    <title>Trick - Property Marketplace</title>
     <!-- Add favicon -->
     <link rel="icon" type="image/png" href="/images/logo.png">
     <link rel="shortcut icon" type="image/png" href="/images/logo.png">
@@ -41,8 +41,8 @@
     <nav class="nav">
         <div class="container nav-container">
             <a href="/" class="nav-brand">
-                <img src="/images/logo.png" alt="RealToken Logo" class="logo">
-                <span class="nav-logo">RealToken</span>
+                <img src="/images/logo.png" alt="Trick Logo" class="logo">
+                <span class="nav-logo">Trick</span>
             </a>
             <div class="nav-links">
                 <div class="nav-item">
@@ -81,8 +81,8 @@
             <div class="view-content marketplace-view" id="marketplace-view">
                 <div class="search-container">
                     <div class="search-bar">
-                        <input type="text" id="propertySearch" placeholder="Search by location, type, or price range...">
-                        <button class="search-btn">
+                        <input type="text" id="propertySearch" placeholder="Search by location (e.g. Kuala Lumpur), type, or price range...">
+                        <button class="search-btn" type="button">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="11" cy="11" r="8"/>
                                 <line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -98,11 +98,11 @@
                         </select>
                         <select id="priceRange">
                             <option value="">Price Range</option>
-                            <option value="2000000-4000000">$2M - $4M</option>
-                            <option value="4000000-6000000">$4M - $6M</option>
-                            <option value="6000000-8000000">$6M - $8M</option>
-                            <option value="8000000-10000000">$8M - $10M</option>
-                            <option value="10000000-20000000">$10M - $20M</option>
+                            <option value="800000-2000000">RM800k - RM2M</option>
+                            <option value="2000000-3500000">RM2M - RM3.5M</option>
+                            <option value="3500000-5000000">RM3.5M - RM5M</option>
+                            <option value="5000000-7000000">RM5M - RM7M</option>
+                            <option value="7000000-9000000">RM7M - RM9M</option>
                         </select>
                         <select id="tokenization">
                             <option value="">Tokenization Status</option>
@@ -113,21 +113,14 @@
                     </div>
                 </div>
 
-                <div class="property-grid">
-                    <!-- First 6 property cards -->
-                    <div class="property-card"><!-- Property 1 --></div>
-                    <div class="property-card"><!-- Property 2 --></div>
-                    <div class="property-card"><!-- Property 3 --></div>
-                    <div class="property-card"><!-- Property 4 --></div>
-                    <div class="property-card"><!-- Property 5 --></div>
-                    <div class="property-card"><!-- Property 6 --></div>
-                </div>
+                <div class="property-grid"></div>
 
                 <div class="pagination">
-                    <button class="page-btn" data-page="1">1</button>
-                    <button class="page-btn" data-page="2">2</button>
-                    <button class="page-btn" data-page="3">3</button>
-                    <button class="page-btn next-page">Next</button>
+                    <button class="page-btn prev-page" type="button" aria-label="Previous page">Previous</button>
+                    <button class="page-btn" type="button" data-page="1">1</button>
+                    <button class="page-btn" type="button" data-page="2">2</button>
+                    <button class="page-btn" type="button" data-page="3">3</button>
+                    <button class="page-btn next-page" type="button" aria-label="Next page">Next</button>
                 </div>
             </div>
 
@@ -147,56 +140,22 @@
                             <label for="state">State</label>
                             <select id="state" required>
                                 <option value="">Select State</option>
-                                <option value="AL">Alabama</option>
-                                <option value="AK">Alaska</option>
-                                <option value="AZ">Arizona</option>
-                                <option value="AR">Arkansas</option>
-                                <option value="CA">California</option>
-                                <option value="CO">Colorado</option>
-                                <option value="CT">Connecticut</option>
-                                <option value="DE">Delaware</option>
-                                <option value="FL">Florida</option>
-                                <option value="GA">Georgia</option>
-                                <option value="HI">Hawaii</option>
-                                <option value="ID">Idaho</option>
-                                <option value="IL">Illinois</option>
-                                <option value="IN">Indiana</option>
-                                <option value="IA">Iowa</option>
-                                <option value="KS">Kansas</option>
-                                <option value="KY">Kentucky</option>
-                                <option value="LA">Louisiana</option>
-                                <option value="ME">Maine</option>
-                                <option value="MD">Maryland</option>
-                                <option value="MA">Massachusetts</option>
-                                <option value="MI">Michigan</option>
-                                <option value="MN">Minnesota</option>
-                                <option value="MS">Mississippi</option>
-                                <option value="MO">Missouri</option>
-                                <option value="MT">Montana</option>
-                                <option value="NE">Nebraska</option>
-                                <option value="NV">Nevada</option>
-                                <option value="NH">New Hampshire</option>
-                                <option value="NJ">New Jersey</option>
-                                <option value="NM">New Mexico</option>
-                                <option value="NY">New York</option>
-                                <option value="NC">North Carolina</option>
-                                <option value="ND">North Dakota</option>
-                                <option value="OH">Ohio</option>
-                                <option value="OK">Oklahoma</option>
-                                <option value="OR">Oregon</option>
-                                <option value="PA">Pennsylvania</option>
-                                <option value="RI">Rhode Island</option>
-                                <option value="SC">South Carolina</option>
-                                <option value="SD">South Dakota</option>
-                                <option value="TN">Tennessee</option>
-                                <option value="TX">Texas</option>
-                                <option value="UT">Utah</option>
-                                <option value="VT">Vermont</option>
-                                <option value="VA">Virginia</option>
-                                <option value="WA">Washington</option>
-                                <option value="WV">West Virginia</option>
-                                <option value="WI">Wisconsin</option>
-                                <option value="WY">Wyoming</option>
+                                <option value="Johor">Johor</option>
+                                <option value="Kedah">Kedah</option>
+                                <option value="Kelantan">Kelantan</option>
+                                <option value="Melaka">Melaka</option>
+                                <option value="Negeri Sembilan">Negeri Sembilan</option>
+                                <option value="Pahang">Pahang</option>
+                                <option value="Penang">Penang</option>
+                                <option value="Perak">Perak</option>
+                                <option value="Perlis">Perlis</option>
+                                <option value="Sabah">Sabah</option>
+                                <option value="Sarawak">Sarawak</option>
+                                <option value="Selangor">Selangor</option>
+                                <option value="Terengganu">Terengganu</option>
+                                <option value="Kuala Lumpur">Kuala Lumpur</option>
+                                <option value="Labuan">Labuan</option>
+                                <option value="Putrajaya">Putrajaya</option>
                             </select>
                         </div>
                     </div>
@@ -209,14 +168,14 @@
                         <div class="dashboard-card metrics-card">
                             <div class="metric-group">
                                 <div class="metric primary">
-                                    <span class="metric-value">$${data.propertyData.estimatedValue.toLocaleString()}</span>
+                                    <span class="metric-value">${formatCurrency(data.propertyData.estimatedValue)}</span>
                                     <span class="metric-label">Property Value</span>
                                     <div class="metric-trend">+12% vs Market Avg</div>
                                 </div>
                                 <div class="stats-row">
                                     <div class="stat">
                                         <span class="stat-label">Annual Rental Income</span>
-                                        <span class="stat-value">$${Math.round(data.propertyData.estimatedValue * 0.08).toLocaleString()}</span>
+                                        <span class="stat-value">${formatCurrency(Math.round(data.propertyData.estimatedValue * 0.08))}</span>
                                     </div>
                                     <div class="stat">
                                         <span class="stat-label">Cap Rate</span>
@@ -253,8 +212,8 @@
                                     <span class="feature-value">${data.propertyData.lotSize}</span>
                                 </div>
                                 <div class="feature">
-                                    <span class="feature-label">Price per Sqft</span>
-                                    <span class="feature-value">$${Math.round(data.propertyData.estimatedValue / data.propertyData.squareFootage).toLocaleString()}</span>
+                                    <span class="feature-label">Price per Sq Ft</span>
+                                    <span class="feature-value">${formatCurrency(Math.round(data.propertyData.estimatedValue / data.propertyData.squareFootage))}</span>
                                 </div>
                             </div>
                         </div>
@@ -279,8 +238,8 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <div class="footer-logo">
-                        <img src="images/logo.png" alt="RealToken Logo">
-                        <span>RealToken</span>
+                        <img src="images/logo.png" alt="Trick Logo">
+                        <span>Trick</span>
                     </div>
                     <p>Revolutionizing real estate through blockchain technology and property tokenization. Making property ownership accessible, transparent, and community-driven.</p>
                 </div>
@@ -300,92 +259,51 @@
 
                 <div class="footer-contact">
                     <h4>Contact Us</h4>
-                    <p>Email: info@realtoken.com</p>
+                    <p>Email: info@trick.com</p>
                     <p>Support: 24/7 Available</p>
-                    <p>Location: Los Angeles, CA</p>
+                    <p>Location: Kuala Lumpur, Malaysia</p>
                 </div>
             </div>
 
             <div class="footer-bottom">
-                <p>© 2024 RealToken. All rights reserved.</p>
+                <p>© 2024 Trick. All rights reserved.</p>
                 <p class="disclaimer">Operating under applicable securities regulations.</p>
             </div>
         </div>
     </footer>
 
     <script>
-    // Add this function at the top of your script
-    function checkImageExists(url) {
-        const img = new Image();
-        img.src = url;
-        img.onload = () => console.log('Image exists:', url);
-        img.onerror = () => console.error('Image does not exist:', url);
+    function formatCurrency(value) {
+        return new Intl.NumberFormat('ms-MY', {
+            style: 'currency',
+            currency: 'MYR',
+            maximumFractionDigits: 0
+        }).format(value);
     }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const propertySearch = document.getElementById('propertySearch');
-        const propertyType = document.getElementById('propertyType');
-        const priceRange = document.getElementById('priceRange');
-        const tokenization = document.getElementById('tokenization');
-
-        // Search functionality
-        propertySearch.addEventListener('input', filterProperties);
-        propertyType.addEventListener('change', filterProperties);
-        priceRange.addEventListener('change', filterProperties);
-        tokenization.addEventListener('change', filterProperties);
-
-        function filterProperties() {
-            // Add your filtering logic here
-            console.log('Filtering properties...');
-        }
-
-        // Simple Previous/Next pagination
-        const prevButton = document.querySelector('.page-btn.prev');
-        const nextButton = document.querySelector('.page-btn.next');
-        
-        prevButton.addEventListener('click', () => {
-            console.log('Loading previous page...');
-            // Add your previous page logic here
-        });
-        
-        nextButton.addEventListener('click', () => {
-            console.log('Loading next page...');
-            // Add your next page logic here
-        });
-
-        const propertyGrid = document.querySelector('.property-grid');
-        
-        // Test each image path
-        houseImages.forEach(image => {
-            checkImageExists(`/images/house_pictures/${image}`);
-            checkImageExists(`./images/house_pictures/${image}`);
-        });
-    });
     </script>
 
     <script>
-    // Property data generation
     document.addEventListener('DOMContentLoaded', () => {
         const propertyGrid = document.querySelector('.property-grid');
-        let currentPage = 1;
+        const propertySearch = document.getElementById('propertySearch');
+        const searchButton = document.querySelector('.search-btn');
+        const propertyType = document.getElementById('propertyType');
+        const priceRange = document.getElementById('priceRange');
+        const tokenizationFilter = document.getElementById('tokenization');
+        const prevButton = document.querySelector('.page-btn.prev-page');
+        const nextButton = document.querySelector('.page-btn.next-page');
+        const pageButtons = Array.from(document.querySelectorAll('.page-btn[data-page]'));
+
+        if (!propertyGrid) {
+            return;
+        }
+
+        const resultsCount = document.createElement('p');
+        resultsCount.className = 'results-count';
+        propertyGrid.insertAdjacentElement('beforebegin', resultsCount);
+
         const propertiesPerPage = 8;
-        let allProperties = [];
-        let filteredProperties = [];
-        let lastUsedImageIndex = -1;  // Track the last used image index
-        
-        // Sample data arrays for realistic property generation
-        const locations = [
-            { city: "Beverly Hills", state: "CA" },
-            { city: "Manhattan", state: "NY" },
-            { city: "Miami Beach", state: "FL" },
-            { city: "Aspen", state: "CO" },
-            { city: "San Francisco", state: "CA" },
-            { city: "Seattle", state: "WA" },
-            { city: "Austin", state: "TX" },
-            { city: "Chicago", state: "IL" },
-            { city: "Boston", state: "MA" },
-            { city: "Las Vegas", state: "NV" }
-        ];
+        let currentPage = 1;
 
         const houseImages = [
             'pexels-binyaminmellish-106399.jpg',
@@ -408,89 +326,171 @@
             'pexels-julia-kuzenkov-442028-1974596.jpg'
         ];
 
-        const propertyTypes = [
-            "Luxury Villa",
-            "Penthouse Suite",
-            "Beachfront Property",
-            "Mountain Resort",
-            "Modern Loft",
-            "Historic Mansion",
-            "Urban Townhouse",
-            "Waterfront Estate",
-            "Sky Villa",
-            "Desert Oasis"
+        let lastUsedImageIndex = -1;
+        const getNextImage = () => {
+            lastUsedImageIndex = (lastUsedImageIndex + 1) % houseImages.length;
+            return houseImages[lastUsedImageIndex];
+        };
+
+        const bandarSunwayData = [
+            { name: 'LaCosta @ Sunway South Quay', beds: 4, baths: 3, sqft: 1750, propertyValue: 2400000, tokenization: 72 },
+            { name: 'LaCosta @ Sunway South Quay', beds: 3, baths: 3, sqft: 1620, propertyValue: 2300000, tokenization: 88 },
+            { name: 'Sunway GeoLake Residences', beds: 3, baths: 2, sqft: 1480, propertyValue: 1950000, tokenization: 64 },
+            { name: 'Sunway Geo Residence', beds: 3, baths: 2, sqft: 1385, propertyValue: 1750000, tokenization: 58 },
+            { name: 'Ridzuan Condominium', beds: 4, baths: 3, sqft: 1820, propertyValue: 1250000, tokenization: 41 },
+            { name: 'Greenfield Residence', beds: 3, baths: 2, sqft: 1510, propertyValue: 1150000, tokenization: 36 },
+            { name: 'Taman Sri Subang, Sunway', beds: 4, baths: 3, sqft: 1890, propertyValue: 980000, tokenization: 29 }
         ];
 
-        const amenities = [
-            "Private Pool",
-            "Ocean View",
-            "Smart Home",
-            "Wine Cellar",
-            "Home Theater",
-            "Rooftop Deck",
-            "Tennis Court",
-            "Spa",
-            "Guest House",
-            "Elevator"
+        const bandarSunwayProperties = bandarSunwayData.map(property => {
+            const propertyValue = property.propertyValue;
+            const tokenization = property.tokenization;
+            return {
+                name: property.name,
+                category: 'residential',
+                location: 'Bandar Sunway, Selangor',
+                beds: property.beds,
+                baths: property.baths,
+                sqft: property.sqft,
+                tokenization,
+                tokenPrice: Math.round(propertyValue / 10000),
+                propertyValue,
+                image: getNextImage(),
+                status: tokenization === 100 ? 'Fully Tokenized' : 'Available'
+            };
+        });
+
+        const additionalPropertyNames = [
+            'Arte Mont Kiara Residences',
+            'The Astaka @ JB City',
+            'Aria Luxury Residence',
+            'Pavilion Suites Kuala Lumpur',
+            'EcoSky Kuala Lumpur',
+            'Tropicana Gardens Signatures',
+            'M Vertica Cheras',
+            'Bukit Bintang City Loft',
+            'Star Residences KLCC',
+            'SouthPoint Mid Valley',
+            'Sentral Suites @ KL Sentral',
+            'Tropicana Metropark Paisley',
+            'The Fennel @ Sentul',
+            'KSL Residences Daya',
+            'Southkey Mosaic Residences',
+            'Quayside Seafront Resort',
+            'Queens Residences Q1',
+            'The Light Collection Penang'
         ];
 
-        function generateRandomProperty() {
-            const location = locations[Math.floor(Math.random() * locations.length)];
-            const propertyType = propertyTypes[Math.floor(Math.random() * propertyTypes.length)];
-            const tokenizationProgress = Math.floor(Math.random() * 100);
-            const propertyValue = (2 + Math.random() * 18).toFixed(1);
-            const tokenPrice = Math.floor(propertyValue * 1000000 / 10000);
-            const beds = Math.floor(3 + Math.random() * 7);
-            const baths = Math.floor(beds * 0.7);
-            const sqft = Math.floor(2000 + Math.random() * 8000);
-            // Get a random image that's different from the last one
-            let newImageIndex;
-            do {
-                newImageIndex = Math.floor(Math.random() * houseImages.length);
-            } while (newImageIndex === lastUsedImageIndex);
-            
-            lastUsedImageIndex = newImageIndex;
-            const image = houseImages[newImageIndex];
+        const additionalPropertyLocations = [
+            'Kuala Lumpur, Federal Territory',
+            'Petaling Jaya, Selangor',
+            'Shah Alam, Selangor',
+            'Johor Bahru, Johor',
+            'George Town, Penang',
+            'Iskandar Puteri, Johor',
+            'Cheras, Kuala Lumpur',
+            'Mont Kiara, Kuala Lumpur'
+        ];
+
+        const propertyCategories = ['residential', 'commercial'];
+
+        const generateRandomProperty = (index) => {
+            const propertyValue = Math.round((900000 + Math.random() * 5200000) / 1000) * 1000;
+            const tokenization = Math.min(100, 40 + Math.floor(Math.random() * 60));
+            const beds = 2 + Math.floor(Math.random() * 4);
+            const baths = Math.max(1, Math.round(beds * 0.75));
+            const sqft = 1100 + Math.floor(Math.random() * 2400);
 
             return {
-                type: propertyType,
-                location: `${location.city}, ${location.state}`,
+                name: additionalPropertyNames[index % additionalPropertyNames.length],
+                category: propertyCategories[index % propertyCategories.length],
+                location: additionalPropertyLocations[index % additionalPropertyLocations.length],
                 beds,
                 baths,
                 sqft,
-                tokenization: tokenizationProgress,
-                tokenPrice,
+                tokenization,
+                tokenPrice: Math.round(propertyValue / 10000),
                 propertyValue,
-                image: image,
-                status: tokenizationProgress < 100 ? 'Available' : 'Fully Tokenized'
+                image: getNextImage(),
+                status: tokenization === 100 ? 'Fully Tokenized' : 'Available'
             };
-        }
+        };
 
-        // Generate all properties once
-        for (let i = 0; i < 24; i++) {
-            allProperties.push(generateRandomProperty());
-        }
-        filteredProperties = [...allProperties];
+        const desiredTotal = 24;
+        const additionalCount = Math.max(0, desiredTotal - bandarSunwayProperties.length);
+        const additionalProperties = Array.from({ length: additionalCount }, (_, index) => generateRandomProperty(index));
 
-        function displayProperties(page) {
-            const startIndex = (page - 1) * propertiesPerPage;
+        const allProperties = [...bandarSunwayProperties, ...additionalProperties];
+        let filteredProperties = [...allProperties];
+
+        const getTotalPages = () => Math.max(1, Math.ceil(filteredProperties.length / propertiesPerPage));
+
+        const updateResultsCount = () => {
+            if (!resultsCount) {
+                return;
+            }
+
+            resultsCount.textContent = filteredProperties.length
+                ? `${filteredProperties.length} properties found`
+                : 'No properties found';
+        };
+
+        const updatePaginationControls = () => {
+            const totalPages = getTotalPages();
+            const hasListings = filteredProperties.length > 0;
+
+            pageButtons.forEach(button => {
+                const pageNumber = Number(button.dataset.page);
+
+                if (Number.isNaN(pageNumber) || pageNumber > totalPages) {
+                    button.style.display = 'none';
+                    return;
+                }
+
+                button.style.display = '';
+                button.classList.toggle('active', pageNumber === currentPage);
+                button.disabled = pageNumber === currentPage;
+                button.setAttribute('aria-current', pageNumber === currentPage ? 'page' : 'false');
+            });
+
+            if (prevButton) {
+                prevButton.disabled = !hasListings || currentPage <= 1;
+                prevButton.style.display = totalPages > 1 ? '' : 'none';
+            }
+
+            if (nextButton) {
+                nextButton.disabled = !hasListings || currentPage >= totalPages;
+                nextButton.style.display = totalPages > 1 ? '' : 'none';
+            }
+        };
+
+        const renderProperties = () => {
+            const startIndex = (currentPage - 1) * propertiesPerPage;
             const endIndex = startIndex + propertiesPerPage;
             const propertiesToShow = filteredProperties.slice(startIndex, endIndex);
-            
-            propertyGrid.innerHTML = ''; // Clear existing properties
+
+            propertyGrid.innerHTML = '';
+
+            if (!propertiesToShow.length) {
+                propertyGrid.innerHTML = `
+                    <div class="empty-state">
+                        <p>No properties match your filters right now. Try adjusting your search terms.</p>
+                    </div>
+                `;
+                updatePaginationControls();
+                updateResultsCount();
+                return;
+            }
 
             propertiesToShow.forEach(property => {
-                const propertyCard = `
+                propertyGrid.insertAdjacentHTML('beforeend', `
                     <div class="property-card">
                         <div class="property-image">
-                            <img src="./images/house_pictures/${property.image}" 
-                                 alt="${property.type}"
-                                 onload="console.log('Image loaded successfully:', this.src)"
-                                 onerror="console.error('Failed to load image:', this.src, 'Error:', event);">
+                            <img src="./images/house_pictures/${property.image}" alt="${property.name}">
                             <div class="property-status ${property.status === 'Available' ? 'available' : 'tokenized'}">${property.status}</div>
                         </div>
                         <div class="property-details">
-                            <h3>${property.type}</h3>
+                            <h3>${property.name}</h3>
                             <p class="location">${property.location}</p>
                             <div class="property-stats">
                                 <span>${property.beds} Beds</span>
@@ -506,124 +506,149 @@
                             <div class="price-info">
                                 <div class="token-price">
                                     <span>Token Price</span>
-                                    <strong>$${property.tokenPrice.toLocaleString()}</strong>
+                                    <strong>${formatCurrency(property.tokenPrice)}</strong>
                                 </div>
                                 <div class="property-value">
                                     <span>Property Value</span>
-                                    <strong>$${property.propertyValue}M</strong>
+                                    <strong>${formatCurrency(property.propertyValue)}</strong>
                                 </div>
                             </div>
                             <a href="/wallet.html" class="invest-btn">Invest Now</a>
                         </div>
                     </div>
-                `;
-                propertyGrid.innerHTML += propertyCard;
+                `);
             });
 
-            // Update pagination buttons state
-            const prevButton = document.querySelector('.page-btn.prev');
-            const nextButton = document.querySelector('.page-btn.next');
-            
-            prevButton.disabled = currentPage === 1;
-            nextButton.disabled = currentPage >= Math.ceil(filteredProperties.length / propertiesPerPage);
-            
-            prevButton.style.opacity = prevButton.disabled ? '0.5' : '1';
-            nextButton.style.opacity = nextButton.disabled ? '0.5' : '1';
-        }
+            updatePaginationControls();
+            updateResultsCount();
+        };
 
-        // Initialize first page
-        displayProperties(currentPage);
-
-        // Update pagination event listeners
-        const prevButton = document.querySelector('.page-btn.prev');
-        const nextButton = document.querySelector('.page-btn.next');
-        
-        prevButton.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                displayProperties(currentPage);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
-        
-        nextButton.addEventListener('click', () => {
-            if (currentPage < Math.ceil(filteredProperties.length / propertiesPerPage)) {
-                currentPage++;
-                displayProperties(currentPage);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
-
-        function filterProperties() {
-            const searchTerm = propertySearch.value.toLowerCase();
-            const selectedType = propertyType.value;
-            const selectedPriceRange = priceRange.value;
-            const selectedTokenization = tokenization.value;
+        const filterProperties = () => {
+            const searchTerm = propertySearch ? propertySearch.value.trim().toLowerCase() : '';
+            const cleanedSearch = searchTerm.replace(/rm|,/g, '').trim();
+            const numericSearch = cleanedSearch.replace(/[^0-9]/g, '');
+            const selectedType = propertyType ? propertyType.value : '';
+            const selectedPriceRange = priceRange ? priceRange.value : '';
+            const selectedTokenization = tokenizationFilter ? tokenizationFilter.value : '';
 
             filteredProperties = allProperties.filter(property => {
-                // Search term filter
-                const matchesSearch = 
-                    property.type.toLowerCase().includes(searchTerm) ||
-                    property.location.toLowerCase().includes(searchTerm) ||
-                    property.propertyValue.toString().includes(searchTerm);
+                const name = property.name.toLowerCase();
+                const location = property.location.toLowerCase();
+                const valueString = property.propertyValue.toString();
+                const tokenPriceString = property.tokenPrice.toString();
 
-                // Property type filter
-                const matchesType = !selectedType || 
-                    property.type.toLowerCase().includes(selectedType.toLowerCase());
+                const matchesSearch = !searchTerm
+                    || name.includes(searchTerm)
+                    || location.includes(searchTerm)
+                    || (cleanedSearch && (name.includes(cleanedSearch) || location.includes(cleanedSearch)))
+                    || (numericSearch && (valueString.includes(numericSearch) || tokenPriceString.includes(numericSearch)));
 
-                // Price range filter
-                let matchesPrice = true;
-                if (selectedPriceRange) {
-                    const propertyPriceInDollars = property.propertyValue * 1000000;
-                    const [minPrice, maxPrice] = selectedPriceRange.split('-').map(Number);
-                    matchesPrice = propertyPriceInDollars >= minPrice && propertyPriceInDollars <= maxPrice;
+                if (!matchesSearch) {
+                    return false;
                 }
 
-                // Tokenization status filter
-                let matchesTokenization = true;
-                if (selectedTokenization) {
-                    switch(selectedTokenization) {
-                        case 'available':
-                            matchesTokenization = property.tokenization < 100;
-                            break;
-                        case 'in-progress':
-                            matchesTokenization = property.tokenization > 0 && property.tokenization < 100;
-                            break;
-                        case 'completed':
-                            matchesTokenization = property.tokenization === 100;
-                            break;
+                if (selectedType && property.category !== selectedType) {
+                    return false;
+                }
+
+                if (selectedPriceRange) {
+                    const [minPrice, maxPrice] = selectedPriceRange.split('-').map(Number);
+                    if (Number.isFinite(minPrice) && Number.isFinite(maxPrice)) {
+                        const withinRange = property.propertyValue >= minPrice && property.propertyValue <= maxPrice;
+                        if (!withinRange) {
+                            return false;
+                        }
                     }
                 }
 
-                return matchesSearch && matchesType && matchesPrice && matchesTokenization;
+                if (selectedTokenization) {
+                    if (selectedTokenization === 'available' && property.tokenization >= 100) {
+                        return false;
+                    }
+                    if (selectedTokenization === 'in-progress' && (property.tokenization === 0 || property.tokenization >= 100)) {
+                        return false;
+                    }
+                    if (selectedTokenization === 'completed' && property.tokenization !== 100) {
+                        return false;
+                    }
+                }
+
+                return true;
             });
 
-            // Reset to first page when filtering
             currentPage = 1;
-            displayProperties(currentPage);
+            renderProperties();
+        };
 
-            // Update UI to show number of results
-            const resultsCount = document.createElement('p');
-            resultsCount.className = 'results-count';
-            resultsCount.textContent = `${filteredProperties.length} properties found`;
-            const existingCount = document.querySelector('.results-count');
-            if (existingCount) {
-                existingCount.remove();
-            }
-            document.querySelector('.property-grid').insertAdjacentElement('beforebegin', resultsCount);
+        renderProperties();
+
+        let searchTimeout;
+        if (propertySearch) {
+            propertySearch.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(filterProperties, 300);
+            });
+
+            propertySearch.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    clearTimeout(searchTimeout);
+                    filterProperties();
+                }
+            });
         }
 
-        // Add debounce for search input
-        let searchTimeout;
-        propertySearch.addEventListener('input', () => {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(filterProperties, 300);
+        if (searchButton) {
+            searchButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                if (propertySearch) {
+                    clearTimeout(searchTimeout);
+                    filterProperties();
+                    propertySearch.focus();
+                }
+            });
+        }
+
+        [propertyType, priceRange, tokenizationFilter].forEach(control => {
+            if (control) {
+                control.addEventListener('change', filterProperties);
+            }
         });
 
-        // Immediate filter for select inputs
-        propertyType.addEventListener('change', filterProperties);
-        priceRange.addEventListener('change', filterProperties);
-        tokenization.addEventListener('change', filterProperties);
+        pageButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const requestedPage = Number(button.dataset.page);
+                if (Number.isNaN(requestedPage) || requestedPage === currentPage) {
+                    return;
+                }
+                currentPage = requestedPage;
+                renderProperties();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        if (prevButton) {
+            prevButton.addEventListener('click', () => {
+                if (currentPage <= 1) {
+                    return;
+                }
+                currentPage -= 1;
+                renderProperties();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                const totalPages = getTotalPages();
+                if (currentPage >= totalPages) {
+                    return;
+                }
+                currentPage += 1;
+                renderProperties();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
     });
     </script>
 
@@ -661,9 +686,9 @@
             return;
         }
 
-        lookupBtn.addEventListener('click', async (e) => {
+        const handleLookup = async (e) => {
             e.preventDefault();
-            
+
             const address = document.getElementById('address').value;
             const city = document.getElementById('city').value;
             const state = document.getElementById('state').value;
@@ -690,7 +715,7 @@
 
                 // Hide loading indicator
                 loadingIndicator.style.display = 'none';
-                
+
                 if (data.error) {
                     propertyResults.innerHTML = `
                         <div class="error-message">
@@ -713,7 +738,9 @@
                 `;
                 propertyResults.style.display = 'block';
             }
-        });
+        };
+
+        lookupBtn.addEventListener('click', handleLookup);
     });
 
     function createDashboardHTML(data) {
@@ -723,14 +750,14 @@
                 <div class="dashboard-card metrics-card">
                     <div class="metric-group">
                         <div class="metric primary">
-                            <span class="metric-value">$${data.propertyData.estimatedValue.toLocaleString()}</span>
+                            <span class="metric-value">${formatCurrency(data.propertyData.estimatedValue)}</span>
                             <span class="metric-label">Property Value</span>
                             <div class="metric-trend">+12% vs Market Avg</div>
                         </div>
                         <div class="stats-row">
                             <div class="stat">
                                 <span class="stat-label">Annual Rental Income</span>
-                                <span class="stat-value">$${Math.round(data.propertyData.estimatedValue * 0.08).toLocaleString()}</span>
+                                <span class="stat-value">${formatCurrency(Math.round(data.propertyData.estimatedValue * 0.08))}</span>
                             </div>
                             <div class="stat">
                                 <span class="stat-label">Cap Rate</span>
@@ -767,8 +794,8 @@
                             <span class="feature-value">${data.propertyData.lotSize}</span>
                         </div>
                         <div class="feature">
-                            <span class="feature-label">Price per Sqft</span>
-                            <span class="feature-value">$${Math.round(data.propertyData.estimatedValue / data.propertyData.squareFootage).toLocaleString()}</span>
+                            <span class="feature-label">Price per Sq Ft</span>
+                            <span class="feature-value">${formatCurrency(Math.round(data.propertyData.estimatedValue / data.propertyData.squareFootage))}</span>
                         </div>
                     </div>
                 </div>
@@ -809,48 +836,7 @@
     // Show marketplace view by default
     document.addEventListener('DOMContentLoaded', () => {
         showMarketplace();
-        
-        // Add event listener for lookup button
-        const lookupBtn = document.getElementById('lookupBtn');
-        if (lookupBtn) {
-            lookupBtn.addEventListener('click', async (e) => {
-                e.preventDefault();
-                const results = document.getElementById('propertyResults');
-                if (!results) return;
-
-                results.style.display = 'block';
-                results.innerHTML = `
-                    <div class="loading-indicator">
-                        <div class="spinner"></div>
-                    </div>
-                `;
-
-                try {
-                    const response = await fetch('/.netlify/functions/property-lookup', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            address: document.getElementById('address')?.value || '',
-                            city: document.getElementById('city')?.value || '',
-                            state: document.getElementById('state')?.value || ''
-                        })
-                    });
-
-                    if (!response.ok) throw new Error('Failed to fetch property data');
-                    const data = await response.json();
-                    
-                    results.innerHTML = createDashboardHTML(data);
-                } catch (error) {
-                    results.innerHTML = `
-                        <div class="error-message">
-                            <p>Sorry, we couldn't find the property details.</p>
-                            <p class="error-details">${error.message}</p>
-                        </div>
-                    `;
-                }
-            });
-        }
     });
     </script>
 </body>
-</html> 
+</html>

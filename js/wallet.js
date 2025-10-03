@@ -4,16 +4,16 @@ class WalletManager {
         this.provider = null;
         this.signer = null;
         this.address = null;
-        this.ethPrice = 0;
+        this.ethPriceMYR = 0;
         this.init();
     }
 
     async init() {
         // Get current ETH price
         try {
-            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
+            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=myr');
             const data = await response.json();
-            this.ethPrice = data.ethereum.usd;
+            this.ethPriceMYR = data.ethereum.myr;
         } catch (error) {
             console.error('Error fetching ETH price:', error);
         }
@@ -58,10 +58,14 @@ class WalletManager {
             // Get and display balance
             const balance = await this.provider.getBalance(this.address);
             const ethBalance = ethers.utils.formatEther(balance);
-            const usdBalance = (parseFloat(ethBalance) * this.ethPrice).toFixed(2);
+            const fiatBalance = (parseFloat(ethBalance) * this.ethPriceMYR).toFixed(2);
+            const formattedFiatBalance = new Intl.NumberFormat('ms-MY', {
+                style: 'currency',
+                currency: 'MYR'
+            }).format(parseFloat(fiatBalance));
 
             document.querySelector('.balance-amount').textContent = parseFloat(ethBalance).toFixed(4);
-            document.querySelector('.usd-balance').textContent = `≈ $${usdBalance} USD`;
+            document.querySelector('.fiat-balance').textContent = `≈ ${formattedFiatBalance}`;
 
             // Get and display transactions
             this.updateTransactionHistory();
@@ -120,7 +124,7 @@ class WalletManager {
                 <div class="token-item">
                     <div class="token-info">
                         <span class="token-name">Sample Property Token</span>
-                        <span class="token-address">123 Main St.</span>
+                        <span class="token-address">123 Jalan Bukit Bintang</span>
                     </div>
                     <div class="token-balance">
                         <span class="token-amount">10</span>

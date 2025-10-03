@@ -1,10 +1,10 @@
-# RealToken - Tokenized Real Estate Platform
+# Trick - Tokenized Real Estate Platform
 
 A modern web interface demonstrating the concept of blockchain-based real estate tokenization. This project showcases how traditional real estate investment can be revolutionized using blockchain technology.
 
 ## Overview
 
-RealToken presents a solution to the current real estate investment barriers, where traditional models limit accessibility and liquidity. The platform demonstrates how property ownership can be tokenized, making it more accessible, transparent, and efficient.
+Trick presents a solution to the current real estate investment barriers, where traditional models limit accessibility and liquidity. The platform demonstrates how property ownership can be tokenized, making it more accessible, transparent, and efficient.
 
 ### Key Features Demonstrated
 
