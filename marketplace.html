@@ -113,21 +113,14 @@
                     </div>
                 </div>
 
-                <div class="property-grid">
-                    <!-- First 6 property cards -->
-                    <div class="property-card"><!-- Property 1 --></div>
-                    <div class="property-card"><!-- Property 2 --></div>
-                    <div class="property-card"><!-- Property 3 --></div>
-                    <div class="property-card"><!-- Property 4 --></div>
-                    <div class="property-card"><!-- Property 5 --></div>
-                    <div class="property-card"><!-- Property 6 --></div>
-                </div>
+                <div class="property-grid"></div>
 
                 <div class="pagination">
-                    <button class="page-btn" data-page="1">1</button>
-                    <button class="page-btn" data-page="2">2</button>
-                    <button class="page-btn" data-page="3">3</button>
-                    <button class="page-btn next-page">Next</button>
+                    <button class="page-btn prev-page" type="button" aria-label="Previous page">Previous</button>
+                    <button class="page-btn" type="button" data-page="1">1</button>
+                    <button class="page-btn" type="button" data-page="2">2</button>
+                    <button class="page-btn" type="button" data-page="3">3</button>
+                    <button class="page-btn next-page" type="button" aria-label="Next page">Next</button>
                 </div>
             </div>
 
@@ -287,75 +280,29 @@
             maximumFractionDigits: 0
         }).format(value);
     }
-
-    function checkImageExists(url) {
-        const img = new Image();
-        img.src = url;
-        img.onload = () => console.log('Image exists:', url);
-        img.onerror = () => console.error('Image does not exist:', url);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const propertySearch = document.getElementById('propertySearch');
-        const propertyType = document.getElementById('propertyType');
-        const priceRange = document.getElementById('priceRange');
-        const tokenization = document.getElementById('tokenization');
-
-        // Search functionality
-        propertySearch.addEventListener('input', filterProperties);
-        propertyType.addEventListener('change', filterProperties);
-        priceRange.addEventListener('change', filterProperties);
-        tokenization.addEventListener('change', filterProperties);
-
-        function filterProperties() {
-            // Add your filtering logic here
-            console.log('Filtering properties...');
-        }
-
-        // Simple Previous/Next pagination
-        const prevButton = document.querySelector('.page-btn.prev');
-        const nextButton = document.querySelector('.page-btn.next');
-        
-        prevButton.addEventListener('click', () => {
-            console.log('Loading previous page...');
-            // Add your previous page logic here
-        });
-        
-        nextButton.addEventListener('click', () => {
-            console.log('Loading next page...');
-            // Add your next page logic here
-        });
-
-        const propertyGrid = document.querySelector('.property-grid');
-        
-        // Test each image path
-        houseImages.forEach(image => {
-            checkImageExists(`/images/house_pictures/${image}`);
-            checkImageExists(`./images/house_pictures/${image}`);
-        });
-    });
     </script>
 
     <script>
-    // Property data generation
     document.addEventListener('DOMContentLoaded', () => {
         const propertyGrid = document.querySelector('.property-grid');
-        let currentPage = 1;
+        const propertySearch = document.getElementById('propertySearch');
+        const propertyType = document.getElementById('propertyType');
+        const priceRange = document.getElementById('priceRange');
+        const tokenizationFilter = document.getElementById('tokenization');
+        const prevButton = document.querySelector('.page-btn.prev-page');
+        const nextButton = document.querySelector('.page-btn.next-page');
+        const pageButtons = Array.from(document.querySelectorAll('.page-btn[data-page]'));
+
+        if (!propertyGrid) {
+            return;
+        }
+
+        const resultsCount = document.createElement('p');
+        resultsCount.className = 'results-count';
+        propertyGrid.insertAdjacentElement('beforebegin', resultsCount);
+
         const propertiesPerPage = 8;
-        let allProperties = [];
-        let filteredProperties = [];
-        let lastUsedImageIndex = -1;  // Track the last used image index
-        
-        // Sample data arrays for realistic property generation
-        const propertyNames = [
-            "LaCosta @ Sunway South Quay",
-            "LaCosta @ Sunway South Quay",
-            "Sunway GeoLake Residences",
-            "Sunway Geo Residence",
-            "Ridzuan Condominium",
-            "Greenfield Residence",
-            "Taman Sri Subang, Sunway"
-        ];
+        let currentPage = 1;
 
         const houseImages = [
             'pexels-binyaminmellish-106399.jpg',
@@ -378,73 +325,167 @@
             'pexels-julia-kuzenkov-442028-1974596.jpg'
         ];
 
-        const amenities = [
-            "Private Pool",
-            "Ocean View",
-            "Smart Home",
-            "Wine Cellar",
-            "Home Theater",
-            "Rooftop Deck",
-            "Tennis Court",
-            "Spa",
-            "Guest House",
-            "Elevator"
+        let lastUsedImageIndex = -1;
+        const getNextImage = () => {
+            lastUsedImageIndex = (lastUsedImageIndex + 1) % houseImages.length;
+            return houseImages[lastUsedImageIndex];
+        };
+
+        const bandarSunwayData = [
+            { name: 'LaCosta @ Sunway South Quay', beds: 4, baths: 3, sqft: 1750, propertyValue: 2400000, tokenization: 72 },
+            { name: 'LaCosta @ Sunway South Quay', beds: 3, baths: 3, sqft: 1620, propertyValue: 2300000, tokenization: 88 },
+            { name: 'Sunway GeoLake Residences', beds: 3, baths: 2, sqft: 1480, propertyValue: 1950000, tokenization: 64 },
+            { name: 'Sunway Geo Residence', beds: 3, baths: 2, sqft: 1385, propertyValue: 1750000, tokenization: 58 },
+            { name: 'Ridzuan Condominium', beds: 4, baths: 3, sqft: 1820, propertyValue: 1250000, tokenization: 41 },
+            { name: 'Greenfield Residence', beds: 3, baths: 2, sqft: 1510, propertyValue: 1150000, tokenization: 36 },
+            { name: 'Taman Sri Subang, Sunway', beds: 4, baths: 3, sqft: 1890, propertyValue: 980000, tokenization: 29 }
         ];
 
-        function generateRandomProperty(index) {
-            const propertyName = propertyNames[index % propertyNames.length];
-            const tokenizationProgress = Math.floor(Math.random() * 100);
-            const propertyValueMillions = +(0.8 + Math.random() * 6.2).toFixed(1);
-            const propertyValue = Math.round(propertyValueMillions * 1000000);
-            const tokenPrice = Math.floor(propertyValue / 10000);
-            const beds = Math.floor(3 + Math.random() * 7);
-            const baths = Math.floor(beds * 0.7);
-            const sqft = Math.floor(2000 + Math.random() * 8000);
-            // Get a random image that's different from the last one
-            let newImageIndex;
-            do {
-                newImageIndex = Math.floor(Math.random() * houseImages.length);
-            } while (newImageIndex === lastUsedImageIndex);
-            
-            lastUsedImageIndex = newImageIndex;
-            const image = houseImages[newImageIndex];
+        const bandarSunwayProperties = bandarSunwayData.map(property => {
+            const propertyValue = property.propertyValue;
+            const tokenization = property.tokenization;
+            return {
+                name: property.name,
+                category: 'residential',
+                location: 'Bandar Sunway, Selangor',
+                beds: property.beds,
+                baths: property.baths,
+                sqft: property.sqft,
+                tokenization,
+                tokenPrice: Math.round(propertyValue / 10000),
+                propertyValue,
+                image: getNextImage(),
+                status: tokenization === 100 ? 'Fully Tokenized' : 'Available'
+            };
+        });
+
+        const additionalPropertyNames = [
+            'Arte Mont Kiara Residences',
+            'The Astaka @ JB City',
+            'Aria Luxury Residence',
+            'Pavilion Suites Kuala Lumpur',
+            'EcoSky Kuala Lumpur',
+            'Tropicana Gardens Signatures',
+            'M Vertica Cheras',
+            'Bukit Bintang City Loft',
+            'Star Residences KLCC',
+            'SouthPoint Mid Valley',
+            'Sentral Suites @ KL Sentral',
+            'Tropicana Metropark Paisley',
+            'The Fennel @ Sentul',
+            'KSL Residences Daya',
+            'Southkey Mosaic Residences',
+            'Quayside Seafront Resort',
+            'Queens Residences Q1',
+            'The Light Collection Penang'
+        ];
+
+        const additionalPropertyLocations = [
+            'Kuala Lumpur, Federal Territory',
+            'Petaling Jaya, Selangor',
+            'Shah Alam, Selangor',
+            'Johor Bahru, Johor',
+            'George Town, Penang',
+            'Iskandar Puteri, Johor',
+            'Cheras, Kuala Lumpur',
+            'Mont Kiara, Kuala Lumpur'
+        ];
+
+        const propertyCategories = ['residential', 'commercial'];
+
+        const generateRandomProperty = (index) => {
+            const propertyValue = Math.round((900000 + Math.random() * 5200000) / 1000) * 1000;
+            const tokenization = Math.min(100, 40 + Math.floor(Math.random() * 60));
+            const beds = 2 + Math.floor(Math.random() * 4);
+            const baths = Math.max(1, Math.round(beds * 0.75));
+            const sqft = 1100 + Math.floor(Math.random() * 2400);
 
             return {
-                name: propertyName,
-                category: 'residential',
-                location: `Bandar Sunway, Selangor`,
+                name: additionalPropertyNames[index % additionalPropertyNames.length],
+                category: propertyCategories[index % propertyCategories.length],
+                location: additionalPropertyLocations[index % additionalPropertyLocations.length],
                 beds,
                 baths,
                 sqft,
-                tokenization: tokenizationProgress,
-                tokenPrice,
+                tokenization,
+                tokenPrice: Math.round(propertyValue / 10000),
                 propertyValue,
-                image: image,
-                status: tokenizationProgress < 100 ? 'Available' : 'Fully Tokenized'
+                image: getNextImage(),
+                status: tokenization === 100 ? 'Fully Tokenized' : 'Available'
             };
-        }
+        };
 
-        // Generate all properties once
-        for (let i = 0; i < 24; i++) {
-            allProperties.push(generateRandomProperty(i));
-        }
-        filteredProperties = [...allProperties];
+        const desiredTotal = 24;
+        const additionalCount = Math.max(0, desiredTotal - bandarSunwayProperties.length);
+        const additionalProperties = Array.from({ length: additionalCount }, (_, index) => generateRandomProperty(index));
 
-        function displayProperties(page) {
-            const startIndex = (page - 1) * propertiesPerPage;
+        const allProperties = [...bandarSunwayProperties, ...additionalProperties];
+        let filteredProperties = [...allProperties];
+
+        const getTotalPages = () => Math.max(1, Math.ceil(filteredProperties.length / propertiesPerPage));
+
+        const updateResultsCount = () => {
+            if (!resultsCount) {
+                return;
+            }
+
+            resultsCount.textContent = filteredProperties.length
+                ? `${filteredProperties.length} properties found`
+                : 'No properties found';
+        };
+
+        const updatePaginationControls = () => {
+            const totalPages = getTotalPages();
+            const hasListings = filteredProperties.length > 0;
+
+            pageButtons.forEach(button => {
+                const pageNumber = Number(button.dataset.page);
+
+                if (Number.isNaN(pageNumber) || pageNumber > totalPages) {
+                    button.style.display = 'none';
+                    return;
+                }
+
+                button.style.display = '';
+                button.classList.toggle('active', pageNumber === currentPage);
+                button.disabled = pageNumber === currentPage;
+                button.setAttribute('aria-current', pageNumber === currentPage ? 'page' : 'false');
+            });
+
+            if (prevButton) {
+                prevButton.disabled = !hasListings || currentPage <= 1;
+                prevButton.style.display = totalPages > 1 ? '' : 'none';
+            }
+
+            if (nextButton) {
+                nextButton.disabled = !hasListings || currentPage >= totalPages;
+                nextButton.style.display = totalPages > 1 ? '' : 'none';
+            }
+        };
+
+        const renderProperties = () => {
+            const startIndex = (currentPage - 1) * propertiesPerPage;
             const endIndex = startIndex + propertiesPerPage;
             const propertiesToShow = filteredProperties.slice(startIndex, endIndex);
-            
-            propertyGrid.innerHTML = ''; // Clear existing properties
+
+            propertyGrid.innerHTML = '';
+
+            if (!propertiesToShow.length) {
+                propertyGrid.innerHTML = `
+                    <div class="empty-state">
+                        <p>No properties match your filters right now. Try adjusting your search terms.</p>
+                    </div>
+                `;
+                updatePaginationControls();
+                updateResultsCount();
+                return;
+            }
 
             propertiesToShow.forEach(property => {
-                const propertyCard = `
+                propertyGrid.insertAdjacentHTML('beforeend', `
                     <div class="property-card">
                         <div class="property-image">
-                            <img src="./images/house_pictures/${property.image}"
-                                 alt="${property.name}"
-                                 onload="console.log('Image loaded successfully:', this.src)"
-                                 onerror="console.error('Failed to load image:', this.src, 'Error:', event);">
+                            <img src="./images/house_pictures/${property.image}" alt="${property.name}">
                             <div class="property-status ${property.status === 'Available' ? 'available' : 'tokenized'}">${property.status}</div>
                         </div>
                         <div class="property-details">
@@ -474,113 +515,120 @@
                             <a href="/wallet.html" class="invest-btn">Invest Now</a>
                         </div>
                     </div>
-                `;
-                propertyGrid.innerHTML += propertyCard;
+                `);
             });
 
-            // Update pagination buttons state
-            const prevButton = document.querySelector('.page-btn.prev');
-            const nextButton = document.querySelector('.page-btn.next');
-            
-            prevButton.disabled = currentPage === 1;
-            nextButton.disabled = currentPage >= Math.ceil(filteredProperties.length / propertiesPerPage);
-            
-            prevButton.style.opacity = prevButton.disabled ? '0.5' : '1';
-            nextButton.style.opacity = nextButton.disabled ? '0.5' : '1';
-        }
+            updatePaginationControls();
+            updateResultsCount();
+        };
 
-        // Initialize first page
-        displayProperties(currentPage);
-
-        // Update pagination event listeners
-        const prevButton = document.querySelector('.page-btn.prev');
-        const nextButton = document.querySelector('.page-btn.next');
-        
-        prevButton.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                displayProperties(currentPage);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
-        
-        nextButton.addEventListener('click', () => {
-            if (currentPage < Math.ceil(filteredProperties.length / propertiesPerPage)) {
-                currentPage++;
-                displayProperties(currentPage);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
-
-        function filterProperties() {
-            const searchTerm = propertySearch.value.toLowerCase();
-            const selectedType = propertyType.value;
-            const selectedPriceRange = priceRange.value;
-            const selectedTokenization = tokenization.value;
+        const filterProperties = () => {
+            const searchTerm = propertySearch ? propertySearch.value.trim().toLowerCase() : '';
+            const cleanedSearch = searchTerm.replace(/rm|,/g, '').trim();
+            const numericSearch = cleanedSearch.replace(/[^0-9]/g, '');
+            const selectedType = propertyType ? propertyType.value : '';
+            const selectedPriceRange = priceRange ? priceRange.value : '';
+            const selectedTokenization = tokenizationFilter ? tokenizationFilter.value : '';
 
             filteredProperties = allProperties.filter(property => {
-                // Search term filter
-                const matchesSearch =
-                    property.name.toLowerCase().includes(searchTerm) ||
-                    property.location.toLowerCase().includes(searchTerm) ||
-                    property.propertyValue.toLocaleString().includes(searchTerm);
+                const name = property.name.toLowerCase();
+                const location = property.location.toLowerCase();
+                const valueString = property.propertyValue.toString();
+                const tokenPriceString = property.tokenPrice.toString();
 
-                // Property type filter
-                const matchesType = !selectedType || property.category === selectedType;
+                const matchesSearch = !searchTerm
+                    || name.includes(searchTerm)
+                    || location.includes(searchTerm)
+                    || (cleanedSearch && (name.includes(cleanedSearch) || location.includes(cleanedSearch)))
+                    || (numericSearch && (valueString.includes(numericSearch) || tokenPriceString.includes(numericSearch)));
 
-                // Price range filter
-                let matchesPrice = true;
-                if (selectedPriceRange) {
-                    const propertyPrice = property.propertyValue;
-                    const [minPrice, maxPrice] = selectedPriceRange.split('-').map(Number);
-                    matchesPrice = propertyPrice >= minPrice && propertyPrice <= maxPrice;
+                if (!matchesSearch) {
+                    return false;
                 }
 
-                // Tokenization status filter
-                let matchesTokenization = true;
-                if (selectedTokenization) {
-                    switch(selectedTokenization) {
-                        case 'available':
-                            matchesTokenization = property.tokenization < 100;
-                            break;
-                        case 'in-progress':
-                            matchesTokenization = property.tokenization > 0 && property.tokenization < 100;
-                            break;
-                        case 'completed':
-                            matchesTokenization = property.tokenization === 100;
-                            break;
+                if (selectedType && property.category !== selectedType) {
+                    return false;
+                }
+
+                if (selectedPriceRange) {
+                    const [minPrice, maxPrice] = selectedPriceRange.split('-').map(Number);
+                    if (Number.isFinite(minPrice) && Number.isFinite(maxPrice)) {
+                        const withinRange = property.propertyValue >= minPrice && property.propertyValue <= maxPrice;
+                        if (!withinRange) {
+                            return false;
+                        }
                     }
                 }
 
-                return matchesSearch && matchesType && matchesPrice && matchesTokenization;
+                if (selectedTokenization) {
+                    if (selectedTokenization === 'available' && property.tokenization >= 100) {
+                        return false;
+                    }
+                    if (selectedTokenization === 'in-progress' && (property.tokenization === 0 || property.tokenization >= 100)) {
+                        return false;
+                    }
+                    if (selectedTokenization === 'completed' && property.tokenization !== 100) {
+                        return false;
+                    }
+                }
+
+                return true;
             });
 
-            // Reset to first page when filtering
             currentPage = 1;
-            displayProperties(currentPage);
+            renderProperties();
+        };
 
-            // Update UI to show number of results
-            const resultsCount = document.createElement('p');
-            resultsCount.className = 'results-count';
-            resultsCount.textContent = `${filteredProperties.length} properties found`;
-            const existingCount = document.querySelector('.results-count');
-            if (existingCount) {
-                existingCount.remove();
-            }
-            document.querySelector('.property-grid').insertAdjacentElement('beforebegin', resultsCount);
+        renderProperties();
+
+        let searchTimeout;
+        if (propertySearch) {
+            propertySearch.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(filterProperties, 300);
+            });
         }
 
-        // Add debounce for search input
-        let searchTimeout;
-        propertySearch.addEventListener('input', () => {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(filterProperties, 300);
+        [propertyType, priceRange, tokenizationFilter].forEach(control => {
+            if (control) {
+                control.addEventListener('change', filterProperties);
+            }
         });
 
-        // Immediate filter for select inputs
-        propertyType.addEventListener('change', filterProperties);
-        priceRange.addEventListener('change', filterProperties);
-        tokenization.addEventListener('change', filterProperties);
+        pageButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const requestedPage = Number(button.dataset.page);
+                if (Number.isNaN(requestedPage) || requestedPage === currentPage) {
+                    return;
+                }
+                currentPage = requestedPage;
+                renderProperties();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        if (prevButton) {
+            prevButton.addEventListener('click', () => {
+                if (currentPage <= 1) {
+                    return;
+                }
+                currentPage -= 1;
+                renderProperties();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                const totalPages = getTotalPages();
+                if (currentPage >= totalPages) {
+                    return;
+                }
+                currentPage += 1;
+                renderProperties();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
     });
     </script>
 
