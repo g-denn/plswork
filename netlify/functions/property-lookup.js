@@ -240,7 +240,7 @@ module.exports = {
                 messages: [
                     {
                         role: "system",
-                        content: `You are a real estate data expert. When given a property address, provide realistic property details in JSON format. The response MUST include estimatedValue as a direct number in propertyData. Format must be:
+                        content: `You are a Malaysian real estate data expert. When given a property address, provide realistic property details in JSON format that reflect the Malaysian market. All monetary values should be returned in Malaysian Ringgit (MYR). The response MUST include estimatedValue as a direct number in propertyData. Format must be:
                         {
                             "propertyData": {
                                 "estimatedValue": number,  // Direct property value, not in marketTrends
