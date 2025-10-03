@@ -81,7 +81,7 @@
             <div class="view-content marketplace-view" id="marketplace-view">
                 <div class="search-container">
                     <div class="search-bar">
-                        <input type="text" id="propertySearch" placeholder="Search by location (e.g. Kuala Lumpur), type, or price range...">
+                        <input type="text" id="propertySearch" placeholder="Search by property name (e.g. Sunway Geo Residence)...">
                         <button class="search-btn" type="button">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="11" cy="11" r="8"/>
@@ -305,6 +305,14 @@
         const propertiesPerPage = 8;
         let currentPage = 1;
 
+        const normalizeText = (value = '') => value
+            .toString()
+            .toLowerCase()
+            .normalize('NFKD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9]+/g, ' ')
+            .trim();
+
         const houseImages = [
             'pexels-binyaminmellish-106399.jpg',
             'pexels-binyaminmellish-1396132.jpg',
@@ -524,23 +532,20 @@
         };
 
         const filterProperties = () => {
-            const searchTerm = propertySearch ? propertySearch.value.trim().toLowerCase() : '';
-            const cleanedSearch = searchTerm.replace(/rm|,/g, '').trim();
-            const numericSearch = cleanedSearch.replace(/[^0-9]/g, '');
+            const searchTermRaw = propertySearch ? propertySearch.value : '';
+            const normalizedSearch = normalizeText(searchTermRaw);
+            const numericSearch = searchTermRaw.replace(/[^0-9]/g, '');
             const selectedType = propertyType ? propertyType.value : '';
             const selectedPriceRange = priceRange ? priceRange.value : '';
             const selectedTokenization = tokenizationFilter ? tokenizationFilter.value : '';
 
             filteredProperties = allProperties.filter(property => {
-                const name = property.name.toLowerCase();
-                const location = property.location.toLowerCase();
+                const normalizedName = normalizeText(property.name);
                 const valueString = property.propertyValue.toString();
                 const tokenPriceString = property.tokenPrice.toString();
 
-                const matchesSearch = !searchTerm
-                    || name.includes(searchTerm)
-                    || location.includes(searchTerm)
-                    || (cleanedSearch && (name.includes(cleanedSearch) || location.includes(cleanedSearch)))
+                const matchesSearch = !normalizedSearch
+                    || normalizedName.includes(normalizedSearch)
                     || (numericSearch && (valueString.includes(numericSearch) || tokenPriceString.includes(numericSearch)));
 
                 if (!matchesSearch) {
