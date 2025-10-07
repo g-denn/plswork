@@ -234,6 +234,16 @@
         </div>
     </section>
 
+    <div class="property-modal" id="propertyModal" aria-hidden="true">
+        <div class="property-modal__backdrop" data-close="true"></div>
+        <div class="property-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="propertyModalTitle" tabindex="-1">
+            <button type="button" class="property-modal__close" aria-label="Close property details" data-close="true">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="property-modal__body"></div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -295,8 +305,11 @@
         const prevButton = document.querySelector('.page-btn.prev-page');
         const nextButton = document.querySelector('.page-btn.next-page');
         const pageButtons = Array.from(document.querySelectorAll('.page-btn[data-page]'));
+        const propertyModal = document.getElementById('propertyModal');
+        const modalBody = propertyModal ? propertyModal.querySelector('.property-modal__body') : null;
+        const modalDialog = propertyModal ? propertyModal.querySelector('.property-modal__dialog') : null;
 
-        if (!propertyGrid) {
+        if (!propertyGrid || !propertyModal || !modalBody || !modalDialog) {
             return;
         }
 
@@ -306,6 +319,150 @@
 
         const propertiesPerPage = 8;
         let currentPage = 1;
+        let lastFocusedCard = null;
+
+        const propertyRegistry = new Map();
+        let propertySequence = 0;
+
+        const createPropertyId = (name) => {
+            propertySequence += 1;
+            const slug = normalizeText(name);
+            return `${slug || 'property'}-${propertySequence}`;
+        };
+
+        const percentFormatter = new Intl.NumberFormat('en-MY', {
+            style: 'percent',
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
+        });
+
+        const formatPercent = (value) => {
+            if (typeof value !== 'number' || Number.isNaN(value)) {
+                return '—';
+            }
+            return percentFormatter.format(value);
+        };
+
+        const formatPercentRange = (range, suffix = '') => {
+            if (!Array.isArray(range) || range.length !== 2) {
+                return '—';
+            }
+            return `${formatPercent(range[0])} – ${formatPercent(range[1])}${suffix}`;
+        };
+
+        const resolveImagePath = (path) => {
+            if (!path) {
+                return '';
+            }
+            if (/^https?:\/\//i.test(path) || path.startsWith('./') || path.startsWith('/')) {
+                return path;
+            }
+            return `./images/house_pictures/${path}`;
+        };
+
+        const createPropertyDetails = (property, detailOverrides = {}) => {
+            const {
+                overview: overviewOverrides = {},
+                investment: investmentOverrides = {},
+                tenant: tenantOverrides = {},
+                financial: financialOverrides = {},
+                aiInsights: aiOverrides = {},
+                security: securityOverrides = {},
+                liquidity: liquidityOverrides = {}
+            } = detailOverrides;
+
+            const overviewGallery = Array.isArray(overviewOverrides.gallery) && overviewOverrides.gallery.length
+                ? overviewOverrides.gallery
+                : [property.image];
+
+            const overview = {
+                address: overviewOverrides.address || `${property.name}, ${property.location}`,
+                mapQuery: overviewOverrides.mapQuery || `${property.name}, ${property.location}`,
+                propertyType: overviewOverrides.propertyType || (property.category === 'commercial' ? 'Commercial Property' : 'Residential Property'),
+                developer: overviewOverrides.developer || 'Sunway Property',
+                yearBuilt: overviewOverrides.yearBuilt || '2018',
+                ownership: overviewOverrides.ownership || 'Freehold',
+                tenancyStatus: overviewOverrides.tenancyStatus || 'Occupied',
+                gallery: overviewGallery.map(resolveImagePath),
+                virtualTour: overviewOverrides.virtualTour || null
+            };
+
+            const investment = {
+                tokenPrice: investmentOverrides.tokenPrice || property.tokenPrice,
+                minInvestment: investmentOverrides.minInvestment ?? 100,
+                propertyValue: investmentOverrides.propertyValue || property.propertyValue,
+                rentalYield: investmentOverrides.rentalYield ?? 0.054,
+                capitalGrowthRange: investmentOverrides.capitalGrowthRange || [0.03, 0.04],
+                expectedROI: investmentOverrides.expectedROI || [0.08, 0.09],
+                nextPayout: investmentOverrides.nextPayout || '30 Nov 2025'
+            };
+
+            const defaultMonthlyRent = Math.round((investment.propertyValue * investment.rentalYield) / 12 / 50) * 50;
+            const tenant = {
+                type: tenantOverrides.type || 'Corporate Tenant',
+                monthlyRent: tenantOverrides.monthlyRent ?? defaultMonthlyRent,
+                leaseRemaining: tenantOverrides.leaseRemaining || '1 year',
+                creditScore: tenantOverrides.creditScore ?? 735,
+                paymentConsistency: tenantOverrides.paymentConsistency || '12/12 months on time',
+                vacancyRisk: tenantOverrides.vacancyRisk || 'Low (95% occupancy in area)'
+            };
+            tenant.creditLabel = tenantOverrides.creditLabel || (tenant.creditScore >= 720 ? 'Good' : tenant.creditScore >= 680 ? 'Fair' : 'Review');
+            tenant.creditStatus = tenantOverrides.creditStatus || (tenant.creditScore >= 720 ? 'positive' : tenant.creditScore >= 680 ? 'neutral' : 'warning');
+
+            const financial = {
+                monthlyRent: financialOverrides.monthlyRent ?? tenant.monthlyRent,
+                maintenanceFees: financialOverrides.maintenanceFees ?? Math.round((tenant.monthlyRent || 0) * 0.1),
+                insurance: financialOverrides.insurance ?? 220,
+                taxes: financialOverrides.taxes ?? 180,
+                managementFeePercent: financialOverrides.managementFeePercent ?? 0.05,
+                statementUrl: financialOverrides.statementUrl || '#',
+                netIncomePerToken: financialOverrides.netIncomePerToken
+            };
+            const managementFeeValue = (financial.monthlyRent || 0) * (financial.managementFeePercent || 0);
+            const netMonthly = (financial.monthlyRent || 0)
+                - (financial.maintenanceFees || 0)
+                - (financial.insurance || 0)
+                - (financial.taxes || 0)
+                - managementFeeValue;
+            const tokenCount = Math.max(1, Math.round((investment.propertyValue || property.propertyValue) / (investment.tokenPrice || property.tokenPrice || 1)));
+            if (typeof financial.netIncomePerToken !== 'number' || Number.isNaN(financial.netIncomePerToken)) {
+                financial.netIncomePerToken = Math.max(0, Math.round(netMonthly / tokenCount));
+            }
+
+            const aiInsights = {
+                forecastRange: aiOverrides.forecastRange || [0.04, 0.06],
+                demandTrend: aiOverrides.demandTrend || '+8% YoY rental demand',
+                tenantRisk: aiOverrides.tenantRisk || 'Low',
+                appreciationScore: aiOverrides.appreciationScore ?? 8,
+                narrative: aiOverrides.narrative || 'AI forecast suggests 4–6% appreciation over the next 12 months, supported by nearby university expansion and improved transit connectivity.'
+            };
+
+            const security = {
+                valuer: securityOverrides.valuer || 'Knight Frank Malaysia',
+                escrowBank: securityOverrides.escrowBank || 'CIMB Trust',
+                auditFirm: securityOverrides.auditFirm || 'Quantstamp Asia',
+                regulatoryNote: securityOverrides.regulatoryNote || 'Compliant under SC Malaysia digital asset sandbox.'
+            };
+
+            const liquidity = {
+                secondaryDemand: liquidityOverrides.secondaryDemand || '12 bids open',
+                avgSpread: liquidityOverrides.avgSpread || '±2%',
+                avgSaleTime: liquidityOverrides.avgSaleTime || '~3 days',
+                demoUrl: liquidityOverrides.demoUrl || '#'
+            };
+
+            return { overview, investment, tenant, financial, aiInsights, security, liquidity };
+        };
+
+        const registerProperty = (property, details = {}) => {
+            const propertyWithId = {
+                ...property,
+                id: createPropertyId(property.name)
+            };
+            propertyWithId.details = createPropertyDetails(propertyWithId, details);
+            propertyRegistry.set(propertyWithId.id, propertyWithId);
+            return propertyWithId;
+        };
 
         const normalizeText = (value = '') => value
             .toString()
@@ -343,31 +500,495 @@
         };
 
         const bandarSunwayData = [
-            { name: 'LaCosta @ Sunway South Quay', beds: 4, baths: 3, sqft: 1750, propertyValue: 2400000, tokenization: 72 },
-            { name: 'LaCosta @ Sunway South Quay', beds: 3, baths: 3, sqft: 1620, propertyValue: 2300000, tokenization: 88 },
-            { name: 'Sunway GeoLake Residences', beds: 3, baths: 2, sqft: 1480, propertyValue: 1950000, tokenization: 64 },
-            { name: 'Sunway Geo Residence', beds: 3, baths: 2, sqft: 1385, propertyValue: 1750000, tokenization: 58 },
-            { name: 'Ridzuan Condominium', beds: 4, baths: 3, sqft: 1820, propertyValue: 1250000, tokenization: 41 },
-            { name: 'Greenfield Residence', beds: 3, baths: 2, sqft: 1510, propertyValue: 1150000, tokenization: 36 },
-            { name: 'Taman Sri Subang, Sunway', beds: 4, baths: 3, sqft: 1890, propertyValue: 980000, tokenization: 29 }
+            {
+                name: 'LaCosta @ Sunway South Quay',
+                category: 'residential',
+                location: 'Bandar Sunway, Selangor',
+                beds: 4,
+                baths: 3,
+                sqft: 1750,
+                propertyValue: 2400000,
+                tokenization: 72,
+                details: {
+                    overview: {
+                        address: 'LaCosta @ Sunway South Quay, Jalan Lagoon Selatan, Bandar Sunway, 47500 Subang Jaya, Selangor',
+                        mapQuery: 'LaCosta Sunway South Quay',
+                        propertyType: 'Residential Condominium',
+                        developer: 'Sunway Property',
+                        yearBuilt: '2013',
+                        ownership: 'Leasehold (99-year tenure, expires 2095)',
+                        tenancyStatus: 'Occupied (Corporate lease)',
+                        gallery: [
+                            'pexels-binyaminmellish-106399.jpg',
+                            'pexels-heyho-7598376.jpg',
+                            'pexels-julia-kuzenkov-442028-1974596.jpg'
+                        ]
+                    },
+                    investment: {
+                        minInvestment: 100,
+                        rentalYield: 0.054,
+                        capitalGrowthRange: [0.03, 0.04],
+                        expectedROI: [0.08, 0.09],
+                        nextPayout: '30 Nov 2025'
+                    },
+                    tenant: {
+                        type: 'Corporate Tenant',
+                        monthlyRent: 9000,
+                        leaseRemaining: '1 year 3 months',
+                        creditScore: 740,
+                        creditLabel: 'Good',
+                        creditStatus: 'positive',
+                        paymentConsistency: '12/12 months on time',
+                        vacancyRisk: 'Low (95% occupancy in Bandar Sunway)'
+                    },
+                    financial: {
+                        maintenanceFees: 850,
+                        insurance: 220,
+                        taxes: 180,
+                        managementFeePercent: 0.05,
+                        statementUrl: '#'
+                    },
+                    aiInsights: {
+                        forecastRange: [0.04, 0.06],
+                        demandTrend: '+8% YoY rental demand (Bandar Sunway)',
+                        tenantRisk: 'Low',
+                        appreciationScore: 8,
+                        narrative: 'AI forecast underscores sustained rental demand from Sunway University and medical tourism.'
+                    },
+                    security: {
+                        valuer: 'Knight Frank Malaysia',
+                        escrowBank: 'CIMB Trust',
+                        auditFirm: 'Quantstamp Asia',
+                        regulatoryNote: 'Compliant under SC Malaysia digital asset sandbox.'
+                    },
+                    liquidity: {
+                        secondaryDemand: '12 bids open',
+                        avgSpread: '±2%',
+                        avgSaleTime: '~3 days',
+                        demoUrl: '#'
+                    }
+                }
+            },
+            {
+                name: 'LaCosta @ Sunway South Quay',
+                category: 'residential',
+                location: 'Bandar Sunway, Selangor',
+                beds: 3,
+                baths: 3,
+                sqft: 1620,
+                propertyValue: 2300000,
+                tokenization: 88,
+                details: {
+                    overview: {
+                        address: 'LaCosta @ Sunway South Quay Tower B, Bandar Sunway, 47500 Subang Jaya, Selangor',
+                        mapQuery: 'LaCosta Sunway Tower B',
+                        propertyType: 'Residential Condominium',
+                        developer: 'Sunway Property',
+                        yearBuilt: '2013',
+                        ownership: 'Leasehold (99-year tenure)',
+                        tenancyStatus: 'Occupied (Family tenant)',
+                        gallery: [
+                            'pexels-binyaminmellish-1396132.jpg',
+                            'pexels-perqued-13041118.jpg',
+                            'pexels-pixasquare-1115804.jpg'
+                        ]
+                    },
+                    investment: {
+                        minInvestment: 100,
+                        rentalYield: 0.052,
+                        capitalGrowthRange: [0.028, 0.038],
+                        expectedROI: [0.078, 0.088],
+                        nextPayout: '31 Oct 2025'
+                    },
+                    tenant: {
+                        type: 'Family Tenant',
+                        monthlyRent: 8200,
+                        leaseRemaining: '11 months',
+                        creditScore: 728,
+                        creditStatus: 'positive',
+                        paymentConsistency: '24/24 months on time',
+                        vacancyRisk: 'Low (long-term residency trend)'
+                    },
+                    financial: {
+                        maintenanceFees: 780,
+                        insurance: 210,
+                        taxes: 170,
+                        managementFeePercent: 0.05,
+                        statementUrl: '#'
+                    },
+                    aiInsights: {
+                        forecastRange: [0.035, 0.055],
+                        demandTrend: '+7% YoY family rental demand',
+                        tenantRisk: 'Low',
+                        appreciationScore: 8,
+                        narrative: 'Upgrades to Sunway Geo Avenue retail keep resale values resilient.'
+                    },
+                    security: {
+                        valuer: 'CBRE | WTW',
+                        escrowBank: 'Maybank Trustees Berhad',
+                        auditFirm: 'CertiK Asia',
+                        regulatoryNote: 'Compliant under SC Malaysia digital asset sandbox.'
+                    },
+                    liquidity: {
+                        secondaryDemand: '15 bids open',
+                        avgSpread: '±1.8%',
+                        avgSaleTime: '~3 days',
+                        demoUrl: '#'
+                    }
+                }
+            },
+            {
+                name: 'Sunway GeoLake Residences',
+                category: 'residential',
+                location: 'Bandar Sunway, Selangor',
+                beds: 3,
+                baths: 2,
+                sqft: 1480,
+                propertyValue: 1950000,
+                tokenization: 64,
+                details: {
+                    overview: {
+                        address: 'Sunway GeoLake Residences, Persiaran Tasik Timur, Bandar Sunway, 47500 Subang Jaya',
+                        mapQuery: 'Sunway GeoLake Residences',
+                        propertyType: 'Residential Condominium',
+                        developer: 'Sunway Property',
+                        yearBuilt: '2019',
+                        ownership: 'Leasehold (extended to 2105)',
+                        tenancyStatus: 'Occupied (Medical professional)',
+                        gallery: [
+                            'pexels-expect-best-79873-323780.jpg',
+                            'pexels-b-s-gulesan-2144469394-30847025.jpg',
+                            'pexels-scottwebb-1029599.jpg'
+                        ]
+                    },
+                    investment: {
+                        minInvestment: 100,
+                        rentalYield: 0.055,
+                        capitalGrowthRange: [0.032, 0.042],
+                        expectedROI: [0.082, 0.092],
+                        nextPayout: '31 Dec 2025'
+                    },
+                    tenant: {
+                        type: 'Healthcare Professional',
+                        monthlyRent: 7800,
+                        leaseRemaining: '2 years 1 month',
+                        creditScore: 752,
+                        creditStatus: 'positive',
+                        paymentConsistency: '18/18 months on time',
+                        vacancyRisk: 'Low (hospital staff demand)'
+                    },
+                    financial: {
+                        maintenanceFees: 720,
+                        insurance: 205,
+                        taxes: 165,
+                        managementFeePercent: 0.05,
+                        statementUrl: '#'
+                    },
+                    aiInsights: {
+                        forecastRange: [0.038, 0.058],
+                        demandTrend: '+9% YoY rental inquiries',
+                        tenantRisk: 'Low',
+                        appreciationScore: 9,
+                        narrative: 'AI projects uplift from upcoming Sunway South Quay commercial launch.'
+                    },
+                    security: {
+                        valuer: 'Henry Butcher Malaysia',
+                        escrowBank: 'RHB Trustees Berhad',
+                        auditFirm: 'Trail of Bits SEA',
+                        regulatoryNote: 'Compliant under SC Malaysia digital asset sandbox.'
+                    },
+                    liquidity: {
+                        secondaryDemand: '9 bids open',
+                        avgSpread: '±2.1%',
+                        avgSaleTime: '~4 days',
+                        demoUrl: '#'
+                    }
+                }
+            },
+            {
+                name: 'Sunway Geo Residence',
+                category: 'residential',
+                location: 'Bandar Sunway, Selangor',
+                beds: 3,
+                baths: 2,
+                sqft: 1385,
+                propertyValue: 1750000,
+                tokenization: 58,
+                details: {
+                    overview: {
+                        address: 'Sunway Geo Residence, Jalan Lagoon Selatan, Bandar Sunway, 47500 Subang Jaya',
+                        mapQuery: 'Sunway Geo Residence',
+                        propertyType: 'Residential Condominium',
+                        developer: 'Sunway Property',
+                        yearBuilt: '2017',
+                        ownership: 'Leasehold (99-year tenure)',
+                        tenancyStatus: 'Occupied (Dual-key layout)',
+                        gallery: [
+                            'pexels-luis-yanez-57302-206172.jpg',
+                            'pexels-fotios-photos-2816323.jpg',
+                            'pexels-tara-winstead-8407011.jpg'
+                        ]
+                    },
+                    investment: {
+                        minInvestment: 100,
+                        rentalYield: 0.053,
+                        capitalGrowthRange: [0.029, 0.039],
+                        expectedROI: [0.081, 0.089],
+                        nextPayout: '31 Aug 2025'
+                    },
+                    tenant: {
+                        type: 'Dual-Key Corporate Let',
+                        monthlyRent: 7600,
+                        leaseRemaining: '1 year 8 months',
+                        creditScore: 734,
+                        creditStatus: 'positive',
+                        paymentConsistency: '12/12 months on time',
+                        vacancyRisk: 'Low (dual-key demand in Sunway)'
+                    },
+                    financial: {
+                        maintenanceFees: 690,
+                        insurance: 195,
+                        taxes: 150,
+                        managementFeePercent: 0.05,
+                        statementUrl: '#'
+                    },
+                    aiInsights: {
+                        forecastRange: [0.034, 0.052],
+                        demandTrend: '+8% YoY dual-key leasing',
+                        tenantRisk: 'Low',
+                        appreciationScore: 8,
+                        narrative: 'Nearby BRT expansion and retail upgrades sustain occupancy strength.'
+                    },
+                    security: {
+                        valuer: 'Savills Malaysia',
+                        escrowBank: 'Hong Leong Trustees',
+                        auditFirm: 'Halborn APAC',
+                        regulatoryNote: 'Compliant under SC Malaysia digital asset sandbox.'
+                    },
+                    liquidity: {
+                        secondaryDemand: '10 bids open',
+                        avgSpread: '±2.2%',
+                        avgSaleTime: '~4 days',
+                        demoUrl: '#'
+                    }
+                }
+            },
+            {
+                name: 'Ridzuan Condominium',
+                category: 'residential',
+                location: 'Bandar Sunway, Selangor',
+                beds: 4,
+                baths: 3,
+                sqft: 1820,
+                propertyValue: 1250000,
+                tokenization: 41,
+                details: {
+                    overview: {
+                        address: 'Ridzuan Condominium, Jalan Subang Indah, Bandar Sunway, 47500 Subang Jaya',
+                        mapQuery: 'Ridzuan Condominium Bandar Sunway',
+                        propertyType: 'Residential Condominium',
+                        developer: 'Mutual Development',
+                        yearBuilt: '1998',
+                        ownership: 'Leasehold (82 years remaining)',
+                        tenancyStatus: 'Occupied (Student coliving)',
+                        gallery: [
+                            'pexels-pixabay-210617.jpg',
+                            'pexels-pixabay-259593.jpg',
+                            'pexels-pixabay-277667.jpg'
+                        ]
+                    },
+                    investment: {
+                        minInvestment: 100,
+                        rentalYield: 0.058,
+                        capitalGrowthRange: [0.024, 0.034],
+                        expectedROI: [0.082, 0.092],
+                        nextPayout: '31 Jul 2025'
+                    },
+                    tenant: {
+                        type: 'Student Housing Cluster',
+                        monthlyRent: 6400,
+                        leaseRemaining: '9 months',
+                        creditScore: 712,
+                        creditLabel: 'Fair',
+                        creditStatus: 'neutral',
+                        paymentConsistency: '10/12 months on time',
+                        vacancyRisk: 'Moderate (high student turnover)'
+                    },
+                    financial: {
+                        maintenanceFees: 540,
+                        insurance: 180,
+                        taxes: 140,
+                        managementFeePercent: 0.06,
+                        statementUrl: '#'
+                    },
+                    aiInsights: {
+                        forecastRange: [0.028, 0.045],
+                        demandTrend: '+6% YoY student demand',
+                        tenantRisk: 'Moderate',
+                        appreciationScore: 7,
+                        narrative: 'Upcoming BRT station upgrades sustain student demand despite building age.'
+                    },
+                    security: {
+                        valuer: 'Rahim & Co International',
+                        escrowBank: 'Public Bank Trustees',
+                        auditFirm: 'SlowMist SEA',
+                        regulatoryNote: 'Compliant under SC Malaysia digital asset sandbox.'
+                    },
+                    liquidity: {
+                        secondaryDemand: '8 bids open',
+                        avgSpread: '±2.6%',
+                        avgSaleTime: '~5 days',
+                        demoUrl: '#'
+                    }
+                }
+            },
+            {
+                name: 'Greenfield Residence',
+                category: 'residential',
+                location: 'Bandar Sunway, Selangor',
+                beds: 3,
+                baths: 2,
+                sqft: 1510,
+                propertyValue: 1150000,
+                tokenization: 36,
+                details: {
+                    overview: {
+                        address: 'Greenfield Residence, Jalan SS6/6, Bandar Sunway, 47301 Petaling Jaya',
+                        mapQuery: 'Greenfield Residence Sunway',
+                        propertyType: 'Residential Condominium',
+                        developer: 'CITRA Group',
+                        yearBuilt: '2021',
+                        ownership: 'Freehold',
+                        tenancyStatus: 'Occupied (Young professionals)',
+                        gallery: [
+                            'pexels-pixabay-259588.jpg',
+                            'pexels-lina-3639542.jpg',
+                            'pexels-julia-kuzenkov-442028-1974596.jpg'
+                        ]
+                    },
+                    investment: {
+                        minInvestment: 100,
+                        rentalYield: 0.051,
+                        capitalGrowthRange: [0.03, 0.041],
+                        expectedROI: [0.081, 0.091],
+                        nextPayout: '30 Sep 2025'
+                    },
+                    tenant: {
+                        type: 'Professional Couple',
+                        monthlyRent: 6200,
+                        leaseRemaining: '1 year 5 months',
+                        creditScore: 746,
+                        creditStatus: 'positive',
+                        paymentConsistency: '14/14 months on time',
+                        vacancyRisk: 'Low (premium facilities demand)'
+                    },
+                    financial: {
+                        maintenanceFees: 510,
+                        insurance: 175,
+                        taxes: 140,
+                        managementFeePercent: 0.05,
+                        statementUrl: '#'
+                    },
+                    aiInsights: {
+                        forecastRange: [0.035, 0.05],
+                        demandTrend: '+8% YoY lifestyle rental demand',
+                        tenantRisk: 'Low',
+                        appreciationScore: 8,
+                        narrative: 'AI projects capital uplift from completion of adjacent Sunway Serene park.'
+                    },
+                    security: {
+                        valuer: 'CBRE | WTW',
+                        escrowBank: 'HSBC Trustee Malaysia',
+                        auditFirm: 'PeckShield Labs',
+                        regulatoryNote: 'Compliant under SC Malaysia digital asset sandbox.'
+                    },
+                    liquidity: {
+                        secondaryDemand: '11 bids open',
+                        avgSpread: '±2.1%',
+                        avgSaleTime: '~3 days',
+                        demoUrl: '#'
+                    }
+                }
+            },
+            {
+                name: 'Taman Sri Subang, Sunway',
+                category: 'residential',
+                location: 'Bandar Sunway, Selangor',
+                beds: 4,
+                baths: 3,
+                sqft: 1890,
+                propertyValue: 980000,
+                tokenization: 29,
+                details: {
+                    overview: {
+                        address: 'Taman Sri Subang, Jalan SS13/2, Bandar Sunway, 47500 Subang Jaya',
+                        mapQuery: 'Taman Sri Subang Bandar Sunway',
+                        propertyType: 'Landed Terrace Home',
+                        developer: 'Selangor Dredging Berhad',
+                        yearBuilt: '1992',
+                        ownership: 'Freehold',
+                        tenancyStatus: 'Vacant (Newly refurbished)',
+                        gallery: [
+                            'pexels-pixabay-259593.jpg',
+                            'pexels-pixabay-277667.jpg',
+                            'pexels-pixasquare-1115804.jpg'
+                        ]
+                    },
+                    investment: {
+                        minInvestment: 100,
+                        rentalYield: 0.049,
+                        capitalGrowthRange: [0.026, 0.036],
+                        expectedROI: [0.075, 0.085],
+                        nextPayout: '31 Jan 2026'
+                    },
+                    tenant: {
+                        type: 'Family or Co-living Target',
+                        monthlyRent: 5200,
+                        leaseRemaining: 'Vacant (marketing period 4 weeks)',
+                        creditScore: 700,
+                        creditLabel: 'Fair',
+                        creditStatus: 'neutral',
+                        paymentConsistency: 'Prior tenancy 11/12 months on time',
+                        vacancyRisk: 'Moderate (transitioning to co-living)'
+                    },
+                    financial: {
+                        maintenanceFees: 320,
+                        insurance: 160,
+                        taxes: 130,
+                        managementFeePercent: 0.05,
+                        statementUrl: '#'
+                    },
+                    aiInsights: {
+                        forecastRange: [0.03, 0.048],
+                        demandTrend: '+5% YoY landed rental enquiries',
+                        tenantRisk: 'Moderate',
+                        appreciationScore: 7,
+                        narrative: 'AI highlights upside from new LRT3 interchange and campus expansion nearby.'
+                    },
+                    security: {
+                        valuer: 'CH Williams Talhar & Wong',
+                        escrowBank: 'Bank Muamalat Trustees',
+                        auditFirm: 'ImmuneBytes Asia',
+                        regulatoryNote: 'Compliant under SC Malaysia digital asset sandbox.'
+                    },
+                    liquidity: {
+                        secondaryDemand: '6 bids open',
+                        avgSpread: '±2.8%',
+                        avgSaleTime: '~6 days',
+                        demoUrl: '#'
+                    }
+                }
+            }
         ];
 
         const bandarSunwayProperties = bandarSunwayData.map(property => {
-            const propertyValue = property.propertyValue;
-            const tokenization = property.tokenization;
-            return {
-                name: property.name,
-                category: 'residential',
-                location: 'Bandar Sunway, Selangor',
-                beds: property.beds,
-                baths: property.baths,
-                sqft: property.sqft,
-                tokenization,
-                tokenPrice: Math.round(propertyValue / 10000),
-                propertyValue,
+            const { details, ...base } = property;
+            return registerProperty({
+                ...base,
+                tokenPrice: Math.round(base.propertyValue / 10000),
                 image: getNextImage(),
-                status: tokenization === 100 ? 'Fully Tokenized' : 'Available'
-            };
+                status: base.tokenization === 100 ? 'Fully Tokenized' : 'Available'
+            }, details);
         });
 
         const additionalPropertyNames = [
@@ -404,26 +1025,138 @@
 
         const propertyCategories = ['residential', 'commercial'];
 
+        const developerOptions = [
+            'Sunway Property',
+            'EcoWorld Development Group',
+            'Gamuda Land',
+            'UEM Sunrise',
+            'S P Setia',
+            'Mah Sing Group'
+        ];
+
+        const valuerOptions = [
+            'Knight Frank Malaysia',
+            'CBRE | WTW',
+            'Henry Butcher Malaysia',
+            'Rahim & Co International',
+            'Savills Malaysia'
+        ];
+
+        const escrowOptions = [
+            'CIMB Trust',
+            'Maybank Trustees Berhad',
+            'RHB Trustees Berhad',
+            'Public Bank Trustees',
+            'HSBC Trustee Malaysia'
+        ];
+
+        const auditFirms = [
+            'Quantstamp Asia',
+            'CertiK Asia',
+            'Trail of Bits SEA',
+            'SlowMist SEA',
+            'PeckShield Labs'
+        ];
+
+        const tenantTypes = ['Family', 'Corporate', 'Student', 'Digital Nomad', 'Healthcare'];
+        const payoutDateOptions = ['28 Feb 2025', '31 Mar 2025', '30 Apr 2025', '31 May 2025', '30 Jun 2025'];
+        const demandTrendOptions = ['+6% YoY rental demand', '+9% YoY corporate demand', '+7% YoY expat interest', '+5% YoY student demand'];
+
         const generateRandomProperty = (index) => {
             const propertyValue = Math.round((900000 + Math.random() * 5200000) / 1000) * 1000;
             const tokenization = Math.min(100, 40 + Math.floor(Math.random() * 60));
             const beds = 2 + Math.floor(Math.random() * 4);
             const baths = Math.max(1, Math.round(beds * 0.75));
             const sqft = 1100 + Math.floor(Math.random() * 2400);
+            const category = propertyCategories[index % propertyCategories.length];
+            const location = additionalPropertyLocations[index % additionalPropertyLocations.length];
+            const name = additionalPropertyNames[index % additionalPropertyNames.length];
+            const tokenPrice = Math.max(100, Math.round(propertyValue / 10000));
+            const rentalYield = 0.045 + Math.random() * 0.018;
+            const capitalMin = 0.025 + Math.random() * 0.012;
+            const capitalMax = capitalMin + 0.01;
+            const expectedMin = rentalYield + capitalMin;
+            const expectedMax = expectedMin + 0.01;
+            const monthlyRent = Math.round((propertyValue * rentalYield) / 12 / 50) * 50;
+            const tenantType = tenantTypes[index % tenantTypes.length];
+            const tenancyVacant = Math.random() < 0.18;
+            const tenancyStatus = tenancyVacant
+                ? 'Vacant (Marketing 4 weeks)'
+                : `Occupied (${tenantType} tenant)`;
+            const creditScore = Math.round(700 + Math.random() * 80);
+            const leaseRemaining = tenancyVacant
+                ? 'Available immediately'
+                : `${1 + Math.floor(Math.random() * 2)} years ${Math.floor(Math.random() * 11)} months`;
+            const demandTrend = demandTrendOptions[index % demandTrendOptions.length];
+            const appreciationScore = Math.min(10, Math.max(6, Math.round(7 + Math.random() * 3)));
+            const managementFeePercent = tenancyVacant ? 0.045 : 0.05;
 
-            return {
-                name: additionalPropertyNames[index % additionalPropertyNames.length],
-                category: propertyCategories[index % propertyCategories.length],
-                location: additionalPropertyLocations[index % additionalPropertyLocations.length],
+            const details = {
+                overview: {
+                    propertyType: category === 'commercial' ? 'Commercial Suite' : 'Residential Condominium',
+                    developer: developerOptions[index % developerOptions.length],
+                    yearBuilt: `${2010 + Math.floor(Math.random() * 12)}`,
+                    ownership: Math.random() > 0.5 ? 'Freehold' : 'Leasehold (99-year tenure)',
+                    tenancyStatus,
+                    gallery: []
+                },
+                investment: {
+                    minInvestment: 100,
+                    rentalYield,
+                    capitalGrowthRange: [capitalMin, capitalMax],
+                    expectedROI: [expectedMin, expectedMax],
+                    nextPayout: payoutDateOptions[index % payoutDateOptions.length]
+                },
+                tenant: {
+                    type: tenancyVacant ? 'Vacant' : `${tenantType} Tenant`,
+                    monthlyRent,
+                    leaseRemaining,
+                    creditScore,
+                    paymentConsistency: tenancyVacant ? 'Prior tenancy 11/12 months on time' : `${11 + Math.floor(Math.random() * 2)}/12 months on time`,
+                    vacancyRisk: tenancyVacant ? 'Moderate (active marketing)' : 'Low (stable demand)'
+                },
+                financial: {
+                    monthlyRent,
+                    maintenanceFees: Math.round(monthlyRent * 0.09),
+                    insurance: 200,
+                    taxes: 180,
+                    managementFeePercent,
+                    statementUrl: '#'
+                },
+                aiInsights: {
+                    forecastRange: [Math.min(0.07, capitalMin + 0.01), Math.min(0.09, capitalMax + 0.02)],
+                    demandTrend,
+                    tenantRisk: tenancyVacant ? 'Moderate' : 'Low',
+                    appreciationScore,
+                    narrative: `AI projects ${formatPercent(capitalMin)}–${formatPercent(capitalMax)} capital growth driven by infrastructure upgrades in ${location}.`
+                },
+                security: {
+                    valuer: valuerOptions[index % valuerOptions.length],
+                    escrowBank: escrowOptions[index % escrowOptions.length],
+                    auditFirm: auditFirms[index % auditFirms.length],
+                    regulatoryNote: 'Compliant under SC Malaysia digital asset sandbox.'
+                },
+                liquidity: {
+                    secondaryDemand: `${8 + Math.floor(Math.random() * 6)} bids open`,
+                    avgSpread: `±${(1.5 + Math.random() * 1.2).toFixed(1)}%`,
+                    avgSaleTime: `~${3 + Math.floor(Math.random() * 3)} days`,
+                    demoUrl: '#'
+                }
+            };
+
+            return registerProperty({
+                name,
+                category,
+                location,
                 beds,
                 baths,
                 sqft,
                 tokenization,
-                tokenPrice: Math.round(propertyValue / 10000),
+                tokenPrice,
                 propertyValue,
                 image: getNextImage(),
                 status: tokenization === 100 ? 'Fully Tokenized' : 'Available'
-            };
+            }, details);
         };
 
         const desiredTotal = 24;
@@ -434,6 +1167,345 @@
         let filteredProperties = [...allProperties];
 
         const getTotalPages = () => Math.max(1, Math.ceil(filteredProperties.length / propertiesPerPage));
+
+        const determineStatusVariant = (value = '') => {
+            const normalized = value.toLowerCase();
+            if (normalized.includes('low')) {
+                return 'positive';
+            }
+            if (normalized.includes('moderate')) {
+                return 'neutral';
+            }
+            return 'warning';
+        };
+
+        const buildPropertyModal = (property) => {
+            if (!property || !property.details) {
+                return '';
+            }
+
+            const { details } = property;
+            const mapQuery = details.overview.mapQuery || details.overview.address;
+            const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`;
+            const galleryImages = Array.from(new Set(details.overview.gallery || []))
+                .map((src, index) => `<img src="${resolveImagePath(src)}" alt="${property.name} gallery image ${index + 1}">`)
+                .join('');
+            const virtualTour = details.overview.virtualTour
+                ? `<div class="virtual-tour"><iframe src="${details.overview.virtualTour}" title="${property.name} virtual tour" loading="lazy" allowfullscreen></iframe></div>`
+                : '';
+            const gallerySection = galleryImages
+                ? `
+                    <section class="property-modal__gallery">
+                        <div class="section-header">
+                            <h3>Photo gallery</h3>
+                            <p>Explore current visuals and amenities before you invest.</p>
+                        </div>
+                        <div class="gallery-grid">
+                            ${galleryImages}
+                        </div>
+                        ${virtualTour}
+                    </section>
+                `
+                : '';
+
+            const snapshotMetrics = [
+                { label: 'Token price', value: formatCurrency(details.investment.tokenPrice), description: 'Cost per token' },
+                { label: 'Minimum investment', value: formatCurrency(details.investment.minInvestment), description: 'Entry level' },
+                { label: 'Property value', value: formatCurrency(details.investment.propertyValue), description: 'Current valuation' },
+                { label: 'Est. rental yield', value: `${formatPercent(details.investment.rentalYield)} p.a.`, description: 'Net yield after costs' },
+                { label: 'Est. capital growth', value: formatPercentRange(details.investment.capitalGrowthRange, ' p.a.'), description: 'Based on trailing 3 years' },
+                { label: 'Expected ROI', value: formatPercentRange(details.investment.expectedROI, ' p.a.'), description: 'Yield + projected growth' },
+                { label: 'Next payout', value: details.investment.nextPayout || 'Quarterly', description: 'Rental distribution date' },
+                { label: 'Tokenization progress', value: `${property.tokenization}%`, description: 'Funding completed' }
+            ];
+
+            const creditClass = `status-pill status-pill--${details.tenant.creditStatus || 'neutral'}`;
+            const vacancyClass = `status-pill status-pill--${determineStatusVariant(details.tenant.vacancyRisk || '')}`;
+
+            const tenantAttributes = [
+                { label: 'Tenant type', value: details.tenant.type || '—', icon: 'fas fa-users' },
+                { label: 'Monthly rent', value: formatCurrency(details.tenant.monthlyRent || 0), icon: 'fas fa-money-bill-wave' },
+                { label: 'Lease remaining', value: details.tenant.leaseRemaining || '—', icon: 'fas fa-calendar-alt' },
+                { label: 'Credit score', value: details.tenant.creditScore ? `<span class="${creditClass}">${details.tenant.creditScore}/850 • ${details.tenant.creditLabel || ''}</span>` : '—', icon: 'fas fa-shield-check' },
+                { label: 'Payment consistency', value: details.tenant.paymentConsistency || '—', icon: 'fas fa-receipt' },
+                { label: 'Vacancy risk', value: `<span class="${vacancyClass}">${details.tenant.vacancyRisk || '—'}</span>`, icon: 'fas fa-chart-line' }
+            ];
+
+            const managementFeeAmount = (details.financial.monthlyRent || 0) * (details.financial.managementFeePercent || 0);
+            const financialItems = [
+                { label: 'Monthly rent', value: formatCurrency(details.financial.monthlyRent || 0) },
+                { label: 'Maintenance fees', value: formatCurrency(details.financial.maintenanceFees || 0) },
+                { label: 'Insurance', value: formatCurrency(details.financial.insurance || 0) },
+                { label: 'Taxes', value: formatCurrency(details.financial.taxes || 0) },
+                { label: `Management fee (${formatPercent(details.financial.managementFeePercent || 0)})`, value: formatCurrency(Math.round(managementFeeAmount)) },
+                { label: 'Net income per token (monthly)', value: formatCurrency(details.financial.netIncomePerToken || 0) }
+            ];
+
+            const sliderMin = details.investment.minInvestment || 100;
+            const sliderMax = Math.max(sliderMin * 40, 20000);
+            const sliderDefault = Math.min(sliderMin * 10, sliderMax);
+
+            const aiCards = [
+                { label: 'Predicted 12-month appreciation', value: formatPercentRange(details.aiInsights.forecastRange, ''), description: 'AI pricing forecast' },
+                { label: 'Rental demand trend', value: details.aiInsights.demandTrend || '—', description: 'Momentum in local enquiries' },
+                { label: 'Tenant risk outlook', value: details.aiInsights.tenantRisk || '—', description: 'AI tenant stability score' },
+                { label: 'Area appreciation score', value: `${details.aiInsights.appreciationScore || 0}/10`, description: 'Composite neighbourhood score' }
+            ];
+
+            const liquidityMetrics = [
+                { label: 'Secondary market demand', value: details.liquidity.secondaryDemand || '—' },
+                { label: 'Average trade spread', value: details.liquidity.avgSpread || '—' },
+                { label: 'Average sale time', value: details.liquidity.avgSaleTime || '—' }
+            ];
+
+            return `
+                <header class="property-modal__header">
+                    <span class="property-modal__tag">${details.overview.propertyType}</span>
+                    <h2 id="propertyModalTitle">${property.name}</h2>
+                    <p class="property-modal__location">${details.overview.address}</p>
+                </header>
+                <section class="property-modal__overview">
+                    <div class="overview-card">
+                        <div class="overview-meta">
+                            <div class="overview-point">
+                                <span class="overview-label">Ownership</span>
+                                <strong>${details.overview.ownership}</strong>
+                            </div>
+                            <div class="overview-point">
+                                <span class="overview-label">Developer</span>
+                                <strong>${details.overview.developer}</strong>
+                            </div>
+                            <div class="overview-point">
+                                <span class="overview-label">Year built</span>
+                                <strong>${details.overview.yearBuilt}</strong>
+                            </div>
+                            <div class="overview-point">
+                                <span class="overview-label">Tenancy status</span>
+                                <strong>${details.overview.tenancyStatus}</strong>
+                            </div>
+                        </div>
+                        <div class="overview-stats-bar">
+                            <span><i class="fas fa-bed"></i>${property.beds} Beds</span>
+                            <span><i class="fas fa-bath"></i>${property.baths} Baths</span>
+                            <span><i class="fas fa-ruler-combined"></i>${property.sqft.toLocaleString()} sqft</span>
+                            <span><i class="fas fa-chart-pie"></i>${property.tokenization}% tokenized</span>
+                        </div>
+                    </div>
+                    <div class="overview-map">
+                        <iframe src="${mapSrc}" title="${property.name} on Google Maps" loading="lazy" allowfullscreen></iframe>
+                    </div>
+                </section>
+                ${gallerySection}
+                <section class="investment-highlight">
+                    <div class="section-header">
+                        <h3>Investment snapshot</h3>
+                        <p>Understand projected returns and liquidity at a glance.</p>
+                    </div>
+                    <div class="snapshot-grid">
+                        ${snapshotMetrics.map(metric => `
+                            <div class="snapshot-metric">
+                                <span class="metric-label">${metric.label}</span>
+                                <strong>${metric.value}</strong>
+                                <small>${metric.description}</small>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+                <section class="tenant-quality">
+                    <div class="section-header">
+                        <h3>Tenant & credit quality</h3>
+                        <p>Risk indicators that underpin stable rental income.</p>
+                    </div>
+                    <div class="tenant-grid">
+                        ${tenantAttributes.map(attr => `
+                            <div class="tenant-attr">
+                                <div class="tenant-icon"><i class="${attr.icon}"></i></div>
+                                <div class="tenant-text">
+                                    <span class="tenant-label">${attr.label}</span>
+                                    <p>${attr.value}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+                <section class="financial-breakdown">
+                    <div class="section-header">
+                        <h3>Financial breakdown</h3>
+                        <p>Transparent cash flow view with an interactive income estimator.</p>
+                    </div>
+                    <div class="financial-content">
+                        <ul class="financial-list">
+                            ${financialItems.map(item => `
+                                <li>
+                                    <span>${item.label}</span>
+                                    <strong>${item.value}</strong>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <div class="yield-calculator" data-yield-calculator>
+                            <div class="calculator-header">
+                                <div>
+                                    <span class="calculator-label">Yield calculator</span>
+                                    <p>Drag the slider to estimate your monthly income.</p>
+                                </div>
+                            </div>
+                            <input type="range" min="${sliderMin}" max="${sliderMax}" step="${sliderMin}" value="${sliderDefault}" data-yield="${details.investment.rentalYield}" aria-label="Estimate income based on investment amount">
+                            <div class="calculator-output">
+                                <div>Investment amount <strong data-calculator-investment></strong></div>
+                                <div>Est. monthly income <strong data-calculator-income></strong></div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="financial-statement-btn" href="${details.financial.statementUrl || '#'}" target="_blank" rel="noopener">View full financial statement (PDF)</a>
+                </section>
+                <section class="ai-insights">
+                    <div class="section-header">
+                        <h3>AI insights</h3>
+                        <p>Machine learning projections to strengthen your conviction.</p>
+                    </div>
+                    <div class="ai-grid">
+                        ${aiCards.map(card => `
+                            <div class="ai-card">
+                                <span class="ai-label">${card.label}</span>
+                                <strong>${card.value}</strong>
+                                <small>${card.description}</small>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <p class="ai-narrative">${details.aiInsights.narrative || ''}</p>
+                </section>
+                <section class="security-trust">
+                    <div class="section-header">
+                        <h3>Security & trust</h3>
+                        <p>Independent partners keep every issuance transparent and compliant.</p>
+                    </div>
+                    <div class="security-grid">
+                        <div class="security-card">
+                            <span class="security-label">Independent valuer</span>
+                            <strong>${details.security.valuer}</strong>
+                        </div>
+                        <div class="security-card">
+                            <span class="security-label">Escrow bank</span>
+                            <strong>${details.security.escrowBank}</strong>
+                        </div>
+                        <div class="security-card">
+                            <span class="security-label">Smart contract audit</span>
+                            <strong>${details.security.auditFirm}</strong>
+                        </div>
+                        <div class="security-card">
+                            <span class="security-label">Regulatory note</span>
+                            <p>${details.security.regulatoryNote}</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="liquidity-exit">
+                    <div class="section-header">
+                        <h3>Liquidity & exit</h3>
+                        <p>See how quickly token holders are trading out of positions.</p>
+                    </div>
+                    <div class="liquidity-grid">
+                        ${liquidityMetrics.map(metric => `
+                            <div class="liquidity-card">
+                                <span class="liquidity-label">${metric.label}</span>
+                                <strong>${metric.value}</strong>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <a class="liquidity-demo" href="${details.liquidity.demoUrl || '#'}">Sell tokens demo</a>
+                </section>
+            `;
+        };
+
+        const setupYieldCalculator = (property) => {
+            if (!property || !property.details) {
+                return;
+            }
+            const calculator = modalBody.querySelector('[data-yield-calculator]');
+            if (!calculator) {
+                return;
+            }
+            const slider = calculator.querySelector('input[type="range"]');
+            const investmentOutput = calculator.querySelector('[data-calculator-investment]');
+            const incomeOutput = calculator.querySelector('[data-calculator-income]');
+            if (!slider || !investmentOutput || !incomeOutput) {
+                return;
+            }
+            const yieldRate = Number(slider.dataset.yield || property.details.investment.rentalYield || 0);
+            const updateOutputs = () => {
+                const amount = Number(slider.value || 0);
+                const monthlyIncome = amount * (yieldRate / 12);
+                investmentOutput.textContent = formatCurrency(amount);
+                incomeOutput.textContent = formatCurrency(Math.round(monthlyIncome));
+            };
+            slider.addEventListener('input', updateOutputs);
+            slider.addEventListener('change', updateOutputs);
+            updateOutputs();
+        };
+
+        const openPropertyModal = (propertyId) => {
+            const property = propertyRegistry.get(propertyId);
+            if (!property) {
+                return;
+            }
+            lastFocusedCard = propertyGrid.querySelector(`[data-property-id="${propertyId}"]`);
+            modalBody.innerHTML = buildPropertyModal(property);
+            propertyModal.classList.add('is-visible');
+            propertyModal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('modal-open');
+            modalDialog.focus();
+            setupYieldCalculator(property);
+        };
+
+        const closePropertyModal = () => {
+            propertyModal.classList.remove('is-visible');
+            propertyModal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('modal-open');
+            modalBody.innerHTML = '';
+            if (lastFocusedCard) {
+                lastFocusedCard.focus();
+            }
+            lastFocusedCard = null;
+        };
+
+        propertyModal.addEventListener('click', (event) => {
+            if (event.target.dataset.close === 'true') {
+                closePropertyModal();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && propertyModal.classList.contains('is-visible')) {
+                closePropertyModal();
+            }
+        });
+
+        const bindPropertyCardInteractions = () => {
+            const cards = propertyGrid.querySelectorAll('.property-card');
+            cards.forEach(card => {
+                const propertyId = card.getAttribute('data-property-id');
+                if (!propertyId) {
+                    return;
+                }
+                const investLink = card.querySelector('.invest-btn');
+                if (investLink) {
+                    investLink.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                    });
+                }
+                card.addEventListener('click', (event) => {
+                    if (event.target.closest('a')) {
+                        return;
+                    }
+                    openPropertyModal(propertyId);
+                });
+                card.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        openPropertyModal(propertyId);
+                    }
+                });
+            });
+        };
 
         const updateResultsCount = () => {
             if (!resultsCount) {
@@ -494,7 +1566,7 @@
 
             propertiesToShow.forEach(property => {
                 propertyGrid.insertAdjacentHTML('beforeend', `
-                    <div class="property-card">
+                    <div class="property-card" data-property-id="${property.id}" role="button" tabindex="0" aria-label="View full investment profile for ${property.name}">
                         <div class="property-image">
                             <img src="./images/house_pictures/${property.image}" alt="${property.name}">
                             <div class="property-status ${property.status === 'Available' ? 'available' : 'tokenized'}">${property.status}</div>
@@ -531,6 +1603,7 @@
 
             updatePaginationControls();
             updateResultsCount();
+            bindPropertyCardInteractions();
         };
 
         const filterProperties = () => {
