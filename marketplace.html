@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trick - Property Marketplace</title>
     <!-- Add favicon -->
-    <link rel="icon" type="image/png" href="/images/logo.png">
-    <link rel="shortcut icon" type="image/png" href="/images/logo.png">
+    <link rel="icon" type="image/png" href="/images/digiestate-logo.png">
+    <link rel="shortcut icon" type="image/png" href="/images/digiestate-logo.png">
     <!-- Base styles first -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/layout.css">
@@ -67,6 +67,7 @@
                         <a href="#" onclick="showPropertyLookup(event)">Property Lookup</a>
                     </div>
                 </div>
+                <a href="/investments.html" class="nav-page">Investments</a>
                 <a href="/wallet.html" class="nav-page">Wallet</a>
                 <a href="/#contact" class="nav-page contact-btn">Contact Us</a>
             </div>
@@ -113,21 +114,14 @@
                     </div>
                 </div>
 
-                <div class="property-grid">
-                    <!-- First 6 property cards -->
-                    <div class="property-card"><!-- Property 1 --></div>
-                    <div class="property-card"><!-- Property 2 --></div>
-                    <div class="property-card"><!-- Property 3 --></div>
-                    <div class="property-card"><!-- Property 4 --></div>
-                    <div class="property-card"><!-- Property 5 --></div>
-                    <div class="property-card"><!-- Property 6 --></div>
-                </div>
+                <div class="property-grid"></div>
 
                 <div class="pagination">
-                    <button class="page-btn" data-page="1">1</button>
-                    <button class="page-btn" data-page="2">2</button>
-                    <button class="page-btn" data-page="3">3</button>
-                    <button class="page-btn next-page">Next</button>
+                    <button class="page-btn prev-page" type="button" aria-label="Previous page">Previous</button>
+                    <button class="page-btn" type="button" data-page="1">1</button>
+                    <button class="page-btn" type="button" data-page="2">2</button>
+                    <button class="page-btn" type="button" data-page="3">3</button>
+                    <button class="page-btn next-page" type="button" aria-label="Next page">Next</button>
                 </div>
             </div>
 
@@ -240,6 +234,16 @@
         </div>
     </section>
 
+    <div class="property-modal" id="propertyModal" aria-hidden="true">
+        <div class="property-modal__backdrop" data-close="true"></div>
+        <div class="property-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="propertyModalTitle" tabindex="-1">
+            <button type="button" class="property-modal__close" aria-label="Close property details" data-close="true">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="property-modal__body"></div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -259,6 +263,7 @@
                         <li><a href="index.html#solution" class="nav-link">Our Solution</a></li>
                         <li><a href="index.html#benefits" class="nav-link">Benefits</a></li>
                         <li><a href="marketplace.html" class="nav-link">Properties</a></li>
+                        <li><a href="investments.html" class="nav-link">Investments</a></li>
                         <li><a href="wallet.html" class="nav-link">Wallet</a></li>
                         <li><a href="index.html#contact">Contact Us</a></li>
                     </ul>
@@ -294,47 +299,49 @@
         img.onload = () => console.log('Image exists:', url);
         img.onerror = () => console.error('Image does not exist:', url);
     }
+    </script>
 
+    <script>
     document.addEventListener('DOMContentLoaded', () => {
+        const propertyGrid = document.querySelector('.property-grid');
         const propertySearch = document.getElementById('propertySearch');
+        const searchButton = document.querySelector('.search-btn');
         const propertyType = document.getElementById('propertyType');
         const priceRange = document.getElementById('priceRange');
-        const tokenization = document.getElementById('tokenization');
+        const tokenizationFilter = document.getElementById('tokenization');
+        const prevButton = document.querySelector('.page-btn.prev-page');
+        const nextButton = document.querySelector('.page-btn.next-page');
+        const pageButtons = Array.from(document.querySelectorAll('.page-btn[data-page]'));
+        const propertyModal = document.getElementById('propertyModal');
+        const modalBody = propertyModal ? propertyModal.querySelector('.property-modal__body') : null;
+        const modalDialog = propertyModal ? propertyModal.querySelector('.property-modal__dialog') : null;
 
-        // Search functionality
-        propertySearch.addEventListener('input', filterProperties);
-        propertyType.addEventListener('change', filterProperties);
-        priceRange.addEventListener('change', filterProperties);
-        tokenization.addEventListener('change', filterProperties);
-
-        function filterProperties() {
-            // Add your filtering logic here
-            console.log('Filtering properties...');
+        if (!propertyGrid || !propertyModal || !modalBody || !modalDialog) {
+            return;
         }
 
-        // Simple Previous/Next pagination
-        const prevButton = document.querySelector('.page-btn.prev');
-        const nextButton = document.querySelector('.page-btn.next');
-        
-        prevButton.addEventListener('click', () => {
-            console.log('Loading previous page...');
-            // Add your previous page logic here
-        });
-        
-        nextButton.addEventListener('click', () => {
-            console.log('Loading next page...');
-            // Add your next page logic here
-        });
+        const resultsCount = document.createElement('p');
+        resultsCount.className = 'results-count';
+        propertyGrid.insertAdjacentElement('beforebegin', resultsCount);
 
-        const propertyGrid = document.querySelector('.property-grid');
-        
-        // Test each image path
-        houseImages.forEach(image => {
-            checkImageExists(`/images/house_pictures/${image}`);
-            checkImageExists(`./images/house_pictures/${image}`);
+        const propertiesPerPage = 8;
+        let currentPage = 1;
+        let lastFocusedCard = null;
+
+        const propertyRegistry = new Map();
+        let propertySequence = 0;
+
+        const createPropertyId = (name) => {
+            propertySequence += 1;
+            const slug = normalizeText(name);
+            return `${slug || 'property'}-${propertySequence}`;
+        };
+
+        const percentFormatter = new Intl.NumberFormat('en-MY', {
+            style: 'percent',
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
         });
-    });
-    </script>
 
     <script>
     // Property data generation
@@ -394,17 +401,15 @@
             "Business Hub Office"
         ];
 
-        const amenities = [
-            "Private Pool",
-            "Ocean View",
-            "Smart Home",
-            "Wine Cellar",
-            "Home Theater",
-            "Rooftop Deck",
-            "Tennis Court",
-            "Spa",
-            "Guest House",
-            "Elevator"
+        const additionalPropertyLocations = [
+            'Kuala Lumpur, Federal Territory',
+            'Petaling Jaya, Selangor',
+            'Shah Alam, Selangor',
+            'Johor Bahru, Johor',
+            'George Town, Penang',
+            'Iskandar Puteri, Johor',
+            'Cheras, Kuala Lumpur',
+            'Mont Kiara, Kuala Lumpur'
         ];
 
         function generateRandomProperty() {
@@ -426,45 +431,554 @@
             lastUsedImageIndex = newImageIndex;
             const image = houseImages[newImageIndex];
 
-            return {
-                type: propertyType,
-                location: `${location.city}, ${location.state}`,
+        const developerOptions = [
+            'Sunway Property',
+            'EcoWorld Development Group',
+            'Gamuda Land',
+            'UEM Sunrise',
+            'S P Setia',
+            'Mah Sing Group'
+        ];
+
+        const valuerOptions = [
+            'Knight Frank Malaysia',
+            'CBRE | WTW',
+            'Henry Butcher Malaysia',
+            'Rahim & Co International',
+            'Savills Malaysia'
+        ];
+
+        const escrowOptions = [
+            'CIMB Trust',
+            'Maybank Trustees Berhad',
+            'RHB Trustees Berhad',
+            'Public Bank Trustees',
+            'HSBC Trustee Malaysia'
+        ];
+
+        const auditFirms = [
+            'Quantstamp Asia',
+            'CertiK Asia',
+            'Trail of Bits SEA',
+            'SlowMist SEA',
+            'PeckShield Labs'
+        ];
+
+        const tenantTypes = ['Family', 'Corporate', 'Student', 'Digital Nomad', 'Healthcare'];
+        const payoutDateOptions = ['28 Feb 2025', '31 Mar 2025', '30 Apr 2025', '31 May 2025', '30 Jun 2025'];
+        const demandTrendOptions = ['+6% YoY rental demand', '+9% YoY corporate demand', '+7% YoY expat interest', '+5% YoY student demand'];
+
+        const generateRandomProperty = (index) => {
+            const propertyValue = Math.round((900000 + Math.random() * 5200000) / 1000) * 1000;
+            const tokenization = Math.min(100, 40 + Math.floor(Math.random() * 60));
+            const beds = 2 + Math.floor(Math.random() * 4);
+            const baths = Math.max(1, Math.round(beds * 0.75));
+            const sqft = 1100 + Math.floor(Math.random() * 2400);
+            const category = propertyCategories[index % propertyCategories.length];
+            const location = additionalPropertyLocations[index % additionalPropertyLocations.length];
+            const name = additionalPropertyNames[index % additionalPropertyNames.length];
+            const tokenPrice = Math.max(100, Math.round(propertyValue / 10000));
+            const rentalYield = 0.045 + Math.random() * 0.018;
+            const capitalMin = 0.025 + Math.random() * 0.012;
+            const capitalMax = capitalMin + 0.01;
+            const expectedMin = rentalYield + capitalMin;
+            const expectedMax = expectedMin + 0.01;
+            const monthlyRent = Math.round((propertyValue * rentalYield) / 12 / 50) * 50;
+            const tenantType = tenantTypes[index % tenantTypes.length];
+            const tenancyVacant = Math.random() < 0.18;
+            const tenancyStatus = tenancyVacant
+                ? 'Vacant (Marketing 4 weeks)'
+                : `Occupied (${tenantType} tenant)`;
+            const creditScore = Math.round(700 + Math.random() * 80);
+            const leaseRemaining = tenancyVacant
+                ? 'Available immediately'
+                : `${1 + Math.floor(Math.random() * 2)} years ${Math.floor(Math.random() * 11)} months`;
+            const demandTrend = demandTrendOptions[index % demandTrendOptions.length];
+            const appreciationScore = Math.min(10, Math.max(6, Math.round(7 + Math.random() * 3)));
+            const managementFeePercent = tenancyVacant ? 0.045 : 0.05;
+
+            const details = {
+                overview: {
+                    propertyType: category === 'commercial' ? 'Commercial Suite' : 'Residential Condominium',
+                    developer: developerOptions[index % developerOptions.length],
+                    yearBuilt: `${2010 + Math.floor(Math.random() * 12)}`,
+                    ownership: Math.random() > 0.5 ? 'Freehold' : 'Leasehold (99-year tenure)',
+                    tenancyStatus,
+                    gallery: []
+                },
+                investment: {
+                    minInvestment: 100,
+                    rentalYield,
+                    capitalGrowthRange: [capitalMin, capitalMax],
+                    expectedROI: [expectedMin, expectedMax],
+                    nextPayout: payoutDateOptions[index % payoutDateOptions.length]
+                },
+                tenant: {
+                    type: tenancyVacant ? 'Vacant' : `${tenantType} Tenant`,
+                    monthlyRent,
+                    leaseRemaining,
+                    creditScore,
+                    paymentConsistency: tenancyVacant ? 'Prior tenancy 11/12 months on time' : `${11 + Math.floor(Math.random() * 2)}/12 months on time`,
+                    vacancyRisk: tenancyVacant ? 'Moderate (active marketing)' : 'Low (stable demand)'
+                },
+                financial: {
+                    monthlyRent,
+                    maintenanceFees: Math.round(monthlyRent * 0.09),
+                    insurance: 200,
+                    taxes: 180,
+                    managementFeePercent,
+                    statementUrl: '#'
+                },
+                aiInsights: {
+                    forecastRange: [Math.min(0.07, capitalMin + 0.01), Math.min(0.09, capitalMax + 0.02)],
+                    demandTrend,
+                    tenantRisk: tenancyVacant ? 'Moderate' : 'Low',
+                    appreciationScore,
+                    narrative: `AI projects ${formatPercent(capitalMin)}–${formatPercent(capitalMax)} capital growth driven by infrastructure upgrades in ${location}.`
+                },
+                security: {
+                    valuer: valuerOptions[index % valuerOptions.length],
+                    escrowBank: escrowOptions[index % escrowOptions.length],
+                    auditFirm: auditFirms[index % auditFirms.length],
+                    regulatoryNote: 'Compliant under SC Malaysia digital asset sandbox.'
+                },
+                liquidity: {
+                    secondaryDemand: `${8 + Math.floor(Math.random() * 6)} bids open`,
+                    avgSpread: `±${(1.5 + Math.random() * 1.2).toFixed(1)}%`,
+                    avgSaleTime: `~${3 + Math.floor(Math.random() * 3)} days`,
+                    demoUrl: '#'
+                }
+            };
+
+            return registerProperty({
+                name,
+                category,
+                location,
                 beds,
                 baths,
                 sqft,
-                tokenization: tokenizationProgress,
+                tokenization,
                 tokenPrice,
                 propertyValue,
-                image: image,
-                status: tokenizationProgress < 100 ? 'Available' : 'Fully Tokenized'
+                image: getNextImage(),
+                status: tokenization === 100 ? 'Fully Tokenized' : 'Available'
+            }, details);
+        };
+
+        const desiredTotal = 24;
+        const additionalCount = Math.max(0, desiredTotal - bandarSunwayProperties.length);
+        const additionalProperties = Array.from({ length: additionalCount }, (_, index) => generateRandomProperty(index));
+
+        const allProperties = [...bandarSunwayProperties, ...additionalProperties];
+        let filteredProperties = [...allProperties];
+
+        const getTotalPages = () => Math.max(1, Math.ceil(filteredProperties.length / propertiesPerPage));
+
+        const determineStatusVariant = (value = '') => {
+            const normalized = value.toLowerCase();
+            if (normalized.includes('low')) {
+                return 'positive';
+            }
+            if (normalized.includes('moderate')) {
+                return 'neutral';
+            }
+            return 'warning';
+        };
+
+        const buildPropertyModal = (property) => {
+            if (!property || !property.details) {
+                return '';
+            }
+
+            const { details } = property;
+            const mapQuery = details.overview.mapQuery || details.overview.address;
+            const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`;
+            const galleryImages = Array.from(new Set(details.overview.gallery || []))
+                .map((src, index) => `<img src="${resolveImagePath(src)}" alt="${property.name} gallery image ${index + 1}">`)
+                .join('');
+            const virtualTour = details.overview.virtualTour
+                ? `<div class="virtual-tour"><iframe src="${details.overview.virtualTour}" title="${property.name} virtual tour" loading="lazy" allowfullscreen></iframe></div>`
+                : '';
+            const gallerySection = galleryImages
+                ? `
+                    <section class="property-modal__gallery">
+                        <div class="section-header">
+                            <h3>Photo gallery</h3>
+                            <p>Explore current visuals and amenities before you invest.</p>
+                        </div>
+                        <div class="gallery-grid">
+                            ${galleryImages}
+                        </div>
+                        ${virtualTour}
+                    </section>
+                `
+                : '';
+
+            const snapshotMetrics = [
+                { label: 'Token price', value: formatCurrency(details.investment.tokenPrice), description: 'Cost per token' },
+                { label: 'Minimum investment', value: formatCurrency(details.investment.minInvestment), description: 'Entry level' },
+                { label: 'Property value', value: formatCurrency(details.investment.propertyValue), description: 'Current valuation' },
+                { label: 'Est. rental yield', value: `${formatPercent(details.investment.rentalYield)} p.a.`, description: 'Net yield after costs' },
+                { label: 'Est. capital growth', value: formatPercentRange(details.investment.capitalGrowthRange, ' p.a.'), description: 'Based on trailing 3 years' },
+                { label: 'Expected ROI', value: formatPercentRange(details.investment.expectedROI, ' p.a.'), description: 'Yield + projected growth' },
+                { label: 'Next payout', value: details.investment.nextPayout || 'Quarterly', description: 'Rental distribution date' },
+                { label: 'Tokenization progress', value: `${property.tokenization}%`, description: 'Funding completed' }
+            ];
+
+            const creditClass = `status-pill status-pill--${details.tenant.creditStatus || 'neutral'}`;
+            const vacancyClass = `status-pill status-pill--${determineStatusVariant(details.tenant.vacancyRisk || '')}`;
+
+            const tenantAttributes = [
+                { label: 'Tenant type', value: details.tenant.type || '—', icon: 'fas fa-users' },
+                { label: 'Monthly rent', value: formatCurrency(details.tenant.monthlyRent || 0), icon: 'fas fa-money-bill-wave' },
+                { label: 'Lease remaining', value: details.tenant.leaseRemaining || '—', icon: 'fas fa-calendar-alt' },
+                { label: 'Credit score', value: details.tenant.creditScore ? `<span class="${creditClass}">${details.tenant.creditScore}/850 • ${details.tenant.creditLabel || ''}</span>` : '—', icon: 'fas fa-shield-check' },
+                { label: 'Payment consistency', value: details.tenant.paymentConsistency || '—', icon: 'fas fa-receipt' },
+                { label: 'Vacancy risk', value: `<span class="${vacancyClass}">${details.tenant.vacancyRisk || '—'}</span>`, icon: 'fas fa-chart-line' }
+            ];
+
+            const managementFeeAmount = (details.financial.monthlyRent || 0) * (details.financial.managementFeePercent || 0);
+            const financialItems = [
+                { label: 'Monthly rent', value: formatCurrency(details.financial.monthlyRent || 0) },
+                { label: 'Maintenance fees', value: formatCurrency(details.financial.maintenanceFees || 0) },
+                { label: 'Insurance', value: formatCurrency(details.financial.insurance || 0) },
+                { label: 'Taxes', value: formatCurrency(details.financial.taxes || 0) },
+                { label: `Management fee (${formatPercent(details.financial.managementFeePercent || 0)})`, value: formatCurrency(Math.round(managementFeeAmount)) },
+                { label: 'Net income per token (monthly)', value: formatCurrency(details.financial.netIncomePerToken || 0) }
+            ];
+
+            const sliderMin = details.investment.minInvestment || 100;
+            const sliderMax = Math.max(sliderMin * 40, 20000);
+            const sliderDefault = Math.min(sliderMin * 10, sliderMax);
+
+            const aiCards = [
+                { label: 'Predicted 12-month appreciation', value: formatPercentRange(details.aiInsights.forecastRange, ''), description: 'AI pricing forecast' },
+                { label: 'Rental demand trend', value: details.aiInsights.demandTrend || '—', description: 'Momentum in local enquiries' },
+                { label: 'Tenant risk outlook', value: details.aiInsights.tenantRisk || '—', description: 'AI tenant stability score' },
+                { label: 'Area appreciation score', value: `${details.aiInsights.appreciationScore || 0}/10`, description: 'Composite neighbourhood score' }
+            ];
+
+            const liquidityMetrics = [
+                { label: 'Secondary market demand', value: details.liquidity.secondaryDemand || '—' },
+                { label: 'Average trade spread', value: details.liquidity.avgSpread || '—' },
+                { label: 'Average sale time', value: details.liquidity.avgSaleTime || '—' }
+            ];
+
+            return `
+                <header class="property-modal__header">
+                    <span class="property-modal__tag">${details.overview.propertyType}</span>
+                    <h2 id="propertyModalTitle">${property.name}</h2>
+                    <p class="property-modal__location">${details.overview.address}</p>
+                </header>
+                <section class="property-modal__overview">
+                    <div class="overview-card">
+                        <div class="overview-meta">
+                            <div class="overview-point">
+                                <span class="overview-label">Ownership</span>
+                                <strong>${details.overview.ownership}</strong>
+                            </div>
+                            <div class="overview-point">
+                                <span class="overview-label">Developer</span>
+                                <strong>${details.overview.developer}</strong>
+                            </div>
+                            <div class="overview-point">
+                                <span class="overview-label">Year built</span>
+                                <strong>${details.overview.yearBuilt}</strong>
+                            </div>
+                            <div class="overview-point">
+                                <span class="overview-label">Tenancy status</span>
+                                <strong>${details.overview.tenancyStatus}</strong>
+                            </div>
+                        </div>
+                        <div class="overview-stats-bar">
+                            <span><i class="fas fa-bed"></i>${property.beds} Beds</span>
+                            <span><i class="fas fa-bath"></i>${property.baths} Baths</span>
+                            <span><i class="fas fa-ruler-combined"></i>${property.sqft.toLocaleString()} sqft</span>
+                            <span><i class="fas fa-chart-pie"></i>${property.tokenization}% tokenized</span>
+                        </div>
+                    </div>
+                    <div class="overview-map">
+                        <iframe src="${mapSrc}" title="${property.name} on Google Maps" loading="lazy" allowfullscreen></iframe>
+                    </div>
+                </section>
+                ${gallerySection}
+                <section class="investment-highlight">
+                    <div class="section-header">
+                        <h3>Investment snapshot</h3>
+                        <p>Understand projected returns and liquidity at a glance.</p>
+                    </div>
+                    <div class="snapshot-grid">
+                        ${snapshotMetrics.map(metric => `
+                            <div class="snapshot-metric">
+                                <span class="metric-label">${metric.label}</span>
+                                <strong>${metric.value}</strong>
+                                <small>${metric.description}</small>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+                <section class="tenant-quality">
+                    <div class="section-header">
+                        <h3>Tenant & credit quality</h3>
+                        <p>Risk indicators that underpin stable rental income.</p>
+                    </div>
+                    <div class="tenant-grid">
+                        ${tenantAttributes.map(attr => `
+                            <div class="tenant-attr">
+                                <div class="tenant-icon"><i class="${attr.icon}"></i></div>
+                                <div class="tenant-text">
+                                    <span class="tenant-label">${attr.label}</span>
+                                    <p>${attr.value}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+                <section class="financial-breakdown">
+                    <div class="section-header">
+                        <h3>Financial breakdown</h3>
+                        <p>Transparent cash flow view with an interactive income estimator.</p>
+                    </div>
+                    <div class="financial-content">
+                        <ul class="financial-list">
+                            ${financialItems.map(item => `
+                                <li>
+                                    <span>${item.label}</span>
+                                    <strong>${item.value}</strong>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <div class="yield-calculator" data-yield-calculator>
+                            <div class="calculator-header">
+                                <div>
+                                    <span class="calculator-label">Yield calculator</span>
+                                    <p>Drag the slider to estimate your monthly income.</p>
+                                </div>
+                            </div>
+                            <input type="range" min="${sliderMin}" max="${sliderMax}" step="${sliderMin}" value="${sliderDefault}" data-yield="${details.investment.rentalYield}" aria-label="Estimate income based on investment amount">
+                            <div class="calculator-output">
+                                <div>Investment amount <strong data-calculator-investment></strong></div>
+                                <div>Est. monthly income <strong data-calculator-income></strong></div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="financial-statement-btn" href="${details.financial.statementUrl || '#'}" target="_blank" rel="noopener">View full financial statement (PDF)</a>
+                </section>
+                <section class="ai-insights">
+                    <div class="section-header">
+                        <h3>AI insights</h3>
+                        <p>Machine learning projections to strengthen your conviction.</p>
+                    </div>
+                    <div class="ai-grid">
+                        ${aiCards.map(card => `
+                            <div class="ai-card">
+                                <span class="ai-label">${card.label}</span>
+                                <strong>${card.value}</strong>
+                                <small>${card.description}</small>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <p class="ai-narrative">${details.aiInsights.narrative || ''}</p>
+                </section>
+                <section class="security-trust">
+                    <div class="section-header">
+                        <h3>Security & trust</h3>
+                        <p>Independent partners keep every issuance transparent and compliant.</p>
+                    </div>
+                    <div class="security-grid">
+                        <div class="security-card">
+                            <span class="security-label">Independent valuer</span>
+                            <strong>${details.security.valuer}</strong>
+                        </div>
+                        <div class="security-card">
+                            <span class="security-label">Escrow bank</span>
+                            <strong>${details.security.escrowBank}</strong>
+                        </div>
+                        <div class="security-card">
+                            <span class="security-label">Smart contract audit</span>
+                            <strong>${details.security.auditFirm}</strong>
+                        </div>
+                        <div class="security-card">
+                            <span class="security-label">Regulatory note</span>
+                            <p>${details.security.regulatoryNote}</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="liquidity-exit">
+                    <div class="section-header">
+                        <h3>Liquidity & exit</h3>
+                        <p>See how quickly token holders are trading out of positions.</p>
+                    </div>
+                    <div class="liquidity-grid">
+                        ${liquidityMetrics.map(metric => `
+                            <div class="liquidity-card">
+                                <span class="liquidity-label">${metric.label}</span>
+                                <strong>${metric.value}</strong>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <a class="liquidity-demo" href="${details.liquidity.demoUrl || '#'}">Sell tokens demo</a>
+                </section>
+            `;
+        };
+
+        const setupYieldCalculator = (property) => {
+            if (!property || !property.details) {
+                return;
+            }
+            const calculator = modalBody.querySelector('[data-yield-calculator]');
+            if (!calculator) {
+                return;
+            }
+            const slider = calculator.querySelector('input[type="range"]');
+            const investmentOutput = calculator.querySelector('[data-calculator-investment]');
+            const incomeOutput = calculator.querySelector('[data-calculator-income]');
+            if (!slider || !investmentOutput || !incomeOutput) {
+                return;
+            }
+            const yieldRate = Number(slider.dataset.yield || property.details.investment.rentalYield || 0);
+            const updateOutputs = () => {
+                const amount = Number(slider.value || 0);
+                const monthlyIncome = amount * (yieldRate / 12);
+                investmentOutput.textContent = formatCurrency(amount);
+                incomeOutput.textContent = formatCurrency(Math.round(monthlyIncome));
             };
-        }
+            slider.addEventListener('input', updateOutputs);
+            slider.addEventListener('change', updateOutputs);
+            updateOutputs();
+        };
 
-        // Generate all properties once
-        for (let i = 0; i < 24; i++) {
-            allProperties.push(generateRandomProperty());
-        }
-        filteredProperties = [...allProperties];
+        const openPropertyModal = (propertyId) => {
+            const property = propertyRegistry.get(propertyId);
+            if (!property) {
+                return;
+            }
+            lastFocusedCard = propertyGrid.querySelector(`[data-property-id="${propertyId}"]`);
+            modalBody.innerHTML = buildPropertyModal(property);
+            propertyModal.classList.add('is-visible');
+            propertyModal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('modal-open');
+            modalDialog.focus();
+            setupYieldCalculator(property);
+        };
 
-        function displayProperties(page) {
-            const startIndex = (page - 1) * propertiesPerPage;
+        const closePropertyModal = () => {
+            propertyModal.classList.remove('is-visible');
+            propertyModal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('modal-open');
+            modalBody.innerHTML = '';
+            if (lastFocusedCard) {
+                lastFocusedCard.focus();
+            }
+            lastFocusedCard = null;
+        };
+
+        propertyModal.addEventListener('click', (event) => {
+            if (event.target.dataset.close === 'true') {
+                closePropertyModal();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && propertyModal.classList.contains('is-visible')) {
+                closePropertyModal();
+            }
+        });
+
+        const bindPropertyCardInteractions = () => {
+            const cards = propertyGrid.querySelectorAll('.property-card');
+            cards.forEach(card => {
+                const propertyId = card.getAttribute('data-property-id');
+                if (!propertyId) {
+                    return;
+                }
+                const investLink = card.querySelector('.invest-btn');
+                if (investLink) {
+                    investLink.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                    });
+                }
+                card.addEventListener('click', (event) => {
+                    if (event.target.closest('a')) {
+                        return;
+                    }
+                    openPropertyModal(propertyId);
+                });
+                card.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        openPropertyModal(propertyId);
+                    }
+                });
+            });
+        };
+
+        const updateResultsCount = () => {
+            if (!resultsCount) {
+                return;
+            }
+
+            resultsCount.textContent = filteredProperties.length
+                ? `${filteredProperties.length} properties found`
+                : 'No properties found';
+        };
+
+        const updatePaginationControls = () => {
+            const totalPages = getTotalPages();
+            const hasListings = filteredProperties.length > 0;
+
+            pageButtons.forEach(button => {
+                const pageNumber = Number(button.dataset.page);
+
+                if (Number.isNaN(pageNumber) || pageNumber > totalPages) {
+                    button.style.display = 'none';
+                    return;
+                }
+
+                button.style.display = '';
+                button.classList.toggle('active', pageNumber === currentPage);
+                button.disabled = pageNumber === currentPage;
+                button.setAttribute('aria-current', pageNumber === currentPage ? 'page' : 'false');
+            });
+
+            if (prevButton) {
+                prevButton.disabled = !hasListings || currentPage <= 1;
+                prevButton.style.display = totalPages > 1 ? '' : 'none';
+            }
+
+            if (nextButton) {
+                nextButton.disabled = !hasListings || currentPage >= totalPages;
+                nextButton.style.display = totalPages > 1 ? '' : 'none';
+            }
+        };
+
+        const renderProperties = () => {
+            const startIndex = (currentPage - 1) * propertiesPerPage;
             const endIndex = startIndex + propertiesPerPage;
             const propertiesToShow = filteredProperties.slice(startIndex, endIndex);
-            
-            propertyGrid.innerHTML = ''; // Clear existing properties
+
+            propertyGrid.innerHTML = '';
+
+            if (!propertiesToShow.length) {
+                propertyGrid.innerHTML = `
+                    <div class="empty-state">
+                        <p>No properties match your filters right now. Try adjusting your search terms.</p>
+                    </div>
+                `;
+                updatePaginationControls();
+                updateResultsCount();
+                return;
+            }
 
             propertiesToShow.forEach(property => {
-                const propertyCard = `
-                    <div class="property-card">
+                propertyGrid.insertAdjacentHTML('beforeend', `
+                    <div class="property-card" data-property-id="${property.id}" role="button" tabindex="0" aria-label="View full investment profile for ${property.name}">
                         <div class="property-image">
-                            <img src="./images/house_pictures/${property.image}" 
-                                 alt="${property.type}"
-                                 onload="console.log('Image loaded successfully:', this.src)"
-                                 onerror="console.error('Failed to load image:', this.src, 'Error:', event);">
+                            <img src="./images/house_pictures/${property.image}" alt="${property.name}">
                             <div class="property-status ${property.status === 'Available' ? 'available' : 'tokenized'}">${property.status}</div>
                         </div>
                         <div class="property-details">
-                            <h3>${property.type}</h3>
+                            <h3>${property.name}</h3>
                             <p class="location">${property.location}</p>
                             <div class="property-stats">
                                 <span>${property.beds} Beds</span>
@@ -490,49 +1004,38 @@
                             <a href="/wallet.html" class="invest-btn">Invest Now</a>
                         </div>
                     </div>
-                `;
-                propertyGrid.innerHTML += propertyCard;
+                `);
             });
 
-            // Update pagination buttons state
-            const prevButton = document.querySelector('.page-btn.prev');
-            const nextButton = document.querySelector('.page-btn.next');
-            
-            prevButton.disabled = currentPage === 1;
-            nextButton.disabled = currentPage >= Math.ceil(filteredProperties.length / propertiesPerPage);
-            
-            prevButton.style.opacity = prevButton.disabled ? '0.5' : '1';
-            nextButton.style.opacity = nextButton.disabled ? '0.5' : '1';
-        }
+            updatePaginationControls();
+            updateResultsCount();
+            bindPropertyCardInteractions();
+        };
 
-        // Initialize first page
-        displayProperties(currentPage);
+        const filterProperties = () => {
+            const searchTermRaw = propertySearch ? propertySearch.value : '';
+            const normalizedSearch = normalizeText(searchTermRaw);
+            const numericSearch = searchTermRaw.replace(/[^0-9]/g, '');
+            const selectedType = propertyType ? propertyType.value : '';
+            const selectedPriceRange = priceRange ? priceRange.value : '';
+            const selectedTokenization = tokenizationFilter ? tokenizationFilter.value : '';
 
-        // Update pagination event listeners
-        const prevButton = document.querySelector('.page-btn.prev');
-        const nextButton = document.querySelector('.page-btn.next');
-        
-        prevButton.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                displayProperties(currentPage);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
-        
-        nextButton.addEventListener('click', () => {
-            if (currentPage < Math.ceil(filteredProperties.length / propertiesPerPage)) {
-                currentPage++;
-                displayProperties(currentPage);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
+            filteredProperties = allProperties.filter(property => {
+                const normalizedName = normalizeText(property.name);
+                const valueString = property.propertyValue.toString();
+                const tokenPriceString = property.tokenPrice.toString();
 
-        function filterProperties() {
-            const searchTerm = propertySearch.value.toLowerCase();
-            const selectedType = propertyType.value;
-            const selectedPriceRange = priceRange.value;
-            const selectedTokenization = tokenization.value;
+                const matchesSearch = !normalizedSearch
+                    || normalizedName.includes(normalizedSearch)
+                    || (numericSearch && (valueString.includes(numericSearch) || tokenPriceString.includes(numericSearch)));
+
+                if (!matchesSearch) {
+                    return false;
+                }
+
+                if (selectedType && property.category !== selectedType) {
+                    return false;
+                }
 
             filteredProperties = allProperties.filter(property => {
                 // Search term filter
@@ -553,51 +1056,94 @@
                     matchesPrice = propertyPrice >= minPrice && propertyPrice <= maxPrice;
                 }
 
-                // Tokenization status filter
-                let matchesTokenization = true;
                 if (selectedTokenization) {
-                    switch(selectedTokenization) {
-                        case 'available':
-                            matchesTokenization = property.tokenization < 100;
-                            break;
-                        case 'in-progress':
-                            matchesTokenization = property.tokenization > 0 && property.tokenization < 100;
-                            break;
-                        case 'completed':
-                            matchesTokenization = property.tokenization === 100;
-                            break;
+                    if (selectedTokenization === 'available' && property.tokenization >= 100) {
+                        return false;
+                    }
+                    if (selectedTokenization === 'in-progress' && (property.tokenization === 0 || property.tokenization >= 100)) {
+                        return false;
+                    }
+                    if (selectedTokenization === 'completed' && property.tokenization !== 100) {
+                        return false;
                     }
                 }
 
-                return matchesSearch && matchesType && matchesPrice && matchesTokenization;
+                return true;
             });
 
-            // Reset to first page when filtering
             currentPage = 1;
-            displayProperties(currentPage);
+            renderProperties();
+        };
 
-            // Update UI to show number of results
-            const resultsCount = document.createElement('p');
-            resultsCount.className = 'results-count';
-            resultsCount.textContent = `${filteredProperties.length} properties found`;
-            const existingCount = document.querySelector('.results-count');
-            if (existingCount) {
-                existingCount.remove();
-            }
-            document.querySelector('.property-grid').insertAdjacentElement('beforebegin', resultsCount);
+        renderProperties();
+
+        let searchTimeout;
+        if (propertySearch) {
+            propertySearch.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(filterProperties, 300);
+            });
+
+            propertySearch.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    clearTimeout(searchTimeout);
+                    filterProperties();
+                }
+            });
         }
 
-        // Add debounce for search input
-        let searchTimeout;
-        propertySearch.addEventListener('input', () => {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(filterProperties, 300);
+        if (searchButton) {
+            searchButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                if (propertySearch) {
+                    clearTimeout(searchTimeout);
+                    filterProperties();
+                    propertySearch.focus();
+                }
+            });
+        }
+
+        [propertyType, priceRange, tokenizationFilter].forEach(control => {
+            if (control) {
+                control.addEventListener('change', filterProperties);
+            }
         });
 
-        // Immediate filter for select inputs
-        propertyType.addEventListener('change', filterProperties);
-        priceRange.addEventListener('change', filterProperties);
-        tokenization.addEventListener('change', filterProperties);
+        pageButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const requestedPage = Number(button.dataset.page);
+                if (Number.isNaN(requestedPage) || requestedPage === currentPage) {
+                    return;
+                }
+                currentPage = requestedPage;
+                renderProperties();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        if (prevButton) {
+            prevButton.addEventListener('click', () => {
+                if (currentPage <= 1) {
+                    return;
+                }
+                currentPage -= 1;
+                renderProperties();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                const totalPages = getTotalPages();
+                if (currentPage >= totalPages) {
+                    return;
+                }
+                currentPage += 1;
+                renderProperties();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
     });
     </script>
 
@@ -635,9 +1181,9 @@
             return;
         }
 
-        lookupBtn.addEventListener('click', async (e) => {
+        const handleLookup = async (e) => {
             e.preventDefault();
-            
+
             const address = document.getElementById('address').value;
             const city = document.getElementById('city').value;
             const state = document.getElementById('state').value;
@@ -664,7 +1210,7 @@
 
                 // Hide loading indicator
                 loadingIndicator.style.display = 'none';
-                
+
                 if (data.error) {
                     propertyResults.innerHTML = `
                         <div class="error-message">
@@ -687,7 +1233,9 @@
                 `;
                 propertyResults.style.display = 'block';
             }
-        });
+        };
+
+        lookupBtn.addEventListener('click', handleLookup);
     });
 
     function createDashboardHTML(data) {
@@ -783,48 +1331,7 @@
     // Show marketplace view by default
     document.addEventListener('DOMContentLoaded', () => {
         showMarketplace();
-        
-        // Add event listener for lookup button
-        const lookupBtn = document.getElementById('lookupBtn');
-        if (lookupBtn) {
-            lookupBtn.addEventListener('click', async (e) => {
-                e.preventDefault();
-                const results = document.getElementById('propertyResults');
-                if (!results) return;
-
-                results.style.display = 'block';
-                results.innerHTML = `
-                    <div class="loading-indicator">
-                        <div class="spinner"></div>
-                    </div>
-                `;
-
-                try {
-                    const response = await fetch('/.netlify/functions/property-lookup', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            address: document.getElementById('address')?.value || '',
-                            city: document.getElementById('city')?.value || '',
-                            state: document.getElementById('state')?.value || ''
-                        })
-                    });
-
-                    if (!response.ok) throw new Error('Failed to fetch property data');
-                    const data = await response.json();
-                    
-                    results.innerHTML = createDashboardHTML(data);
-                } catch (error) {
-                    results.innerHTML = `
-                        <div class="error-message">
-                            <p>Sorry, we couldn't find the property details.</p>
-                            <p class="error-details">${error.message}</p>
-                        </div>
-                    `;
-                }
-            });
-        }
     });
     </script>
 </body>
-</html> 
+</html>
